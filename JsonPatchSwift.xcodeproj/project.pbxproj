@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F2FEDD81C1626DD00D7630F /* JPSDocumentStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */; };
 		2FAD257A1C161A66006760CE /* JsonPatchSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FAD25791C161A66006760CE /* JsonPatchSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2FAD25811C161A66006760CE /* JsonPatchSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FAD25761C161A66006760CE /* JsonPatchSwift.framework */; };
-		2FAD25861C161A66006760CE /* JsonPatchSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAD25851C161A66006760CE /* JsonPatchSwiftTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,11 +23,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSDocumentStructureTests.swift; sourceTree = "<group>"; };
 		2FAD25761C161A66006760CE /* JsonPatchSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JsonPatchSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FAD25791C161A66006760CE /* JsonPatchSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JsonPatchSwift.h; sourceTree = "<group>"; };
 		2FAD257B1C161A66006760CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2FAD25801C161A66006760CE /* JsonPatchSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JsonPatchSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2FAD25851C161A66006760CE /* JsonPatchSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonPatchSwiftTests.swift; sourceTree = "<group>"; };
 		2FAD25871C161A66006760CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,7 +80,7 @@
 		2FAD25841C161A66006760CE /* JsonPatchSwiftTests */ = {
 			isa = PBXGroup;
 			children = (
-				2FAD25851C161A66006760CE /* JsonPatchSwiftTests.swift */,
+				2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */,
 				2FAD25871C161A66006760CE /* Info.plist */,
 			);
 			path = JsonPatchSwiftTests;
@@ -218,7 +218,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2FAD25861C161A66006760CE /* JsonPatchSwiftTests.swift in Sources */,
+				2F2FEDD81C1626DD00D7630F /* JPSDocumentStructureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,16 +359,19 @@
 		2FAD258E1C161A66006760CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = JsonPatchSwiftTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dominicfrei.JsonPatchSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		2FAD258F1C161A66006760CE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = JsonPatchSwiftTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dominicfrei.JsonPatchSwiftTests;
