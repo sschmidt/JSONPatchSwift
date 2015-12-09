@@ -31,6 +31,9 @@ struct JPSJsonPatch {
             self.operations = [try JPSJsonPatch.extractOperationFromJson(json)]
             
         } else if let json = json as? [AnyObject] {
+            guard 0 < json.count else {
+                throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Patch array does not contain elements.")
+            }
             var operationArray = [JPSOperation]()
             for i in 0..<json.count {
                 guard let operation = json[i] as? [String: AnyObject] else {

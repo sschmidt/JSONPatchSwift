@@ -148,6 +148,21 @@ class JPSDocumentStructureTests: XCTestCase {
         }
     }
     
+    func testJsonPatchRejectsEmptyArray() {
+        do {
+            // swiftlint:disable opening_brace
+            let _ = try JPSJsonPatch("[]")
+            // swiftlint:enable opening_brace
+            XCTFail("Unreachable code. Should have raised an error.")
+        } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
+            // Expected behaviour.
+            XCTAssertNotNil(message)
+            XCTAssertEqual(message, "Patch array does not contain elements.")
+        } catch {
+            XCTFail("Unexpected error.")
+        }
+    }
+    
     // Examples from the RFC itself.
     func testIfExamplesFromRFCAreRecognizedAsValidJsonPatches() {
         // swiftlint:disable opening_brace
