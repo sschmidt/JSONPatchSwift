@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2F2FEDD81C1626DD00D7630F /* JPSDocumentStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */; };
+		2F2FEDDA1C16E68C00D7630F /* JPSJsonPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2FEDD91C16E68C00D7630F /* JPSJsonPatch.swift */; };
 		2FAD257A1C161A66006760CE /* JsonPatchSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FAD25791C161A66006760CE /* JsonPatchSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2FAD25811C161A66006760CE /* JsonPatchSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FAD25761C161A66006760CE /* JsonPatchSwift.framework */; };
 		87D0730933DDDC34BEE99264 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A32E642709E465BE0F9EF098 /* Pods.framework */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSDocumentStructureTests.swift; sourceTree = "<group>"; };
+		2F2FEDD91C16E68C00D7630F /* JPSJsonPatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSJsonPatch.swift; sourceTree = "<group>"; };
 		2FAD25761C161A66006760CE /* JsonPatchSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JsonPatchSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FAD25791C161A66006760CE /* JsonPatchSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JsonPatchSwift.h; sourceTree = "<group>"; };
 		2FAD257B1C161A66006760CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 		2FAD25781C161A66006760CE /* JsonPatchSwift */ = {
 			isa = PBXGroup;
 			children = (
+				2F2FEDD91C16E68C00D7630F /* JPSJsonPatch.swift */,
 				2FAD25791C161A66006760CE /* JsonPatchSwift.h */,
 				2FAD257B1C161A66006760CE /* Info.plist */,
 			);
@@ -281,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F2FEDDA1C16E68C00D7630F /* JPSJsonPatch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,6 +400,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9AE6C2808D0FD6D1AD424E1D /* Pods.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -406,6 +411,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.dominicfrei.JsonPatchSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WARNING_CFLAGS = "-Weverything";
 			};
 			name = Debug;
@@ -414,6 +420,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4DDB22A8A6459AE77C366463 /* Pods.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
