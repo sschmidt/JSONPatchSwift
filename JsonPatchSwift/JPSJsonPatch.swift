@@ -23,39 +23,36 @@ struct JPSJsonPatch {
             throw JPSJsonPatchInitialisationError.InvalidJsonFormat(message: "Could not encode patch.")
         }
         
-        do {
-            let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
-            if let json = json as? [String: String] {
-                guard let _ = json["op"] else {
-                    throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'op' element.")
+        let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
+        
+        print(json)
+        
+        if let json = json as? [String: AnyObject] {
+            self.operations = [try JPSJsonPatch.extractOperationFromJson(json)]
+            
+        } else if let json = json as? [AnyObject] {
+            var operationArray = [JPSOperation]()
+            for i in 0..<json.count {
+                guard let operation = json[i] as? [String: AnyObject] else {
+                    throw JPSJsonPatchInitialisationError.InvalidJsonFormat(message: "Array does not contain dictionaries")
                 }
-                guard let _ = json["path"] else {
-                    throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'path' element.")
-                }
-                guard let _ = json["value"] else {
-                    throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'value' element.")
-                }
-                self.operations = [try JPSJsonPatch.extractOperationFromJson(json)]
-            } else if let json = json as? [AnyObject] {
-                var operationArray = [JPSOperation]()
-                for i in 0..<json.count {
-                    operationArray.append(try JPSJsonPatch.extractOperationFromJson(json[i]))
-                }
-                self.operations = operationArray
-            } else {
-                // All other types are not a valid JSON Patch Operation.
-                throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Root element is not an array or dictionary.")
+                operationArray.append(try JPSJsonPatch.extractOperationFromJson(operation))
             }
-        } catch JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
-            throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: message)
-        } catch {
-            throw JPSJsonPatchInitialisationError.InvalidJsonFormat(message: "JSON transformation failed.")
+            self.operations = operationArray
+        } else {
+            // All other types are not a valid JSON Patch Operation.
+            print(json)
+            throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Root element is not an array of dictionaries or a single dictionary.")
         }
+        
     }
     
-    private static func extractOperationFromJson(json: AnyObject) throws -> JPSOperation {
+    private static func extractOperationFromJson(json: [String: AnyObject]) throws -> JPSOperation {
         guard let operation = json["op"] as? String else {
             throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'op' element.")
+        }
+        guard let _ = json["path"] as? String else {
+            throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'path' element.")
         }
         switch JPSOperationType(rawValue: operation)! {
         case .Add: return JPSOperation(type: JPSOperationType.Add)
