@@ -146,7 +146,7 @@ class JPSDocumentStructureTests: XCTestCase {
         } catch JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
             // Expected behaviour.
             XCTAssertNotNil(message)
-            XCTAssertEqual(message, "Could not find 'op' element.")
+            XCTAssertEqual(message, "Could not find 'path' element.")
         } catch {
             XCTFail("Unexpected error.")
         }
@@ -161,7 +161,7 @@ class JPSDocumentStructureTests: XCTestCase {
         } catch JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
             // Expected behaviour.
             XCTAssertNotNil(message)
-            XCTAssertEqual(message, "Could not find 'op' element.")
+            XCTAssertEqual(message, "Could not find 'value' element.")
         } catch {
             XCTFail("Unexpected error.")
         }
