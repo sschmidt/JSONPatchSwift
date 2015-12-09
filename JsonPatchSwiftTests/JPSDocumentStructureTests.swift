@@ -41,24 +41,100 @@ class JPSDocumentStructureTests: XCTestCase {
         let operation0 = jsonPatch.operations[0]
         XCTAssertEqual(operation0.type, JPSOperationType.Test)
         XCTAssertTrue((jsonPatch.operations[1] as Any) is JPSOperation)
-        let operation1 = jsonPatch.operations[0]
+        let operation1 = jsonPatch.operations[1]
         XCTAssertEqual(operation1.type, JPSOperationType.Add)
         XCTAssertTrue((jsonPatch.operations[2] as Any) is JPSOperation)
-        let operation2 = jsonPatch.operations[0]
+        let operation2 = jsonPatch.operations[2]
         XCTAssertEqual(operation2.type, JPSOperationType.Remove)
     }
     
     // This is about the JSON format in general.
     func testJsonPatchRejectsInvalidJsonFormat() {
-//        do {
-//            _ = try JPSJsonPatch("!#€%&/()*^*_:;;:;_poawolwasnndaw")
-//            XCTFail("Unreachable code. Should have raised an error.")
-//        } catch let error = JPSJsonPatchInitialisationError.InvalidJsonFormat {
-//            error.me
-//            // Expected behaviour.
-//        } catch {
-//            XCTFail("Unreachable code. Should have raised another error.")
-//        }
+        do {
+            _ = try JPSJsonPatch("!#€%&/()*^*_:;;:;_poawolwasnndaw")
+            XCTFail("Unreachable code. Should have raised an error.")
+        } catch JPSJsonPatchInitialisationError.InvalidJsonFormat(let message) {
+            // Expected behaviour.
+            XCTAssertNotNil(message)
+            XCTAssertEqual(message, "JSON transformation failed.")
+        } catch {
+            XCTFail("Unreachable code. Should have raised another error.")
+        }
+    }
+    
+    func testJsonPatchWithDictionaryAsRootElementForOperationTest() {
+        // swiftlint:disable opening_brace
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
+        // swiftlint:enable opening_brace
+        XCTAssertNotNil(jsonPatch)
+        XCTAssertNotNil(jsonPatch.operations)
+        XCTAssertEqual(jsonPatch.operations.count, 1)
+        XCTAssertTrue((jsonPatch.operations[0] as Any) is JPSOperation)
+        let operation0 = jsonPatch.operations[0]
+        XCTAssertEqual(operation0.type, JPSOperationType.Test)
+    }
+    
+    func testJsonPatchWithDictionaryAsRootElementForOperationAdd() {
+        // swiftlint:disable opening_brace
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
+        // swiftlint:enable opening_brace
+        XCTAssertNotNil(jsonPatch)
+        XCTAssertNotNil(jsonPatch.operations)
+        XCTAssertEqual(jsonPatch.operations.count, 1)
+        XCTAssertTrue((jsonPatch.operations[0] as Any) is JPSOperation)
+        let operation0 = jsonPatch.operations[0]
+        XCTAssertEqual(operation0.type, JPSOperationType.Add)
+    }
+    
+    func testJsonPatchWithDictionaryAsRootElementForOperationCopy() {
+        // swiftlint:disable opening_brace
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"copy\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
+        // swiftlint:enable opening_brace
+        XCTAssertNotNil(jsonPatch)
+        XCTAssertNotNil(jsonPatch.operations)
+        XCTAssertEqual(jsonPatch.operations.count, 1)
+        XCTAssertTrue((jsonPatch.operations[0] as Any) is JPSOperation)
+        let operation0 = jsonPatch.operations[0]
+        XCTAssertEqual(operation0.type, JPSOperationType.Copy)
+    }
+    
+    func testJsonPatchWithDictionaryAsRootElementForOperationRemove() {
+        // swiftlint:disable opening_brace
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
+        // swiftlint:enable opening_brace
+        XCTAssertNotNil(jsonPatch)
+        XCTAssertNotNil(jsonPatch.operations)
+        XCTAssertEqual(jsonPatch.operations.count, 1)
+        XCTAssertTrue((jsonPatch.operations[0] as Any) is JPSOperation)
+        let operation0 = jsonPatch.operations[0]
+        XCTAssertEqual(operation0.type, JPSOperationType.Remove)
+    }
+    
+    func testJsonPatchWithDictionaryAsRootElementForOperationReplace() {
+        // swiftlint:disable opening_brace
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"replace\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
+        // swiftlint:enable opening_brace
+        XCTAssertNotNil(jsonPatch)
+        XCTAssertNotNil(jsonPatch.operations)
+        XCTAssertEqual(jsonPatch.operations.count, 1)
+        XCTAssertTrue((jsonPatch.operations[0] as Any) is JPSOperation)
+        let operation0 = jsonPatch.operations[0]
+        XCTAssertEqual(operation0.type, JPSOperationType.Replace)
+    }
+    
+    func testIfValidJsonWithoutOpElementIsRejected() {
+        do {
+        // swiftlint:disable opening_brace
+        let _ = try JPSJsonPatch("{ \"path\": \"/a/b/c\", \"value\": \"foo\" }")
+        // swiftlint:enable opening_brace
+            XCTFail("Unreachable code. Should have raised an error.")
+        } catch JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
+            // Expected behaviour.
+            XCTAssertNotNil(message)
+            XCTAssertEqual(message, "Could not find 'op' element.")
+        } catch {
+            XCTFail("Unexpected error.")
+        }
     }
     
     func testJsonPatchRejectsMissingOperation() {
