@@ -122,11 +122,11 @@ class JPSDocumentStructureTests: XCTestCase {
         XCTAssertEqual(operation0.type, JPSOperationType.Replace)
     }
     
-    func testIfValidJsonWithoutOpElementIsRejected() {
+    func testJsonPatchRejectsMissingOperation() {
         do {
-        // swiftlint:disable opening_brace
-        let _ = try JPSJsonPatch("{ \"path\": \"/a/b/c\", \"value\": \"foo\" }")
-        // swiftlint:enable opening_brace
+            // swiftlint:disable opening_brace
+            let _ = try JPSJsonPatch("{ \"path\": \"/a/b/c\", \"value\": \"foo\" }")
+            // swiftlint:enable opening_brace
             XCTFail("Unreachable code. Should have raised an error.")
         } catch JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
             // Expected behaviour.
@@ -137,29 +137,70 @@ class JPSDocumentStructureTests: XCTestCase {
         }
     }
     
-    func testJsonPatchRejectsMissingOperation() {
-        XCTFail("Yet to be implemented.")
-    }
-    
     func testJsonPatchRejectsMissingPath() {
-        XCTFail("Yet to be implemented.")
+        do {
+            // swiftlint:disable opening_brace
+            let _ = try JPSJsonPatch("{ \"op\": \"add\", \"value\": \"foo\" }")
+            // swiftlint:enable opening_brace
+            XCTFail("Unreachable code. Should have raised an error.")
+        } catch JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
+            // Expected behaviour.
+            XCTAssertNotNil(message)
+            XCTAssertEqual(message, "Could not find 'op' element.")
+        } catch {
+            XCTFail("Unexpected error.")
+        }
     }
     
     func testJsonPatchRejectsMissingValue() {
-        XCTFail("Yet to be implemented.")
+        do {
+            // swiftlint:disable opening_brace
+            let _ = try JPSJsonPatch("{ \"path\": \"/a/b/c\", \"op\": \"add\" }")
+            // swiftlint:enable opening_brace
+            XCTFail("Unreachable code. Should have raised an error.")
+        } catch JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
+            // Expected behaviour.
+            XCTAssertNotNil(message)
+            XCTAssertEqual(message, "Could not find 'op' element.")
+        } catch {
+            XCTFail("Unexpected error.")
+        }
     }
     
     // Examples from the RFC itself.
     func testIfExamplesFromRFCAreRecognizedAsValidJsonPatches() {
-        XCTFail("Yet to be implemented.")
-        //        [
-        //            { "op": "test", "path": "/a/b/c", "value": "foo" },
-        //            { "op": "remove", "path": "/a/b/c" },
-        //            { "op": "add", "path": "/a/b/c", "value": [ "foo", "bar" ] },
-        //            { "op": "replace", "path": "/a/b/c", "value": 42 },
-        //            { "op": "move", "from": "/a/b/c", "path": "/a/b/d" },
-        //            { "op": "copy", "from": "/a/b/d", "path": "/a/b/e" }
-        //        ]
+        // swiftlint:disable opening_brace
+        let patch = "["
+            + "{ \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\" },"
+            + "{ \"op\": \"remove\", \"path\": \"/a/b/c\" },"
+            + "{ \"op\": \"add\", \"path\": \"/a/b/c\", \"value\": [ \"foo\", \"bar\" ] },"
+            + "{ \"op\": \"replace\", \"path\": \"/a/b/c\", \"value\": 42 },"
+            + "{ \"op\": \"move\", \"from\": \"/a/b/c\", \"path\": \"/a/b/d\" },"
+            + "{ \"op\": \"copy\", \"from\": \"/a/b/d\", \"path\": \"/a/b/e\" }"
+            + "]"
+        // swiftlint:enable opening_brace
+        let jsonPatch = try! JPSJsonPatch(patch)
+        XCTAssertNotNil(jsonPatch)
+        XCTAssertNotNil(jsonPatch.operations)
+        XCTAssertEqual(jsonPatch.operations.count, 6)
+        XCTAssertTrue((jsonPatch.operations[0] as Any) is JPSOperation)
+        let operation0 = jsonPatch.operations[0]
+        XCTAssertEqual(operation0.type, JPSOperationType.Test)
+        XCTAssertTrue((jsonPatch.operations[1] as Any) is JPSOperation)
+        let operation1 = jsonPatch.operations[1]
+        XCTAssertEqual(operation1.type, JPSOperationType.Remove)
+        XCTAssertTrue((jsonPatch.operations[2] as Any) is JPSOperation)
+        let operation2 = jsonPatch.operations[2]
+        XCTAssertEqual(operation2.type, JPSOperationType.Add)
+        XCTAssertTrue((jsonPatch.operations[3] as Any) is JPSOperation)
+        let operation3 = jsonPatch.operations[3]
+        XCTAssertEqual(operation3.type, JPSOperationType.Replace)
+        XCTAssertTrue((jsonPatch.operations[4] as Any) is JPSOperation)
+        let operation4 = jsonPatch.operations[4]
+        XCTAssertEqual(operation4.type, JPSOperationType.Move)
+        XCTAssertTrue((jsonPatch.operations[5] as Any) is JPSOperation)
+        let operation5 = jsonPatch.operations[5]
+        XCTAssertEqual(operation5.type, JPSOperationType.Copy)
     }
     
 }
