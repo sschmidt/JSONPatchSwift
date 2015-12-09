@@ -25,18 +25,17 @@ struct JPSJsonPatch {
         
         do {
             let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
-            if let json = json as? [String: AnyObject] {
-                guard let operation = json["op"] as? String else {
+            if let json = json as? [String: String] {
+                guard let _ = json["op"] else {
                     throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'op' element.")
                 }
-                switch JPSOperationType(rawValue: operation)! {
-                case .Add: self.operations = [JPSOperation(type: JPSOperationType.Add)]
-                case .Remove: self.operations = [JPSOperation(type: JPSOperationType.Remove)]
-                case .Replace: self.operations = [JPSOperation(type: JPSOperationType.Replace)]
-                case .Move: self.operations = [JPSOperation(type: JPSOperationType.Move)]
-                case .Copy: self.operations = [JPSOperation(type: JPSOperationType.Copy)]
-                case .Test: self.operations = [JPSOperation(type: JPSOperationType.Test)]
+                guard let _ = json["path"] else {
+                    throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'path' element.")
                 }
+                guard let _ = json["value"] else {
+                    throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'value' element.")
+                }
+                self.operations = [try JPSJsonPatch.extractOperationFromJson(json)]
             } else if let json = json as? [AnyObject] {
                 var operationArray = [JPSOperation]()
                 for i in 0..<json.count {
