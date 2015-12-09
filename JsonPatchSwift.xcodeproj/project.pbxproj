@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F2FEDD81C1626DD00D7630F /* JPSDocumentStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */; };
+		2F2FEDDA1C16E68C00D7630F /* JPSJsonPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2FEDD91C16E68C00D7630F /* JPSJsonPatch.swift */; };
 		2FAD257A1C161A66006760CE /* JsonPatchSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FAD25791C161A66006760CE /* JsonPatchSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2FAD25811C161A66006760CE /* JsonPatchSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FAD25761C161A66006760CE /* JsonPatchSwift.framework */; };
-		2FAD25861C161A66006760CE /* JsonPatchSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAD25851C161A66006760CE /* JsonPatchSwiftTests.swift */; };
+		87D0730933DDDC34BEE99264 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A32E642709E465BE0F9EF098 /* Pods.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,12 +25,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSDocumentStructureTests.swift; sourceTree = "<group>"; };
+		2F2FEDD91C16E68C00D7630F /* JPSJsonPatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSJsonPatch.swift; sourceTree = "<group>"; };
 		2FAD25761C161A66006760CE /* JsonPatchSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JsonPatchSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FAD25791C161A66006760CE /* JsonPatchSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JsonPatchSwift.h; sourceTree = "<group>"; };
 		2FAD257B1C161A66006760CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2FAD25801C161A66006760CE /* JsonPatchSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JsonPatchSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2FAD25851C161A66006760CE /* JsonPatchSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonPatchSwiftTests.swift; sourceTree = "<group>"; };
 		2FAD25871C161A66006760CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4DDB22A8A6459AE77C366463 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		9AE6C2808D0FD6D1AD424E1D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		A32E642709E465BE0F9EF098 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87D0730933DDDC34BEE99264 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +63,8 @@
 				2FAD25781C161A66006760CE /* JsonPatchSwift */,
 				2FAD25841C161A66006760CE /* JsonPatchSwiftTests */,
 				2FAD25771C161A66006760CE /* Products */,
+				70ED9D8D24275935B07EA2A6 /* Pods */,
+				791CD0792246FDA7DE86173F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,6 +80,7 @@
 		2FAD25781C161A66006760CE /* JsonPatchSwift */ = {
 			isa = PBXGroup;
 			children = (
+				2F2FEDD91C16E68C00D7630F /* JPSJsonPatch.swift */,
 				2FAD25791C161A66006760CE /* JsonPatchSwift.h */,
 				2FAD257B1C161A66006760CE /* Info.plist */,
 			);
@@ -80,10 +90,27 @@
 		2FAD25841C161A66006760CE /* JsonPatchSwiftTests */ = {
 			isa = PBXGroup;
 			children = (
-				2FAD25851C161A66006760CE /* JsonPatchSwiftTests.swift */,
+				2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */,
 				2FAD25871C161A66006760CE /* Info.plist */,
 			);
 			path = JsonPatchSwiftTests;
+			sourceTree = "<group>";
+		};
+		70ED9D8D24275935B07EA2A6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9AE6C2808D0FD6D1AD424E1D /* Pods.debug.xcconfig */,
+				4DDB22A8A6459AE77C366463 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		791CD0792246FDA7DE86173F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A32E642709E465BE0F9EF098 /* Pods.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -104,11 +131,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FAD258A1C161A66006760CE /* Build configuration list for PBXNativeTarget "JsonPatchSwift" */;
 			buildPhases = (
+				002756287D7D6E9E7A6C6E3B /* Check Pods Manifest.lock */,
 				2FAD25711C161A66006760CE /* Sources */,
 				2FAD25721C161A66006760CE /* Frameworks */,
 				2FAD25731C161A66006760CE /* Headers */,
 				2FAD25741C161A66006760CE /* Resources */,
-				2F2FEDD21C161F8C00D7630F /* ShellScript */,
+				2F2FEDDB1C16EA6100D7630F /* ShellScript */,
+				974422AD8B1F2B9DDFF084AA /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -126,6 +155,7 @@
 				2FAD257C1C161A66006760CE /* Sources */,
 				2FAD257D1C161A66006760CE /* Frameworks */,
 				2FAD257E1C161A66006760CE /* Resources */,
+				2F2FEDDC1C16EA8B00D7630F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -191,7 +221,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2F2FEDD21C161F8C00D7630F /* ShellScript */ = {
+		002756287D7D6E9E7A6C6E3B /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		2F2FEDDB1C16EA6100D7630F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -202,7 +247,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi";
+			shellScript = "if which swiftlint >/dev/null; then\n  cd JsonPatchSwift\n  swiftlint\nelse\n  echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+		2F2FEDDC1C16EA8B00D7630F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  cd JsonPatchSwiftTests\n  swiftlint\nelse\n  echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+		974422AD8B1F2B9DDFF084AA /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -211,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F2FEDDA1C16E68C00D7630F /* JPSJsonPatch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,7 +292,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2FAD25861C161A66006760CE /* JsonPatchSwiftTests.swift in Sources */,
+				2F2FEDD81C1626DD00D7630F /* JPSDocumentStructureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,7 +398,9 @@
 		};
 		2FAD258B1C161A66006760CE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9AE6C2808D0FD6D1AD424E1D /* Pods.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -335,13 +411,16 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.dominicfrei.JsonPatchSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WARNING_CFLAGS = "-Weverything";
 			};
 			name = Debug;
 		};
 		2FAD258C1C161A66006760CE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4DDB22A8A6459AE77C366463 /* Pods.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -359,16 +438,19 @@
 		2FAD258E1C161A66006760CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = JsonPatchSwiftTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dominicfrei.JsonPatchSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		2FAD258F1C161A66006760CE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = JsonPatchSwiftTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dominicfrei.JsonPatchSwiftTests;
