@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F07C3B81C18749000314FF1 /* JPSAddOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F07C3B71C18749000314FF1 /* JPSAddOperationTests.swift */; };
 		2F07C3BA1C18862100314FF1 /* JPSOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F07C3B91C18862100314FF1 /* JPSOperation.swift */; };
 		2F2FEDD81C1626DD00D7630F /* JPSDocumentStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */; };
 		2F2FEDDA1C16E68C00D7630F /* JPSJsonPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2FEDD91C16E68C00D7630F /* JPSJsonPatch.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2F07C3B71C18749000314FF1 /* JPSAddOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSAddOperationTests.swift; sourceTree = "<group>"; };
 		2F07C3B91C18862100314FF1 /* JPSOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSOperation.swift; sourceTree = "<group>"; };
 		2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSDocumentStructureTests.swift; sourceTree = "<group>"; };
 		2F2FEDD91C16E68C00D7630F /* JPSJsonPatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSJsonPatch.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */,
+				2F07C3B71C18749000314FF1 /* JPSAddOperationTests.swift */,
 				2FAD25871C161A66006760CE /* Info.plist */,
 			);
 			path = JsonPatchSwiftTests;
@@ -297,6 +300,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F2FEDD81C1626DD00D7630F /* JPSDocumentStructureTests.swift in Sources */,
+				2F07C3B81C18749000314FF1 /* JPSAddOperationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
