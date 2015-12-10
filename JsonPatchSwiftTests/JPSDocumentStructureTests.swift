@@ -199,4 +199,15 @@ class JPSDocumentStructureTests: XCTestCase {
         XCTAssertEqual(operation5.type, JPSOperation.JPSOperationType.Copy)
     }
     
+    func testInvalidJsonGetsRejected() {
+        do {
+            // swiftlint:disable opening_brace
+            let _ = try JPSJsonPatch("{op:foo}")
+            // swiftlint:enable opening_brace
+            XCTFail("Unreachable code. Should have raised an error.")
+        } catch {
+            // Expected behaviour.
+        }
+    }
+    
 }

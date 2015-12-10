@@ -25,6 +25,9 @@ struct JPSJsonPatch {
             throw JPSJsonPatchInitialisationError.InvalidJsonFormat(message: "Could not encode patch.")
         }
         let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
+        guard true == NSJSONSerialization.isValidJSONObject(json) else {
+            throw JPSJsonPatchInitialisationError.InvalidJsonFormat(message: "Invalid JSON format.")
+        }
         
         // Check if there is an array of a dictionary as root element. Both are valid JSON patch documents.
         if let json = json as? [String: AnyObject] {
