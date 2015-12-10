@@ -10,7 +10,7 @@ import XCTest
 @testable import JsonPatchSwift
 
 // http://tools.ietf.org/html/rfc6902#section-3
-// 3. Document Structure
+// 3. Document Structure (and the general Part of Chapter 4)
 
 class JPSDocumentStructureTests: XCTestCase {
     
