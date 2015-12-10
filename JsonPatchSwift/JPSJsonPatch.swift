@@ -6,7 +6,17 @@
 //  Copyright © 2015 Dominic Frei. All rights reserved.
 //
 
-import SwiftyJSON
+func == (lhs: JPSJsonPatch, rhs: JPSJsonPatch) -> Bool {
+    if lhs.operations.count != rhs.operations.count {
+        return false
+    }
+    for i in 0..<lhs.operations.count {
+        if !(lhs.operations[i] == rhs.operations[i]) {
+            return false
+        }
+    }
+    return true
+}
 
 struct JPSJsonPatch {
     

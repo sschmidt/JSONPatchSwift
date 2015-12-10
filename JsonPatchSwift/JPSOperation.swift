@@ -6,6 +6,10 @@
 //  Copyright © 2015 Dominic Frei. All rights reserved.
 //
 
+func  == (lhs: JPSOperation, rhs: JPSOperation) -> Bool {
+    return lhs.type == rhs.type
+}
+
 struct JPSOperation {
     
     enum JPSOperationType: String {
