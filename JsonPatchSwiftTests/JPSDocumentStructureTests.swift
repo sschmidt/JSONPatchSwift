@@ -272,4 +272,17 @@ class JPSDocumentStructureTests: XCTestCase {
         }
     }
     
+    func testIfAdditionalElementsAreIgnored() {
+        // swiftlint:disable opening_brace
+        let patch = "{ \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\", \"additionalParamter\": \"foo\" }"
+        // swiftlint:enable opening_brace
+        let jsonPatch = try! JPSJsonPatch(patch)
+        XCTAssertNotNil(jsonPatch)
+        XCTAssertNotNil(jsonPatch.operations)
+        XCTAssertEqual(jsonPatch.operations.count, 1)
+        XCTAssertTrue((jsonPatch.operations[0] as Any) is JPSOperation)
+        let operation0 = jsonPatch.operations[0]
+        XCTAssertEqual(operation0.type, JPSOperation.JPSOperationType.Test)
+    }
+    
 }
