@@ -298,4 +298,47 @@ class JPSDocumentStructureTests: XCTestCase {
         XCTAssertEqual(operation0.type, JPSOperation.JPSOperationType.Remove)
     }
     
+    func testIfReorderedMembersOfOneOperationLeadToSameResult() {
+        // Examples from RFC:
+        // swiftlint:disable opening_brace
+        let patch0 = "{ \"op\": \"add\", \"path\": \"/a/b/c\", \"value\": \"foo\" }"
+        // swiftlint:enable opening_brace
+        let jsonPatch0 = try! JPSJsonPatch(patch0)
+        XCTAssertNotNil(jsonPatch0)
+        XCTAssertNotNil(jsonPatch0.operations)
+        XCTAssertEqual(jsonPatch0.operations.count, 1)
+        XCTAssertTrue((jsonPatch0.operations[0] as Any) is JPSOperation)
+        let operation0 = jsonPatch0.operations[0]
+        XCTAssertEqual(operation0.type, JPSOperation.JPSOperationType.Add)
+        
+        // swiftlint:disable opening_brace
+        let patch1 = "{ \"path\": \"/a/b/c\", \"op\": \"add\", \"value\": \"foo\" }"
+        // swiftlint:enable opening_brace
+        let jsonPatch1 = try! JPSJsonPatch(patch1)
+        XCTAssertNotNil(jsonPatch1)
+        XCTAssertNotNil(jsonPatch1.operations)
+        XCTAssertEqual(jsonPatch1.operations.count, 1)
+        XCTAssertTrue((jsonPatch1.operations[0] as Any) is JPSOperation)
+        let operation1 = jsonPatch1.operations[0]
+        XCTAssertEqual(operation1.type, JPSOperation.JPSOperationType.Add)
+        
+        // swiftlint:disable opening_brace
+        let patch2 = "{ \"value\": \"foo\", \"path\": \"/a/b/c\", \"op\": \"add\" }"
+        // swiftlint:enable opening_brace
+        let jsonPatch2 = try! JPSJsonPatch(patch2)
+        XCTAssertNotNil(jsonPatch2)
+        XCTAssertNotNil(jsonPatch2.operations)
+        XCTAssertEqual(jsonPatch2.operations.count, 1)
+        XCTAssertTrue((jsonPatch2.operations[0] as Any) is JPSOperation)
+        let operation2 = jsonPatch2.operations[0]
+        XCTAssertEqual(operation2.type, JPSOperation.JPSOperationType.Add)
+        
+        XCTAssertTrue(jsonPatch0 == jsonPatch1)
+        XCTAssertTrue(jsonPatch0 == jsonPatch2)
+        XCTAssertTrue(jsonPatch1 == jsonPatch2)
+        XCTAssertTrue(operation0 == operation1)
+        XCTAssertTrue(operation0 == operation2)
+        XCTAssertTrue(operation1 == operation2)
+    }
+    
 }
