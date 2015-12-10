@@ -240,4 +240,19 @@ class JPSDocumentStructureTests: XCTestCase {
         }
     }
     
+    func testExactlyOnePathMemeber() {
+        do {
+            // swiftlint:disable opening_brace
+            let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"/a/b\", \"path\" : \"/a/b\"}")
+            // swiftlint:enable opening_brace
+            XCTFail("Unreachable code. Should have raised an error.")
+        } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
+            // Expected behaviour.
+            XCTAssertNotNil(message)
+            XCTAssertEqual(message, "There can be only one 'path' element.")
+        } catch {
+            XCTFail("Unexpected error.")
+        }
+    }
+    
 }
