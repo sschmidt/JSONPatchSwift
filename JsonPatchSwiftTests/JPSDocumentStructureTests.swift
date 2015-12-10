@@ -225,4 +225,19 @@ class JPSDocumentStructureTests: XCTestCase {
         }
     }
     
+    func testMultipleOpElementsAreRejected() {
+        do {
+            // swiftlint:disable opening_brace
+            let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"/a/b\", \"op\" : \"remove\"}")
+            // swiftlint:enable opening_brace
+            XCTFail("Unreachable code. Should have raised an error.")
+        } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
+            // Expected behaviour.
+            XCTAssertNotNil(message)
+            XCTAssertEqual(message, "There can be only one 'op' element.")
+        } catch {
+            XCTFail("Unexpected error.")
+        }
+    }
+    
 }
