@@ -62,6 +62,9 @@ struct JPSJsonPatch {
         guard let _ = json["path"] as? String else {
             throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'path' element.")
         }
+        guard nil != JPSOperation.JPSOperationType(rawValue: operation) else {
+            throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Operation '\(operation)' is invalid.")
+        }
         
         switch JPSOperation.JPSOperationType(rawValue: operation)! {
         case .Add: return JPSOperation(type: JPSOperation.JPSOperationType.Add)

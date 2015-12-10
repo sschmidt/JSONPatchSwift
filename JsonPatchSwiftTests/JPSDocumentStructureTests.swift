@@ -210,4 +210,19 @@ class JPSDocumentStructureTests: XCTestCase {
         }
     }
     
+    func testInvalidOperationsAreRejected() {
+        do {
+            // swiftlint:disable opening_brace
+            let _ = try JPSJsonPatch("{\"op\" : \"foo\", \"path\" : \"/a/b\"}")
+            // swiftlint:enable opening_brace
+            XCTFail("Unreachable code. Should have raised an error.")
+        } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
+            // Expected behaviour.
+            XCTAssertNotNil(message)
+            XCTAssertEqual(message, "Operation 'foo' is invalid.")
+        } catch {
+            XCTFail("Unexpected error.")
+        }
+    }
+    
 }
