@@ -1,10 +1,12 @@
+//===----------------------------------------------------------------------===//
 //
-//  JPSDocumentStructureTests.swift
-//  JsonPatchSwift
+// This source file is part of the JSONPatchSwift open source project.
 //
-//  Created by Dominic Frei on 07/12/2015.
-//  Copyright © 2015 Dominic Frei. All rights reserved.
+// Copyright (c) 2015 EXXEETA AG
+// Licensed under Apache License v2.0
 //
+//
+//===----------------------------------------------------------------------===//
 
 import XCTest
 @testable import JsonPatchSwift
