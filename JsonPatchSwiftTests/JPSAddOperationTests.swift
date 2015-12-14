@@ -22,7 +22,7 @@ class JPSAddOperationTests: XCTestCase {
     }
 
     func testIfPathToNonExistingMemberCreatesNewMember() {
-        let patch = JPSJsonPatch("{ \"op\" : \"add\", \"path\" : \"\", \"\" : \"\" }")
+        let patch = try! JPSJsonPatch("{ \"op\" : \"add\", \"path\" : \"\", \"\" : \"\" }")
         XCTFail("Yet to be implemented.")
     }
     
