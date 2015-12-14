@@ -20,6 +20,7 @@ class JPSAddOperationTests: XCTestCase {
     }
 
     func testIfPathToNonExistingMemberCreatesNewMember() {
+        let patch = JPSJsonPatch("{ \"op\" : \"add\", \"path\" : \"\", \"\" : \"\" }")
         XCTFail("Yet to be implemented.")
     }
     

@@ -162,7 +162,7 @@ class JPSDocumentStructureTests: XCTestCase {
             XCTFail("Unexpected error.")
         }
     }
-    
+
     // Examples from the RFC itself.
     func testIfExamplesFromRFCAreRecognizedAsValidJsonPatches() {
         // swiftlint:disable opening_brace
