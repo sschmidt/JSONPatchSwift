@@ -1,6 +1,4 @@
-# Project Name
-
-JSON Patch (RFC 6902) in Swift.
+# JSON Patch (RFC 6902) in Swift
 
 ## Installation
 
