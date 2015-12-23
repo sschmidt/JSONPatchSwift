@@ -232,6 +232,8 @@ class JPSDocumentStructureTests: XCTestCase {
             // swiftlint:disable opening_brace
             let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"/a/b\", \"op\" : \"remove\"}")
             // swiftlint:enable opening_brace
+            // NSJSONSerialisation just ignores the second 'op' instead of raising an error.
+            // Further investigation needed on how to solve that, except for manually parsing the string ...
             XCTFail("Unreachable code. Should have raised an error.")
         } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
             // Expected behaviour.
@@ -247,6 +249,8 @@ class JPSDocumentStructureTests: XCTestCase {
             // swiftlint:disable opening_brace
             let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"/a/b\", \"path\" : \"/a/b\"}")
             // swiftlint:enable opening_brace
+            // NSJSONSerialisation just ignores the second 'op' instead of raising an error.
+            // Further investigation needed on how to solve that, except for manually parsing the string ...
             XCTFail("Unreachable code. Should have raised an error.")
         } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
             // Expected behaviour.
