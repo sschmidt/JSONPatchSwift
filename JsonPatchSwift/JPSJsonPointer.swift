@@ -10,4 +10,10 @@
 
 struct JPSJsonPointer {
     
+    let value: String
+    
+    init(value: String) {
+        self.value = value
+    }
+    
 }

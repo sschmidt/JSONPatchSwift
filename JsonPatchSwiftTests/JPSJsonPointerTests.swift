@@ -14,101 +14,13 @@ import XCTest
 // JavaScript Object Notation (JSON) Pointer
 // https://tools.ietf.org/html/rfc6901
 
-class JPSAddOperationTests: XCTestCase {
+class JPSJsonPointerTests: XCTestCase {
     
-//    [Docs] [txt|pdf] [draft-ietf-appsaw...] [Diff1] [Diff2] [Errata]
-//    
-//    PROPOSED STANDARD
-//    Errata Exist
-//    Internet Engineering Task Force (IETF)                     P. Bryan, Ed.
-//    Request for Comments: 6901                                Salesforce.com
-//    Category: Standards Track                                         K. Zyp
-//    ISSN: 2070-1721                                            SitePen (USA)
-//    M. Nottingham, Ed.
-//    Akamai
-//    April 2013
-//    
-//    
-//    JavaScript Object Notation (JSON) Pointer
-//    
-//    Abstract
-//    
-//    JSON Pointer defines a string syntax for identifying a specific value
-//    within a JavaScript Object Notation (JSON) document.
-//    
-//    Status of This Memo
-//    
-//    This is an Internet Standards Track document.
-//    
-//    This document is a product of the Internet Engineering Task Force
-//    (IETF).  It represents the consensus of the IETF community.  It has
-//    received public review and has been approved for publication by the
-//    Internet Engineering Steering Group (IESG).  Further information on
-//    Internet Standards is available in Section 2 of RFC 5741.
-//    
-//    Information about the current status of this document, any errata,
-//    and how to provide feedback on it may be obtained at
-//    http://www.rfc-editor.org/info/rfc6901.
-//    
-//    Copyright Notice
-//    
-//    Copyright (c) 2013 IETF Trust and the persons identified as the
-//    document authors.  All rights reserved.
-//    
-//    This document is subject to BCP 78 and the IETF Trust's Legal
-//    Provisions Relating to IETF Documents
-//    (http://trustee.ietf.org/license-info) in effect on the date of
-//    publication of this document.  Please review these documents
-//    carefully, as they describe your rights and restrictions with respect
-//    to this document.  Code Components extracted from this document must
-//    include Simplified BSD License text as described in Section 4.e of
-//    the Trust Legal Provisions and are provided without warranty as
-//    described in the Simplified BSD License.
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    Bryan, et al.                Standards Track                    [Page 1]
-//    
-//    RFC 6901                      JSON Pointer                    April 2013
-//    
-//    
-//    Table of Contents
-//    
-//    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . . . 2
-//    2.  Conventions . . . . . . . . . . . . . . . . . . . . . . . . . . 2
-//    3.  Syntax  . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
-//    4.  Evaluation  . . . . . . . . . . . . . . . . . . . . . . . . . . 3
-//    5.  JSON String Representation  . . . . . . . . . . . . . . . . . . 4
-//    6.  URI Fragment Identifier Representation  . . . . . . . . . . . . 5
-//    7.  Error Handling  . . . . . . . . . . . . . . . . . . . . . . . . 6
-//    8.  Security Considerations . . . . . . . . . . . . . . . . . . . . 6
-//    9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . 7
-//    10. References  . . . . . . . . . . . . . . . . . . . . . . . . . . 7
-//    10.1.  Normative References . . . . . . . . . . . . . . . . . . . 7
-//    10.2.  Informative References . . . . . . . . . . . . . . . . . . 7
-//    
-//    1.  Introduction
-//    
-//    This specification defines JSON Pointer, a string syntax for
-//    identifying a specific value within a JavaScript Object Notation
-//    (JSON) document [RFC4627].  JSON Pointer is intended to be easily
-//    expressed in JSON string values as well as Uniform Resource
-//    Identifier (URI) [RFC3986] fragment identifiers.
-//    
-//    2.  Conventions
-//    
-//    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-//    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-//    document are to be interpreted as described in [RFC2119].
-//    
-//    This specification expresses normative syntax rules using Augmented
-//    Backus-Naur Form (ABNF) [RFC5234] notation.
-//    
-//    3.  Syntax
+    func testIfJsonPointerIsAString() {
+        let jsonPointer = JPSJsonPointer(value: "/a/b")
+        XCTAssertEqual(jsonPointer.value, "/a/b")
+    }
+
 //    
 //    A JSON Pointer is a Unicode string (see [RFC4627], Section 3)
 //    containing a sequence of zero or more reference tokens, each prefixed
