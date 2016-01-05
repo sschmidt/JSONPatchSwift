@@ -2,87 +2,90 @@
 //
 // This source file is part of the JSONPatchSwift open source project.
 //
-// Copyright (c) 2015 EXXEETA AG
+// Copyright (c) 2015 EXXETA AG
 // Licensed under Apache License v2.0
 //
 //
 //===----------------------------------------------------------------------===//
 
-import SwiftyJSON
-
-enum JPSJsonPatchInitialisationError: ErrorType {
-    case InvalidJsonFormat(message: String?)
-    case InvalidPatchFormat(message: String?)
-    case UnexpectedError
+func == (lhs: JPSJsonPatch, rhs: JPSJsonPatch) -> Bool {
+    if lhs.operations.count != rhs.operations.count {
+        return false
+    }
+    for i in 0..<lhs.operations.count {
+        if !(lhs.operations[i] == rhs.operations[i]) {
+            return false
+        }
+    }
+    return true
 }
 
 struct JPSJsonPatch {
     
+    enum JPSJsonPatchInitialisationError: ErrorType {
+        case InvalidJsonFormat(message: String?)
+        case InvalidPatchFormat(message: String?)
+        case UnexpectedError
+    }
+    
     let operations: [JPSOperation]
     
     init(_ patch: String) throws {
+        
+        // Get the JSON
         guard let data = patch.dataUsingEncoding(NSUTF8StringEncoding) else {
             throw JPSJsonPatchInitialisationError.InvalidJsonFormat(message: "Could not encode patch.")
         }
-        
-        do {
-            let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
-            if let json = json as? [String: AnyObject] {
-                guard let operation = json["op"] as? String else {
-                    throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'op' element.")
-                }
-                switch JPSOperationType(rawValue: operation)! {
-                case .Add: self.operations = [JPSOperation(type: JPSOperationType.Add)]
-                case .Remove: self.operations = [JPSOperation(type: JPSOperationType.Remove)]
-                case .Replace: self.operations = [JPSOperation(type: JPSOperationType.Replace)]
-                case .Move: self.operations = [JPSOperation(type: JPSOperationType.Move)]
-                case .Copy: self.operations = [JPSOperation(type: JPSOperationType.Copy)]
-                case .Test: self.operations = [JPSOperation(type: JPSOperationType.Test)]
-                }
-            } else if let json = json as? [AnyObject] {
-                var operationArray = [JPSOperation]()
-                for i in 0..<json.count {
-                    operationArray.append(try JPSJsonPatch.extractOperationFromJson(json[i]))
-                }
-                self.operations = operationArray
-            } else {
-                // All other types are not a valid JSON Patch Operation.
-                throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Root element is not an array or dictionary.")
-            }
-        } catch JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
-            throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: message)
-        } catch {
-            throw JPSJsonPatchInitialisationError.InvalidJsonFormat(message: "JSON transformation failed.")
+        let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
+        guard true == NSJSONSerialization.isValidJSONObject(json) else {
+            throw JPSJsonPatchInitialisationError.InvalidJsonFormat(message: "Invalid JSON format.")
         }
+        
+        // Check if there is an array of a dictionary as root element. Both are valid JSON patch documents.
+        if let json = json as? [String: AnyObject] {
+            self.operations = [try JPSJsonPatch.extractOperationFromJson(json)]
+            
+        } else if let json = json as? [AnyObject] {
+            guard 0 < json.count else {
+                throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Patch array does not contain elements.")
+            }
+            var operationArray = [JPSOperation]()
+            for i in 0..<json.count {
+                guard let operation = json[i] as? [String: AnyObject] else {
+                    throw JPSJsonPatchInitialisationError.InvalidJsonFormat(message: "Array does not contain dictionaries")
+                }
+                operationArray.append(try JPSJsonPatch.extractOperationFromJson(operation))
+            }
+            self.operations = operationArray
+            
+        } else {
+            // All other types are not a valid JSON Patch Operation.
+            throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Root element is not an array of dictionaries or a single dictionary.")
+        }
+        
     }
     
-    private static func extractOperationFromJson(json: AnyObject) throws -> JPSOperation {
+    private static func extractOperationFromJson(json: [String: AnyObject]) throws -> JPSOperation {
+        
+        // The elements 'op' and 'path' are mandatory.
         guard let operation = json["op"] as? String else {
             throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'op' element.")
         }
-        switch JPSOperationType(rawValue: operation)! {
-        case .Add: return JPSOperation(type: JPSOperationType.Add)
-        case .Remove: return JPSOperation(type: JPSOperationType.Remove)
-        case .Replace: return JPSOperation(type: JPSOperationType.Replace)
-        case .Move: return JPSOperation(type: JPSOperationType.Move)
-        case .Copy: return JPSOperation(type: JPSOperationType.Copy)
-        case .Test: return JPSOperation(type: JPSOperationType.Test)
+        guard let _ = json["path"] as? String else {
+            throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'path' element.")
+        }
+        guard nil != JPSOperation.JPSOperationType(rawValue: operation) else {
+            throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Operation '\(operation)' is invalid.")
+        }
+        
+        switch JPSOperation.JPSOperationType(rawValue: operation)! {
+        case .Add: return JPSOperation(type: JPSOperation.JPSOperationType.Add)
+        case .Remove: return JPSOperation(type: JPSOperation.JPSOperationType.Remove)
+        case .Replace: return JPSOperation(type: JPSOperation.JPSOperationType.Replace)
+        case .Move: return JPSOperation(type: JPSOperation.JPSOperationType.Move)
+        case .Copy: return JPSOperation(type: JPSOperation.JPSOperationType.Copy)
+        case .Test: return JPSOperation(type: JPSOperation.JPSOperationType.Test)
         }
     }
-    
-}
-
-enum JPSOperationType: String {
-    case Add = "add"
-    case Remove = "remove"
-    case Replace = "replace"
-    case Move = "move"
-    case Copy = "copy"
-    case Test = "test"
-}
-
-struct JPSOperation {
-    
-    let type: JPSOperationType
     
 }
