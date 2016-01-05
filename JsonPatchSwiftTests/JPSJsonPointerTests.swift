@@ -20,6 +20,16 @@ class JPSJsonPointerTests: XCTestCase {
         let jsonPointer = JPSJsonPointer(value: "/a/b")
         XCTAssertEqual(jsonPointer.value, "/a/b")
     }
+    
+    func testIfJsoinPointerRejectsInputWithoutSlashDelimiter() {
+        do {
+            let _ = try JPSJsonPointer(value: "ab")
+            XCTFail("Unreachable code. Invalid pointer should raise an error.")
+        } catch {
+            // Expected behaviour.
+        }
+        
+    }
 
 //    
 //    A JSON Pointer is a Unicode string (see [RFC4627], Section 3)
