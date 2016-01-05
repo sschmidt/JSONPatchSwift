@@ -17,7 +17,7 @@ import XCTest
 class JPSJsonPointerTests: XCTestCase {
     
     func testIfJsonPointerIsAString() {
-        let jsonPointer = JPSJsonPointer(value: "/a/b")
+        let jsonPointer = try! JPSJsonPointer(value: "/a/b")
         XCTAssertEqual(jsonPointer.value, "/a/b")
     }
     
