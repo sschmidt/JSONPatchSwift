@@ -17,6 +17,7 @@ enum JPSJsonPointerError: ErrorType {
 struct JPSJsonPointer {
     
     let value: String
+    let valueParts: [String]
     
     init(value: String) throws {
         guard value.isEmpty || value.containsString("/") else {
@@ -30,6 +31,10 @@ struct JPSJsonPointer {
         }
         
         self.value = value
+        
+        let valuePartsWithoutFirstDelimiter = Array(value.componentsSeparatedByString("/").dropFirst())
+        let valuePartsAfterDecodingDelimiter = valuePartsWithoutFirstDelimiter.map { $0.stringByReplacingOccurrencesOfString("~1", withString: "/") }
+        self.valueParts = valuePartsAfterDecodingDelimiter.map { $0.stringByReplacingOccurrencesOfString("~0", withString: "~") }
     }
     
 }

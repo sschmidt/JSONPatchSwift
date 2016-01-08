@@ -125,15 +125,6 @@ extension JPSJsonPointerTests {
     }
     
 //    
-//    Evaluation of each reference token begins by decoding any escaped
-//    character sequence.  This is performed by first transforming any
-//    occurrence of the sequence '~1' to '/', and then transforming any
-//    occurrence of the sequence '~0' to '~'.  By performing the
-//    substitutions in this order, an implementation avoids the error of
-//    turning '~01' first into '~1' and then into '/', which would be
-//    incorrect (the string '~01' correctly becomes '~1' after
-//    transformation).
-//    
 //    The reference token then modifies which value is referenced according
 //    to the following scheme:
 //    
