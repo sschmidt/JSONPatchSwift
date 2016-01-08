@@ -11,6 +11,7 @@
 enum JPSJsonPointerError: ErrorType {
     case ValueDoesNotContainDelimiter
     case NonEmptyPointerDoesNotStartWithDelimiter
+    case ContainsEmptyReferenceToken
 }
 
 struct JPSJsonPointer {
@@ -24,6 +25,10 @@ struct JPSJsonPointer {
         guard value.isEmpty || value.hasPrefix("/") else {
             throw JPSJsonPointerError.NonEmptyPointerDoesNotStartWithDelimiter
         }
+        guard value.isEmpty || !value.componentsSeparatedByString("/").dropFirst().contains("") else {
+            throw JPSJsonPointerError.ContainsEmptyReferenceToken
+        }
+        
         self.value = value
     }
     
