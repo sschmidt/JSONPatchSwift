@@ -248,19 +248,19 @@ extension JPSJsonPointerTests {
 //    
 //    For example, given the JSON document
 //    
-//    {
-//    "foo": ["bar", "baz"],
-//    "": 0,
-//    "a/b": 1,
-//    "c%d": 2,
-//    "e^f": 3,
-//    "g|h": 4,
-//    "i\\j": 5,
-//    "k\"l": 6,
-//    " ": 7,
-//    "m~n": 8
-//    }
-//    
+//    "{"
+//+    "foo\": [\"bar\", \"baz\"],"
+//+    "\": 0,"
+//+    "a/b\": 1,"
+//+    "c%d\": 2,"
+//+    "e^f\": 3,"
+//+    "g|h\": 4,"
+//+    "i\\j\": 5,"
+//+    "k\\\"l\": 6,"
+//+    " \": 7,"
+//+    "m~n\": 8"
+//+    "}"
+//
 //    The following JSON strings evaluate to the accompanying values:
 //    
 //    ""           // the whole document
@@ -271,12 +271,56 @@ extension JPSJsonPointerTests {
 //    "/c%d"       2
 //    "/e^f"       3
 //    "/g|h"       4
-//    "/i\\j"      5
+//    "/i//j"      5 ---- can't be parsed by SwiftyJSON
 //    "/k\"l"      6
 //    "/ "         7
 //    "/m~0n"      8
     
-    
+    func testExamplesFromRFC() {
+        let jsonString = "{        \"foo\": [\"bar\", \"baz\"],        \"\\\": 0,        \"a/b\": 1,        \"c%d\": 2,        \"e^f\": 3,        \"g|h\": 4,        \"ij\": 5,        \"k\\\"l\": 6,        \" \": 7,        \"m~n\": 8    }"
+        let json = JSON(data: jsonString.dataUsingEncoding(NSUTF8StringEncoding)!)
+        
+        let pointer0 = try! JPSJsonPointer(rawValue: "/foo")
+        let retrievedJson0 = try! JPSJsonPointer.identifySubJsonForPointer(pointer0, inJson: json) as? JSON
+        let expectedJson0 = JSON(data: " [\"bar\", \"baz\"] ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(retrievedJson0, expectedJson0)
+        
+        let pointer1 = try! JPSJsonPointer(rawValue: "/foo/0")
+        let retrievedJson1 = try! JPSJsonPointer.identifySubJsonForPointer(pointer1, inJson: json) as? String
+        XCTAssertEqual(retrievedJson1, "bar")
+        
+        let pointer2 = try! JPSJsonPointer(rawValue: "/")
+        let retrievedJson2 = try! JPSJsonPointer.identifySubJsonForPointer(pointer2, inJson: json) as? Int
+        XCTAssertEqual(retrievedJson2, 0)
+        
+        let pointer3 = try! JPSJsonPointer(rawValue: "/a~1b")
+        let retrievedJson3 = try! JPSJsonPointer.identifySubJsonForPointer(pointer3, inJson: json) as? Int
+        XCTAssertEqual(retrievedJson3, 1)
+        
+        let pointer4 = try! JPSJsonPointer(rawValue: "/c%d")
+        let retrievedJson4 = try! JPSJsonPointer.identifySubJsonForPointer(pointer4, inJson: json) as? Int
+        XCTAssertEqual(retrievedJson4, 2)
+        
+        let pointer5 = try! JPSJsonPointer(rawValue: "/e^f")
+        let retrievedJson5 = try! JPSJsonPointer.identifySubJsonForPointer(pointer5, inJson: json) as? Int
+        XCTAssertEqual(retrievedJson5, 3)
+        
+        let pointer6 = try! JPSJsonPointer(rawValue: "/g|h")
+        let retrievedJson6 = try! JPSJsonPointer.identifySubJsonForPointer(pointer6, inJson: json) as? Int
+        XCTAssertEqual(retrievedJson6, 4)
+        
+        let pointer7 = try! JPSJsonPointer(rawValue: "/k\"l")
+        let retrievedJson7 = try! JPSJsonPointer.identifySubJsonForPointer(pointer7, inJson: json) as? Int
+        XCTAssertEqual(retrievedJson7, 6)
+        
+        let pointer8 = try! JPSJsonPointer(rawValue: "/ ")
+        let retrievedJson8 = try! JPSJsonPointer.identifySubJsonForPointer(pointer8, inJson: json) as? Int
+        XCTAssertEqual(retrievedJson8, 7)
+        
+        let pointer9 = try! JPSJsonPointer(rawValue: "/m~0n")
+        let retrievedJson9 = try! JPSJsonPointer.identifySubJsonForPointer(pointer9, inJson: json) as? Int
+        XCTAssertEqual(retrievedJson9, 8)
+    }
     
 }
 
