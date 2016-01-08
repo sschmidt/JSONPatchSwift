@@ -8,6 +8,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+import SwiftyJSON
 import XCTest
 @testable import JsonPatchSwift
 
@@ -124,22 +125,28 @@ extension JPSJsonPointerTests {
         
     }
     
-//    
-//    The reference token then modifies which value is referenced according
-//    to the following scheme:
-//    
-//    o  If the currently referenced value is a JSON object, the new
-//    referenced value is the object member with the name identified by
-//    the reference token.  The member name is equal to the token if it
-//    has the same number of Unicode characters as the token and their
-//    code points are byte-by-byte equal.  No Unicode character
-//    normalization is performed.  If a referenced member name is not
-//    unique in an object, the member that is referenced is undefined,
-//    and evaluation fails (see below).
-//    
-//    
-
-//    
+    //    The reference token then modifies which value is referenced according
+    //    to the following scheme:
+    //
+    //    o  If the currently referenced value is a JSON object, the new
+    //    referenced value is the object member with the name identified by
+    //    the reference token.  The member name is equal to the token if it
+    //    has the same number of Unicode characters as the token and their
+    //    code points are byte-by-byte equal.  No Unicode character
+    //    normalization is performed.  If a referenced member name is not
+    //    unique in an object, the member that is referenced is undefined,
+    //    and evaluation fails (see below).
+    
+    func testIfPointerIdentifiesObjectInJson() {
+        let data = " { \"a\": { \"b\": \"bla\" } } ".dataUsingEncoding(NSUTF8StringEncoding)
+        let json = JSON(data: data!)
+        let pointer = try! JPSJsonPointer(rawValue: "/a")
+        let retrievedJson = JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json)
+        let expectedJson = JSON(data: " { \"b\": \"bla\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(retrievedJson, expectedJson)
+    }
+    
+    
 //    o  If the currently referenced value is a JSON array, the reference
 //    token MUST contain either:
 //    
