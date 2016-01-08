@@ -189,6 +189,26 @@ extension JPSJsonPointerTests {
 //    
 //    array-index = %x30 / ( %x31-39 *(%x30-39) )
 //    ; "0", or digits without a leading "0"
+    
+    func testIfPointerIdentifiesEndOfArrayTokenInJson() {
+        let json = JSON(data: " { \"a\": [ \"b\", { \"c\" : \"foo\" } ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let pointer = try! JPSJsonPointer(rawValue: "/a/-")
+        let retrievedJson = try! JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json)
+        let expectedJson = JSON(data: " { \"c\" : \"foo\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(retrievedJson, expectedJson)
+    }
+    
+    func testIfInvalidArrayPointerRaisesError() {
+        let json = JSON(data: " { \"a\": \"b\", \"c\" : \"foo\" ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let pointer = try! JPSJsonPointer(rawValue: "/a/-")
+        do {
+            let _ = try JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json)
+            XCTFail("Unreachable code. Invalid pointer should raise an error.")
+        } catch {
+            // Expected behaviour.
+        }
+    }
+    
 //    
 //    Implementations will evaluate each reference token against the
 //    document's contents and will raise an error condition if it fails to
