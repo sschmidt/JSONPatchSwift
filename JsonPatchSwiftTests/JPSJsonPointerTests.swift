@@ -52,6 +52,12 @@ class JPSJsonPointerTests: XCTestCase {
             // Expected behaviour.
         }
     }
+    
+    func testForSeveralUnicodeCharacters() {
+        let value = "/1234567890-=!@£$%^&*()_+¡€#¢∞§¶•ªº–≠⁄™‹›ﬁﬂ‡°·‚—±qwertyuiop[]QWERTYUIOP{}œ∑´®†¥¨^øπ“‘Œ„‰ÂÊÁËÈØ∏’asdfghjkl;'ASDFGHJKL:|åß∂ƒ©˙∆˚¬…æ«ÅÍÎÏÌÓÔÒÚÆ»`zxcvbnm,./~ZXCVBNM<>?`Ω≈ç√∫~µ≤≥÷ŸÛÙÇ◊ıˆ˜¯˘¿"
+        let jsonPointer = try! JPSJsonPointer(value: value)
+        XCTAssertEqual(jsonPointer.value, value)
+    }
 
 //    
 //    A JSON Pointer is a Unicode string (see [RFC4627], Section 3)
