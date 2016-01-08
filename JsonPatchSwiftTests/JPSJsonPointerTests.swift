@@ -146,10 +146,11 @@ extension JPSJsonPointerTests {
     }
     
     func testIfPointerIdentifiesArrayInJson() {
-        let json = JSON(data: " { \"a\": [ \"b\", \"bla\" ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
-        let pointer = try! JPSJsonPointer(rawValue: "/a/1")
-        let retrievedJson = JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json)
-        let expectedJson = JSON(data: " { \"bla\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let json = JSON(data: " { \"a\": [ { \"c\" : \"foo\" }, \"b\" ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let pointer = try! JPSJsonPointer(rawValue: "/a/0")
+        let retrievedJson = try! JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json)
+        let expectedJson = JSON(data: " { \"c\" : \"foo\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(retrievedJson, expectedJson)
     }
     
     func testIfPointerIdentifiesArrayInJson2() {
