@@ -97,11 +97,33 @@ extension JPSJsonPointerTests {
 
 extension JPSJsonPointerTests {
     
-//    
-//    Evaluation of a JSON Pointer begins with a reference to the root
-//    value of a JSON document and completes with a reference to some value
-//    within the document.  Each reference token in the JSON Pointer is
-//    evaluated sequentially.
+    func testIfTildeEscapedCharactersAreDecoded() {
+        let jsonPointer1 = try! JPSJsonPointer(value: "/~1")
+        XCTAssertEqual(jsonPointer1.valueParts.count, 1)
+        XCTAssertEqual(jsonPointer1.valueParts[0], "/")
+        let jsonPointer2 = try! JPSJsonPointer(value: "/~0")
+        XCTAssertEqual(jsonPointer2.valueParts.count, 1)
+        XCTAssertEqual(jsonPointer2.valueParts[0], "~")
+        let jsonPointer3 = try! JPSJsonPointer(value: "/~01")
+        XCTAssertEqual(jsonPointer3.valueParts.count, 1)
+        XCTAssertEqual(jsonPointer3.valueParts[0], "~1")
+        let jsonPointer4 = try! JPSJsonPointer(value: "/~10")
+        XCTAssertEqual(jsonPointer4.valueParts.count, 1)
+        XCTAssertEqual(jsonPointer4.valueParts[0], "/0")
+        let jsonPointer5 = try! JPSJsonPointer(value: "/~1~0")
+        XCTAssertEqual(jsonPointer5.valueParts.count, 1)
+        XCTAssertEqual(jsonPointer5.valueParts[0], "/~")
+        let jsonPointer6 = try! JPSJsonPointer(value: "/~1/~0")
+        XCTAssertEqual(jsonPointer6.valueParts.count, 2)
+        XCTAssertEqual(jsonPointer6.valueParts[0], "/")
+        XCTAssertEqual(jsonPointer6.valueParts[1], "~")
+        let jsonPointer7 = try! JPSJsonPointer(value: "/~0/~1")
+        XCTAssertEqual(jsonPointer7.valueParts.count, 2)
+        XCTAssertEqual(jsonPointer7.valueParts[0], "~")
+        XCTAssertEqual(jsonPointer7.valueParts[1], "/")
+        
+    }
+    
 //    
 //    Evaluation of each reference token begins by decoding any escaped
 //    character sequence.  This is performed by first transforming any
