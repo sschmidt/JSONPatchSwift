@@ -43,6 +43,15 @@ class JPSJsonPointerTests: XCTestCase {
             // Expected behaviour.
         }
     }
+    
+    func testIfEmptyReferenceTokenIsInvalid() {
+        do {
+            let _ = try JPSJsonPointer(value: "/a//c")
+            XCTFail("Unreachable code. Invalid pointer should raise an error.")
+        } catch {
+            // Expected behaviour.
+        }
+    }
 
 //    
 //    A JSON Pointer is a Unicode string (see [RFC4627], Section 3)
