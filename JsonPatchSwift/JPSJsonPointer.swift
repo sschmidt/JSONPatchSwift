@@ -19,6 +19,10 @@ struct JPSJsonPointer {
     let rawValue: String
     let pointerValue: [String]
     
+}
+
+extension JPSJsonPointer {
+
     init(rawValue: String) throws {
         guard rawValue.isEmpty || rawValue.containsString("/") else {
             throw JPSJsonPointerError.ValueDoesNotContainDelimiter
@@ -30,11 +34,12 @@ struct JPSJsonPointer {
             throw JPSJsonPointerError.ContainsEmptyReferenceToken
         }
         
-        self.rawValue = rawValue
-        
         let pointerValueWithoutFirstDelimiter = Array(rawValue.componentsSeparatedByString("/").dropFirst())
         let pointerValueAfterDecodingDelimiter = pointerValueWithoutFirstDelimiter.map { $0.stringByReplacingOccurrencesOfString("~1", withString: "/") }
-        self.pointerValue = pointerValueAfterDecodingDelimiter.map { $0.stringByReplacingOccurrencesOfString("~0", withString: "~") }
+        let pointerValue = pointerValueAfterDecodingDelimiter.map { $0.stringByReplacingOccurrencesOfString("~0", withString: "~") }
+        
+        self.init(rawValue: rawValue, pointerValue: pointerValue)
+    }
     }
     
 }
