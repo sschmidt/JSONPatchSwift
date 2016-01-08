@@ -140,7 +140,7 @@ extension JPSJsonPointerTests {
     func testIfPointerIdentifiesObjectInJson() {
         let json = JSON(data: " { \"a\": { \"b\": \"bla\" } } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let pointer = try! JPSJsonPointer(rawValue: "/a")
-        let retrievedJson = try! JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json)
+        let retrievedJson = try! JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json) as? JSON
         let expectedJson = JSON(data: " { \"b\": \"bla\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(retrievedJson, expectedJson)
     }
@@ -159,7 +159,7 @@ extension JPSJsonPointerTests {
     func testIfPointerIdentifiesArrayInJson() {
         let json = JSON(data: " { \"a\": [ { \"c\" : \"foo\" }, \"b\" ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let pointer = try! JPSJsonPointer(rawValue: "/a/0")
-        let retrievedJson = try! JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json)
+        let retrievedJson = try! JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json) as? JSON
         let expectedJson = JSON(data: " { \"c\" : \"foo\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(retrievedJson, expectedJson)
     }
@@ -167,7 +167,7 @@ extension JPSJsonPointerTests {
     func testIfPointerIdentifiesArrayInJson2() {
         let json = JSON(data: " { \"a\": [ { \"c\" : [ \"0\", \"1\", \"2\", { \"foo\" : \"bar\" }, \"4\" ] }, \"b\" ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let pointer = try! JPSJsonPointer(rawValue: "/a/0/c/3")
-        let retrievedJson = try! JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json)
+        let retrievedJson = try! JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json) as? JSON
         let expectedJson = JSON(data: " { \"foo\" : \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(retrievedJson, expectedJson)
     }
@@ -193,7 +193,7 @@ extension JPSJsonPointerTests {
     func testIfPointerIdentifiesEndOfArrayTokenInJson() {
         let json = JSON(data: " { \"a\": [ \"b\", { \"c\" : \"foo\" } ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let pointer = try! JPSJsonPointer(rawValue: "/a/-")
-        let retrievedJson = try! JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json)
+        let retrievedJson = try! JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json) as? JSON
         let expectedJson = JSON(data: " { \"c\" : \"foo\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(retrievedJson, expectedJson)
     }
