@@ -138,11 +138,18 @@ extension JPSJsonPointerTests {
     //    and evaluation fails (see below).
     
     func testIfPointerIdentifiesObjectInJson() {
-        let data = " { \"a\": { \"b\": \"bla\" } } ".dataUsingEncoding(NSUTF8StringEncoding)
-        let json = JSON(data: data!)
+        let json = JSON(data: " { \"a\": { \"b\": \"bla\" } } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let pointer = try! JPSJsonPointer(rawValue: "/a")
         let retrievedJson = JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json)
         let expectedJson = JSON(data: " { \"b\": \"bla\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(retrievedJson, expectedJson)
+    }
+    
+    func testIfPointerIdentifiesArrayInJson() {
+        let json = JSON(data: " { \"a\": [ \"b\", \"bla\" ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let pointer = try! JPSJsonPointer(rawValue: "/a/1")
+        let retrievedJson = JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json)
+        let expectedJson = JSON(data: " { \"bla\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(retrievedJson, expectedJson)
     }
     
