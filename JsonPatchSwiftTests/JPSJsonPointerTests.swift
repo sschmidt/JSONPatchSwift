@@ -33,7 +33,15 @@ class JPSJsonPointerTests: XCTestCase {
         } catch {
             // Expected behaviour.
         }
-        
+    }
+    
+    func testIfNonEmptyJsonPointerStartsWithDelimiter() {
+        do {
+            let _ = try JPSJsonPointer(value: "a/b/c")
+            XCTFail("Unreachable code. Invalid pointer should raise an error.")
+        } catch {
+            // Expected behaviour.
+        }
     }
 
 //    
