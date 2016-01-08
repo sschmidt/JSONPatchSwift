@@ -145,6 +145,17 @@ extension JPSJsonPointerTests {
         XCTAssertEqual(retrievedJson, expectedJson)
     }
     
+    func testIfInvalidPointerLeadsToError() {
+        let json = JSON(data: " { \"a\": { \"b\": \"bla\" } } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let pointer = try! JPSJsonPointer(rawValue: "/b")
+        do {
+            let _ = try JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json)
+            XCTFail("Unreachable code. Invalid pointer should raise an error.")
+        } catch {
+            // Expected behaviour.
+        }
+    }
+    
     func testIfPointerIdentifiesArrayInJson() {
         let json = JSON(data: " { \"a\": [ { \"c\" : \"foo\" }, \"b\" ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let pointer = try! JPSJsonPointer(rawValue: "/a/0")
