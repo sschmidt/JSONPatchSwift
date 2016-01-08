@@ -16,6 +16,13 @@ import XCTest
 
 class JPSJsonPointerTests: XCTestCase {
     
+}
+
+
+// MARK: - Chapter 3 tests
+
+extension JPSJsonPointerTests {
+
     func testIfEmptyPointerIsValid() {
         let jsonPointer = try! JPSJsonPointer(value: "")
         XCTAssertEqual(jsonPointer.value, "")
