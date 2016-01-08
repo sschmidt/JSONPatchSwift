@@ -14,6 +14,7 @@ enum JPSJsonPointerError: ErrorType {
     case ValueDoesNotContainDelimiter
     case NonEmptyPointerDoesNotStartWithDelimiter
     case ContainsEmptyReferenceToken
+    case EvaluationFailed
 }
 
 struct JPSJsonPointer {
@@ -47,10 +48,21 @@ extension JPSJsonPointer {
 
 extension JPSJsonPointer {
 
-    static func identifySubJsonForPointer(pointer: JPSJsonPointer, inJson json: JSON) -> JSON {
+    static func identifySubJsonForPointer(pointer: JPSJsonPointer, inJson json: JSON) throws -> JSON {
         var tempJson = json
         for i in 0..<pointer.pointerValue.count {
-            tempJson = tempJson[pointer.pointerValue[i]]
+            if tempJson.type == .Array {
+                if "-" == pointer.pointerValue[i] {
+                    tempJson = tempJson.arrayValue.last!
+                } else {
+                    tempJson = tempJson[Int(pointer.pointerValue[i])!]
+                }
+            } else {
+                tempJson = tempJson[pointer.pointerValue[i]]
+            }
+        }
+        if tempJson == nil {
+            throw JPSJsonPointerError.EvaluationFailed
         }
         return tempJson
     }
