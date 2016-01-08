@@ -8,6 +8,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+import SwiftyJSON
+
 enum JPSJsonPointerError: ErrorType {
     case ValueDoesNotContainDelimiter
     case NonEmptyPointerDoesNotStartWithDelimiter
@@ -40,6 +42,17 @@ extension JPSJsonPointer {
         
         self.init(rawValue: rawValue, pointerValue: pointerValue)
     }
+    
+}
+
+extension JPSJsonPointer {
+
+    static func identifySubJsonForPointer(pointer: JPSJsonPointer, inJson json: JSON) -> JSON {
+        var tempJson = json
+        for i in 0..<pointer.pointerValue.count {
+            tempJson = tempJson[pointer.pointerValue[i]]
+        }
+        return tempJson
     }
     
 }
