@@ -19,7 +19,7 @@ class JPSJsonPointerTests: XCTestCase {
 }
 
 
-// MARK: - Chapter 3 tests
+// MARK: - chapter 3 tests
 
 extension JPSJsonPointerTests {
 
@@ -74,30 +74,7 @@ extension JPSJsonPointerTests {
         let jsonPointer = try! JPSJsonPointer(value: value)
         XCTAssertEqual(jsonPointer.value, value)
     }
-
-//    
-//    A JSON Pointer is a Unicode string (see [RFC4627], Section 3)
-//    containing a sequence of zero or more reference tokens, each prefixed
-//    by a '/' (%x2F) character.
-//    
-//    Because the characters '~' (%x7E) and '/' (%x2F) have special
-//    meanings in JSON Pointer, '~' needs to be encoded as '~0' and '/'
-//    needs to be encoded as '~1' when these characters appear in a
-//    reference token.
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    Bryan, et al.                Standards Track                    [Page 2]
-//    
-//    RFC 6901                      JSON Pointer                    April 2013
-//    
-//    
+    
 //    The ABNF syntax of a JSON Pointer is:
 //    
 //    json-pointer    = *( "/" reference-token )
@@ -111,8 +88,15 @@ extension JPSJsonPointerTests {
 //    this syntax (see Section 7).
 //    
 //    Note that JSON Pointers are specified in characters, not as bytes.
-//    
-//    4.  Evaluation
+    
+    
+}
+
+
+// MARK: - chapter 4 tests
+
+extension JPSJsonPointerTests {
+    
 //    
 //    Evaluation of a JSON Pointer begins with a reference to the root
 //    value of a JSON document and completes with a reference to some value
@@ -141,18 +125,7 @@ extension JPSJsonPointerTests {
 //    and evaluation fails (see below).
 //    
 //    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    Bryan, et al.                Standards Track                    [Page 3]
-//    
-//    RFC 6901                      JSON Pointer                    April 2013
-//    
+
 //    
 //    o  If the currently referenced value is a JSON array, the reference
 //    token MUST contain either:
@@ -185,7 +158,16 @@ extension JPSJsonPointerTests {
 //    
 //    Any error condition for which a specific action is not defined by the
 //    JSON Pointer application results in termination of evaluation.
-//    
+    
+    
+}
+
+
+// MARK: - chapter 5 tests
+
+extension JPSJsonPointerTests {
+    
+//
 //    5.  JSON String Representation
 //    
 //    A JSON Pointer can be represented in a JSON string value.  Per
@@ -196,19 +178,7 @@ extension JPSJsonPointerTests {
 //    Note that before processing a JSON string as a JSON Pointer,
 //    backslash escape sequences must be unescaped.
 //    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    Bryan, et al.                Standards Track                    [Page 4]
-//    
-//    RFC 6901                      JSON Pointer                    April 2013
-//    
+
 //    
 //    For example, given the JSON document
 //    
@@ -239,7 +209,18 @@ extension JPSJsonPointerTests {
 //    "/k\"l"      6
 //    "/ "         7
 //    "/m~0n"      8
-//    
+    
+    
+    
+}
+
+
+// MARK: - chapter 6 tests
+
+extension JPSJsonPointerTests {
+    
+    
+//
 //    6.  URI Fragment Identifier Representation
 //    
 //    A JSON Pointer can be represented in a URI fragment identifier by
@@ -252,19 +233,7 @@ extension JPSJsonPointerTests {
 //    that JSON Pointer can be used as its fragment identifier syntax.  In
 //    particular, the fragment identifier syntax for application/json is
 //    not JSON Pointer.
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    Bryan, et al.                Standards Track                    [Page 5]
-//    
-//    RFC 6901                      JSON Pointer                    April 2013
-//    
+
 //    
 //    Given the same example document as above, the following URI fragment
 //    identifiers evaluate to the accompanying values:
@@ -281,7 +250,18 @@ extension JPSJsonPointerTests {
 //    #/k%22l      6
 //    #/%20        7
 //    #/m~0n       8
-//    
+    
+    
+    
+}
+
+
+// MARK: - chapter 7 tests
+
+extension JPSJsonPointerTests {
+    
+    
+//
 //    7.  Error Handling
 //    
 //    In the event of an error condition, evaluation of the JSON Pointer
@@ -300,7 +280,18 @@ extension JPSJsonPointerTests {
 //    For example, some applications might stop pointer processing upon an
 //    error, while others may attempt to recover from missing values by
 //    inserting default ones.
-//    
+    
+    
+    
+}
+
+
+// MARK: - chapter 8 tests
+
+extension JPSJsonPointerTests {
+    
+    
+//
 //    8.  Security Considerations
 //    
 //    A given JSON Pointer is not guaranteed to reference an actual JSON
@@ -313,125 +304,5 @@ extension JPSJsonPointerTests {
 //    programming languages that use NUL to mark the end of a string.
 //    
 //    
-//    
-//    
-//    
-//    
-//    Bryan, et al.                Standards Track                    [Page 6]
-//    
-//    RFC 6901                      JSON Pointer                    April 2013
-//    
-//    
-//    9.  Acknowledgements
-//    
-//    The following individuals contributed ideas, feedback, and wording to
-//    this specification:
-//    
-//    Mike Acar, Carsten Bormann, Tim Bray, Jacob Davies, Martin J.
-//    Duerst, Bjoern Hoehrmann, James H. Manger, Drew Perttula, and
-//    Julian Reschke.
-//    
-//    10.  References
-//    
-//    10.1.  Normative References
-//    
-//    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-//    Requirement Levels", BCP 14, RFC 2119, March 1997.
-//    
-//    [RFC3629]  Yergeau, F., "UTF-8, a transformation format of ISO
-//    10646", STD 63, RFC 3629, November 2003.
-//    
-//    [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
-//    Resource Identifier (URI): Generic Syntax", STD 66,
-//    RFC 3986, January 2005.
-//    
-//    [RFC4627]  Crockford, D., "The application/json Media Type for
-//    JavaScript Object Notation (JSON)", RFC 4627, July 2006.
-//    
-//    [RFC5234]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
-//    Specifications: ABNF", STD 68, RFC 5234, January 2008.
-//    
-//    10.2.  Informative References
-//    
-//    [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
-//    Specifications and Registration Procedures", BCP 13,
-//    RFC 6838, January 2013.
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    Bryan, et al.                Standards Track                    [Page 7]
-//    
-//    RFC 6901                      JSON Pointer                    April 2013
-//    
-//    
-//    Authors' Addresses
-//    
-//    Paul C. Bryan (editor)
-//    Salesforce.com
-//    
-//    Phone: +1 604 783 1481
-//    EMail: pbryan@anode.ca
-//    
-//    
-//    Kris Zyp
-//    SitePen (USA)
-//    
-//    Phone: +1 650 968 8787
-//    EMail: kris@sitepen.com
-//    
-//    
-//    Mark Nottingham (editor)
-//    Akamai
-//    
-//    EMail: mnot@mnot.net
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    
-//    Bryan, et al.                Standards Track                    [Page 8]
-//    
-//    
-//    Html markup produced by rfcmarkup 1.115, available from https://tools.ietf.org/tools/rfcmarkup/
     
 }
