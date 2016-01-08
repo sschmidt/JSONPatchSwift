@@ -10,6 +10,7 @@
 
 enum JPSJsonPointerError: ErrorType {
     case ValueDoesNotContainDelimiter
+    case NonEmptyPointerDoesNotStartWithDelimiter
 }
 
 struct JPSJsonPointer {
@@ -19,6 +20,9 @@ struct JPSJsonPointer {
     init(value: String) throws {
         guard value.isEmpty || value.containsString("/") else {
             throw JPSJsonPointerError.ValueDoesNotContainDelimiter
+        }
+        guard value.isEmpty || value.hasPrefix("/") else {
+            throw JPSJsonPointerError.NonEmptyPointerDoesNotStartWithDelimiter
         }
         self.value = value
     }
