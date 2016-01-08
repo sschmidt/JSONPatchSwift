@@ -60,6 +60,15 @@ extension JPSJsonPointerTests {
         }
     }
     
+    func testIfPointerOnlyContainingDelimiterIsInvalid() {
+        do {
+            let _ = try JPSJsonPointer(value: "/")
+            XCTFail("Unreachable code. Invalid pointer should raise an error.")
+        } catch {
+            // Expected behaviour.
+        }
+    }
+    
     func testForSeveralUnicodeCharacters() {
         let value = "/1234567890-=!@£$%^&*()_+¡€#¢∞§¶•ªº–≠⁄™‹›ﬁﬂ‡°·‚—±qwertyuiop[]QWERTYUIOP{}œ∑´®†¥¨^øπ“‘Œ„‰ÂÊÁËÈØ∏’asdfghjkl;'ASDFGHJKL:|åß∂ƒ©˙∆˚¬…æ«ÅÍÎÏÌÓÔÒÚÆ»`zxcvbnm,./~ZXCVBNM<>?`Ω≈ç√∫~µ≤≥÷ŸÛÙÇ◊ıˆ˜¯˘¿"
         let jsonPointer = try! JPSJsonPointer(value: value)
