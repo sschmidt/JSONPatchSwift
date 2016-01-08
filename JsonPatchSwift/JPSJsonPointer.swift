@@ -16,25 +16,25 @@ enum JPSJsonPointerError: ErrorType {
 
 struct JPSJsonPointer {
     
-    let value: String
-    let valueParts: [String]
+    let rawValue: String
+    let pointerValue: [String]
     
-    init(value: String) throws {
-        guard value.isEmpty || value.containsString("/") else {
+    init(rawValue: String) throws {
+        guard rawValue.isEmpty || rawValue.containsString("/") else {
             throw JPSJsonPointerError.ValueDoesNotContainDelimiter
         }
-        guard value.isEmpty || value.hasPrefix("/") else {
+        guard rawValue.isEmpty || rawValue.hasPrefix("/") else {
             throw JPSJsonPointerError.NonEmptyPointerDoesNotStartWithDelimiter
         }
-        guard value.isEmpty || !value.componentsSeparatedByString("/").dropFirst().contains("") else {
+        guard rawValue.isEmpty || !rawValue.componentsSeparatedByString("/").dropFirst().contains("") else {
             throw JPSJsonPointerError.ContainsEmptyReferenceToken
         }
         
-        self.value = value
+        self.rawValue = rawValue
         
-        let valuePartsWithoutFirstDelimiter = Array(value.componentsSeparatedByString("/").dropFirst())
-        let valuePartsAfterDecodingDelimiter = valuePartsWithoutFirstDelimiter.map { $0.stringByReplacingOccurrencesOfString("~1", withString: "/") }
-        self.valueParts = valuePartsAfterDecodingDelimiter.map { $0.stringByReplacingOccurrencesOfString("~0", withString: "~") }
+        let pointerValueWithoutFirstDelimiter = Array(rawValue.componentsSeparatedByString("/").dropFirst())
+        let pointerValueAfterDecodingDelimiter = pointerValueWithoutFirstDelimiter.map { $0.stringByReplacingOccurrencesOfString("~1", withString: "/") }
+        self.pointerValue = pointerValueAfterDecodingDelimiter.map { $0.stringByReplacingOccurrencesOfString("~0", withString: "~") }
     }
     
 }
