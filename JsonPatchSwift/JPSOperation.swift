@@ -8,7 +8,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-func  == (lhs: JPSOperation, rhs: JPSOperation) -> Bool {
+func == (lhs: JPSOperation, rhs: JPSOperation) -> Bool {
     return lhs.type == rhs.type
 }
 
