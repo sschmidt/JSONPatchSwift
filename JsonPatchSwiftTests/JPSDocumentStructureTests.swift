@@ -266,13 +266,11 @@ class JPSDocumentStructureTests: XCTestCase {
     func testIfPathContainsValidJsonPointer() {
         do {
             // swiftlint:disable opening_brace
-            let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"/a/b\", \"path\" : \"/a/b\"}")
+            let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"foo\" }")
             // swiftlint:enable opening_brace
             XCTFail("Unreachable code. Should have raised an error.")
-        } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
+        } catch JPSJsonPointerError.ValueDoesNotContainDelimiter {
             // Expected behaviour.
-            XCTAssertNotNil(message)
-            XCTAssertEqual(message, "Value of 'path' is not a valid JSON Pointer.")
         } catch {
             XCTFail("Unexpected error.")
         }
