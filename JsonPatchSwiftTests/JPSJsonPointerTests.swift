@@ -246,7 +246,7 @@ extension JPSJsonPointerTests {
         let retrievedJson1 = try! JPSJsonPointer.identifySubJsonForPointer(pointer1, inJson: json)
         XCTAssertEqual(retrievedJson1.stringValue, "bar")
         
-        let pointer2 = try! JPSJsonPointer(rawValue: "/")
+        let pointer2 = try! JPSJsonPointer(rawValue: "/\\")
         let retrievedJson2 = try! JPSJsonPointer.identifySubJsonForPointer(pointer2, inJson: json)
         XCTAssertEqual(retrievedJson2.intValue, 42)
         
