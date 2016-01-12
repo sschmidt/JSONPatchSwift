@@ -46,15 +46,6 @@ extension JPSJsonPointer {
     
 }
 
-
-//protocol JPSJsonPointerEvaluationResult {}
-//extension JSON: JPSJsonPointerEvaluationResult {}
-//extension String: JPSJsonPointerEvaluationResult {}
-//extension Int: JPSJsonPointerEvaluationResult {}
-//extension Float: JPSJsonPointerEvaluationResult {}
-//extension Double: JPSJsonPointerEvaluationResult {}
-//extension Bool: JPSJsonPointerEvaluationResult {}
-
 extension JPSJsonPointer {
 
     static func identifySubJsonForPointer(pointer: JPSJsonPointer, inJson json: JSON) throws -> JSON {
