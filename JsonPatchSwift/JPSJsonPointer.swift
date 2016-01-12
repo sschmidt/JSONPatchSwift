@@ -51,7 +51,7 @@ extension JPSJsonPointer {
     static func identifySubJsonForPointer(pointer: JPSJsonPointer, inJson json: JSON) throws -> JSON {
         var tempJson = json
         
-        guard "/" != pointer.rawValue else {
+        guard "" != pointer.rawValue else {
             return json
         }
         
