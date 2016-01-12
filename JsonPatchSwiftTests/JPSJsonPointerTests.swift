@@ -233,49 +233,6 @@ extension JPSJsonPointerTests {
 
 extension JPSJsonPointerTests {
     
-//
-//    5.  JSON String Representation
-//    
-//    A JSON Pointer can be represented in a JSON string value.  Per
-//    [RFC4627], Section 2.5, all instances of quotation mark '"' (%x22),
-//    reverse solidus '\' (%x5C), and control (%x00-1F) characters MUST be
-//    escaped.
-//    
-//    Note that before processing a JSON string as a JSON Pointer,
-//    backslash escape sequences must be unescaped.
-//    
-
-//    
-//    For example, given the JSON document
-//    
-//    "{"
-//+    "foo\": [\"bar\", \"baz\"],"
-//+    "\": 0,"
-//+    "a/b\": 1,"
-//+    "c%d\": 2,"
-//+    "e^f\": 3,"
-//+    "g|h\": 4,"
-//+    "i//j\": 5,"
-//+    "k\\\"l\": 6,"
-//+    " \": 7,"
-//+    "m~n\": 8"
-//+    "}"
-//
-//    The following JSON strings evaluate to the accompanying values:
-//    
-//    ""           // the whole document
-//    "/foo"       ["bar", "baz"]
-//    "/foo/0"     "bar"
-//    "/"          0
-//    "/a~1b"      1
-//    "/c%d"       2
-//    "/e^f"       3
-//    "/g|h"       4
-//    "/i//j"      5 ---- can't be parsed by SwiftyJSON
-//    "/k\"l"      6
-//    "/ "         7
-//    "/m~0n"      8
-    
     func testExamplesFromRFC() {
         let jsonString = "{        \"foo\": [\"bar\", \"baz\"],        \"\\\\\": 0,        \"a/b\": 1,        \"c%d\": 2,        \"e^f\": 3,        \"g|h\": 4,        \"i//j\": 5,        \"k\\\"l\": 6,        \" \": 7,        \"m~n\": 8    }"
         let json = JSON(data: jsonString.dataUsingEncoding(NSUTF8StringEncoding)!)
