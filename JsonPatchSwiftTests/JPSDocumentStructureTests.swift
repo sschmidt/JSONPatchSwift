@@ -347,13 +347,23 @@ class JPSDocumentStructureTests: XCTestCase {
         XCTAssertTrue(operation1 == operation2)
     }
     
-    func testEqualityOperator() {
+    func testEqualityOperatorWithDifferentAmountsOfOperations() {
         // swiftlint:disable opening_brace
         let patch0 = "{ \"op\": \"add\", \"path\": \"/a/b/c\" }"
         let patch1 = "["
             + "{ \"op\": \"test\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" },"
             + "{ \"op\": \"remove\", \"path\": \"/a/b/c\" },"
             + "]"
+        // swiftlint:enable opening_brace
+        let jsonPatch0 = try! JPSJsonPatch(patch0)
+        let jsonPatch1 = try! JPSJsonPatch(patch1)
+        XCTAssertFalse(jsonPatch0 == jsonPatch1)
+    }
+    
+    func testEqualityOperatorWithDifferentOperations() {
+        // swiftlint:disable opening_brace
+        let patch0 = "{ \"op\": \"add\", \"path\": \"/a/b/c\" }"
+        let patch1 = "{ \"op\": \"remove\", \"path\": \"/a/b/c\" }"
         // swiftlint:enable opening_brace
         let jsonPatch0 = try! JPSJsonPatch(patch0)
         let jsonPatch1 = try! JPSJsonPatch(patch1)
