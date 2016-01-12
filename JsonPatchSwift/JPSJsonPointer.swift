@@ -33,7 +33,7 @@ extension JPSJsonPointer {
         guard rawValue.isEmpty || rawValue.hasPrefix("/") else {
             throw JPSJsonPointerError.NonEmptyPointerDoesNotStartWithDelimiter
         }
-        guard rawValue.isEmpty || !rawValue.componentsSeparatedByString("/").dropFirst().contains("") else {
+        guard rawValue.isEmpty || "/" == rawValue || !rawValue.componentsSeparatedByString("/").dropFirst().contains("") else {
             throw JPSJsonPointerError.ContainsEmptyReferenceToken
         }
         
