@@ -290,36 +290,36 @@ extension JPSJsonPointerTests {
         XCTAssertEqual(retrievedJson1.stringValue, "bar")
         
         let pointer2 = try! JPSJsonPointer(rawValue: "/")
-        let retrievedJson2 = try! JPSJsonPointer.identifySubJsonForPointer(pointer2, inJson: json) as? Int
-        XCTAssertEqual(retrievedJson2, 0)
+        let retrievedJson2 = try! JPSJsonPointer.identifySubJsonForPointer(pointer2, inJson: json)
+        XCTAssertEqual(retrievedJson2.intValue, 0)
         
         let pointer3 = try! JPSJsonPointer(rawValue: "/a~1b")
-        let retrievedJson3 = try! JPSJsonPointer.identifySubJsonForPointer(pointer3, inJson: json) as? Int
-        XCTAssertEqual(retrievedJson3, 1)
+        let retrievedJson3 = try! JPSJsonPointer.identifySubJsonForPointer(pointer3, inJson: json)
+        XCTAssertEqual(retrievedJson3.intValue, 1)
         
         let pointer4 = try! JPSJsonPointer(rawValue: "/c%d")
-        let retrievedJson4 = try! JPSJsonPointer.identifySubJsonForPointer(pointer4, inJson: json) as? Int
-        XCTAssertEqual(retrievedJson4, 2)
+        let retrievedJson4 = try! JPSJsonPointer.identifySubJsonForPointer(pointer4, inJson: json)
+        XCTAssertEqual(retrievedJson4.intValue, 2)
         
         let pointer5 = try! JPSJsonPointer(rawValue: "/e^f")
-        let retrievedJson5 = try! JPSJsonPointer.identifySubJsonForPointer(pointer5, inJson: json) as? Int
-        XCTAssertEqual(retrievedJson5, 3)
+        let retrievedJson5 = try! JPSJsonPointer.identifySubJsonForPointer(pointer5, inJson: json)
+        XCTAssertEqual(retrievedJson5.intValue, 3)
         
         let pointer6 = try! JPSJsonPointer(rawValue: "/g|h")
-        let retrievedJson6 = try! JPSJsonPointer.identifySubJsonForPointer(pointer6, inJson: json) as? Int
-        XCTAssertEqual(retrievedJson6, 4)
+        let retrievedJson6 = try! JPSJsonPointer.identifySubJsonForPointer(pointer6, inJson: json)
+        XCTAssertEqual(retrievedJson6.intValue, 4)
         
         let pointer7 = try! JPSJsonPointer(rawValue: "/k\"l")
-        let retrievedJson7 = try! JPSJsonPointer.identifySubJsonForPointer(pointer7, inJson: json) as? Int
-        XCTAssertEqual(retrievedJson7, 6)
+        let retrievedJson7 = try! JPSJsonPointer.identifySubJsonForPointer(pointer7, inJson: json)
+        XCTAssertEqual(retrievedJson7.intValue, 6)
         
         let pointer8 = try! JPSJsonPointer(rawValue: "/ ")
-        let retrievedJson8 = try! JPSJsonPointer.identifySubJsonForPointer(pointer8, inJson: json) as? Int
-        XCTAssertEqual(retrievedJson8, 7)
+        let retrievedJson8 = try! JPSJsonPointer.identifySubJsonForPointer(pointer8, inJson: json)
+        XCTAssertEqual(retrievedJson8.intValue, 7)
         
         let pointer9 = try! JPSJsonPointer(rawValue: "/m~0n")
-        let retrievedJson9 = try! JPSJsonPointer.identifySubJsonForPointer(pointer9, inJson: json) as? Int
-        XCTAssertEqual(retrievedJson9, 8)
+        let retrievedJson9 = try! JPSJsonPointer.identifySubJsonForPointer(pointer9, inJson: json)
+        XCTAssertEqual(retrievedJson9.intValue, 8)
     }
     
 }
