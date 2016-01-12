@@ -283,6 +283,13 @@ extension JPSJsonPointerTests {
         XCTAssertEqual(retrievedJson10.intValue, 8)
     }
     
+    func testRetrievingTheWholeDocument() {
+        let json = JSON(data: " { \"a\": [ \"b\", { \"c\" : \"foo\" } ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let pointer = try! JPSJsonPointer(rawValue: "")
+        let retrievedJson = try! JPSJsonPointer.identifySubJsonForPointer(pointer, inJson: json)
+        XCTAssertEqual(retrievedJson, json)
+    }
+    
 }
 
 
