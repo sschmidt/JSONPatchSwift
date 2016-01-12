@@ -234,7 +234,7 @@ extension JPSJsonPointerTests {
 extension JPSJsonPointerTests {
     
     func testExamplesFromRFC() {
-        let jsonString = "{        \"foo\": [\"bar\", \"baz\"],        \"\\\\\": 0,        \"a/b\": 1,        \"c%d\": 2,        \"e^f\": 3,        \"g|h\": 4,        \"i//j\": 5,        \"k\\\"l\": 6,        \" \": 7,        \"m~n\": 8    }"
+        let jsonString = "{        \"foo\": [\"bar\", \"baz\"],        \"\\\\\": 42,        \"a/b\": 1,        \"c%d\": 2,        \"e^f\": 3,        \"g|h\": 4,        \"i//j\": 5,        \"k\\\"l\": 6,        \" \": 7,        \"m~n\": 8    }"
         let json = JSON(data: jsonString.dataUsingEncoding(NSUTF8StringEncoding)!)
         
         let pointer0 = try! JPSJsonPointer(rawValue: "/foo")
@@ -248,7 +248,7 @@ extension JPSJsonPointerTests {
         
         let pointer2 = try! JPSJsonPointer(rawValue: "/")
         let retrievedJson2 = try! JPSJsonPointer.identifySubJsonForPointer(pointer2, inJson: json)
-        XCTAssertEqual(retrievedJson2.intValue, 0)
+        XCTAssertEqual(retrievedJson2.intValue, 42)
         
         let pointer3 = try! JPSJsonPointer(rawValue: "/a~1b")
         let retrievedJson3 = try! JPSJsonPointer.identifySubJsonForPointer(pointer3, inJson: json)
