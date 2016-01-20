@@ -17,7 +17,7 @@ import XCTest
 class JPSDocumentStructureTests: XCTestCase {
     
     func testJsonPatchContainsArrayOfOperations() {
-        let jsonPatch = try! JPSJsonPatch("[{ \"op\": \"test\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }]")
+        let jsonPatch = try! JPSJsonPatch("[{ \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\" }]")
         XCTAssertNotNil(jsonPatch)
         XCTAssertNotNil(jsonPatch.operations)
         XCTAssertEqual(jsonPatch.operations.count, 1)
@@ -25,7 +25,7 @@ class JPSDocumentStructureTests: XCTestCase {
     }
     
     func testJsonPatchReadsAllOperations() {
-        let jsonPatch = try! JPSJsonPatch("[{ \"op\": \"test\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }, { \"op\": \"test\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }, { \"op\": \"test\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }]")
+        let jsonPatch = try! JPSJsonPatch("[{ \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\" }, { \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\" }, { \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\" }]")
         XCTAssertNotNil(jsonPatch)
         XCTAssertNotNil(jsonPatch.operations)
         XCTAssertEqual(jsonPatch.operations.count, 3)
@@ -35,7 +35,7 @@ class JPSDocumentStructureTests: XCTestCase {
     }
     
     func testJsonPatchOperationsHaveSameOrderAsInJsonRepresentation() {
-        let jsonPatch = try! JPSJsonPatch("[{ \"op\": \"test\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }, { \"op\": \"add\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }, { \"op\": \"remove\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }]")
+        let jsonPatch = try! JPSJsonPatch("[{ \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\" }, { \"op\": \"add\", \"path\": \"/a/b/c\", \"value\": \"foo\" }, { \"op\": \"remove\", \"path\": \"/a/b/c\", \"value\": \"foo\" }]")
         XCTAssertNotNil(jsonPatch)
         XCTAssertNotNil(jsonPatch.operations)
         XCTAssertEqual(jsonPatch.operations.count, 3)
@@ -62,7 +62,7 @@ class JPSDocumentStructureTests: XCTestCase {
     
     func testJsonPatchWithDictionaryAsRootElementForOperationTest() {
         // swiftlint:disable opening_brace
-        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"test\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }")
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
         // swiftlint:enable opening_brace
         XCTAssertNotNil(jsonPatch)
         XCTAssertNotNil(jsonPatch.operations)
@@ -74,7 +74,7 @@ class JPSDocumentStructureTests: XCTestCase {
     
     func testJsonPatchWithDictionaryAsRootElementForOperationAdd() {
         // swiftlint:disable opening_brace
-        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }")
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
         // swiftlint:enable opening_brace
         XCTAssertNotNil(jsonPatch)
         XCTAssertNotNil(jsonPatch.operations)
@@ -86,7 +86,7 @@ class JPSDocumentStructureTests: XCTestCase {
     
     func testJsonPatchWithDictionaryAsRootElementForOperationCopy() {
         // swiftlint:disable opening_brace
-        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"copy\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }")
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"copy\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
         // swiftlint:enable opening_brace
         XCTAssertNotNil(jsonPatch)
         XCTAssertNotNil(jsonPatch.operations)
@@ -98,7 +98,7 @@ class JPSDocumentStructureTests: XCTestCase {
     
     func testJsonPatchWithDictionaryAsRootElementForOperationRemove() {
         // swiftlint:disable opening_brace
-        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }")
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
         // swiftlint:enable opening_brace
         XCTAssertNotNil(jsonPatch)
         XCTAssertNotNil(jsonPatch.operations)
@@ -110,7 +110,7 @@ class JPSDocumentStructureTests: XCTestCase {
     
     func testJsonPatchWithDictionaryAsRootElementForOperationReplace() {
         // swiftlint:disable opening_brace
-        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"replace\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }")
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"replace\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
         // swiftlint:enable opening_brace
         XCTAssertNotNil(jsonPatch)
         XCTAssertNotNil(jsonPatch.operations)
@@ -123,7 +123,7 @@ class JPSDocumentStructureTests: XCTestCase {
     func testJsonPatchRejectsMissingOperation() {
         do {
             // swiftlint:disable opening_brace
-            let _ = try JPSJsonPatch("{ \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }")
+            let _ = try JPSJsonPatch("{ \"path\": \"/a/b/c\", \"value\": \"foo\" }")
             // swiftlint:enable opening_brace
             XCTFail("Unreachable code. Should have raised an error.")
         } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
@@ -138,7 +138,7 @@ class JPSDocumentStructureTests: XCTestCase {
     func testJsonPatchRejectsMissingPath() {
         do {
             // swiftlint:disable opening_brace
-            let _ = try JPSJsonPatch("{ \"op\": \"add\", \"rawValue\": \"foo\" }")
+            let _ = try JPSJsonPatch("{ \"op\": \"add\", \"value\": \"foo\" }")
             // swiftlint:enable opening_brace
             XCTFail("Unreachable code. Should have raised an error.")
         } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
@@ -169,10 +169,10 @@ class JPSDocumentStructureTests: XCTestCase {
     func testIfExamplesFromRFCAreRecognizedAsValidJsonPatches() {
         // swiftlint:disable opening_brace
         let patch = "["
-            + "{ \"op\": \"test\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" },"
+            + "{ \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\" },"
             + "{ \"op\": \"remove\", \"path\": \"/a/b/c\" },"
-            + "{ \"op\": \"add\", \"path\": \"/a/b/c\", \"rawValue\": [ \"foo\", \"bar\" ] },"
-            + "{ \"op\": \"replace\", \"path\": \"/a/b/c\", \"rawValue\": 42 },"
+            + "{ \"op\": \"add\", \"path\": \"/a/b/c\", \"value\": [ \"foo\", \"bar\" ] },"
+            + "{ \"op\": \"replace\", \"path\": \"/a/b/c\", \"value\": 42 },"
             + "{ \"op\": \"move\", \"from\": \"/a/b/c\", \"path\": \"/a/b/d\" },"
             + "{ \"op\": \"copy\", \"from\": \"/a/b/d\", \"path\": \"/a/b/e\" }"
             + "]"
@@ -278,7 +278,7 @@ class JPSDocumentStructureTests: XCTestCase {
     
     func testIfAdditionalElementsAreIgnored() {
         // swiftlint:disable opening_brace
-        let patch = "{ \"op\": \"test\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\", \"additionalParamter\": \"foo\" }"
+        let patch = "{ \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\", \"additionalParamter\": \"foo\" }"
         // swiftlint:enable opening_brace
         let jsonPatch = try! JPSJsonPatch(patch)
         XCTAssertNotNil(jsonPatch)
@@ -291,7 +291,7 @@ class JPSDocumentStructureTests: XCTestCase {
     
     func testIfElementsNotNecessaryForOperationAreIgnored() {
         // swiftlint:disable opening_brace
-        let patch = "{ \"op\": \"remove\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\", \"additionalParamter\": \"foo\" }"
+        let patch = "{ \"op\": \"remove\", \"path\": \"/a/b/c\", \"value\": \"foo\", \"additionalParamter\": \"foo\" }"
         // swiftlint:enable opening_brace
         let jsonPatch = try! JPSJsonPatch(patch)
         XCTAssertNotNil(jsonPatch)
@@ -305,7 +305,7 @@ class JPSDocumentStructureTests: XCTestCase {
     func testIfReorderedMembersOfOneOperationLeadToSameResult() {
         // Examples from RFC:
         // swiftlint:disable opening_brace
-        let patch0 = "{ \"op\": \"add\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" }"
+        let patch0 = "{ \"op\": \"add\", \"path\": \"/a/b/c\", \"value\": \"foo\" }"
         // swiftlint:enable opening_brace
         let jsonPatch0 = try! JPSJsonPatch(patch0)
         XCTAssertNotNil(jsonPatch0)
@@ -316,7 +316,7 @@ class JPSDocumentStructureTests: XCTestCase {
         XCTAssertEqual(operation0.type, JPSOperation.JPSOperationType.Add)
         
         // swiftlint:disable opening_brace
-        let patch1 = "{ \"path\": \"/a/b/c\", \"op\": \"add\", \"rawValue\": \"foo\" }"
+        let patch1 = "{ \"path\": \"/a/b/c\", \"op\": \"add\", \"value\": \"foo\" }"
         // swiftlint:enable opening_brace
         let jsonPatch1 = try! JPSJsonPatch(patch1)
         XCTAssertNotNil(jsonPatch1)
@@ -327,7 +327,7 @@ class JPSDocumentStructureTests: XCTestCase {
         XCTAssertEqual(operation1.type, JPSOperation.JPSOperationType.Add)
         
         // swiftlint:disable opening_brace
-        let patch2 = "{ \"rawValue\": \"foo\", \"path\": \"/a/b/c\", \"op\": \"add\" }"
+        let patch2 = "{ \"value\": \"foo\", \"path\": \"/a/b/c\", \"op\": \"add\" }"
         // swiftlint:enable opening_brace
         let jsonPatch2 = try! JPSJsonPatch(patch2)
         XCTAssertNotNil(jsonPatch2)
@@ -349,7 +349,7 @@ class JPSDocumentStructureTests: XCTestCase {
         // swiftlint:disable opening_brace
         let patch0 = "{ \"op\": \"add\", \"path\": \"/a/b/c\" }"
         let patch1 = "["
-            + "{ \"op\": \"test\", \"path\": \"/a/b/c\", \"rawValue\": \"foo\" },"
+            + "{ \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\" },"
             + "{ \"op\": \"remove\", \"path\": \"/a/b/c\" },"
             + "]"
         // swiftlint:enable opening_brace
