@@ -8,6 +8,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+import SwiftyJSON
+
 func == (lhs: JPSJsonPatch, rhs: JPSJsonPatch) -> Bool {
     
     guard lhs.operations.count == rhs.operations.count else { return false }
@@ -66,6 +68,24 @@ struct JPSJsonPatch {
         
     }
     
+}
+
+
+// MARK: - Using the patch
+
+extension JPSJsonPatch {
+    
+    static func applyPatch(_: JPSJsonPatch, toJson json: JSON) -> JSON {
+        return JSON("")
+    }
+    
+}
+
+
+// MARK: - Private functions
+
+extension JPSJsonPatch {
+
     private static func extractOperationFromJson(json: [String: AnyObject]) throws -> JPSOperation {
         
         // The elements 'op' and 'path' are mandatory.

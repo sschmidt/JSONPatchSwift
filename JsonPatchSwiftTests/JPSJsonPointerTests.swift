@@ -15,9 +15,7 @@ import XCTest
 // JavaScript Object Notation (JSON) Pointer
 // https://tools.ietf.org/html/rfc6901
 
-class JPSJsonPointerTests: XCTestCase {
-    
-}
+class JPSJsonPointerTests: XCTestCase {}
 
 
 // MARK: - chapter 3 tests
