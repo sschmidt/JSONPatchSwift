@@ -20,7 +20,7 @@ enum JPSJsonPointerError: ErrorType {
 struct JPSJsonPointer {
     
     let rawValue: String
-    let pointerValue: [String]
+    let pointerValue: [JSONSubscriptType]
     
 }
 
@@ -39,7 +39,7 @@ extension JPSJsonPointer {
         
         let pointerValueWithoutFirstDelimiter = Array(rawValue.componentsSeparatedByString("/").dropFirst())
         let pointerValueAfterDecodingDelimiter = pointerValueWithoutFirstDelimiter.map { $0.stringByReplacingOccurrencesOfString("~1", withString: "/") }
-        let pointerValue = pointerValueAfterDecodingDelimiter.map { $0.stringByReplacingOccurrencesOfString("~0", withString: "~") }
+        let pointerValue: [JSONSubscriptType] = pointerValueAfterDecodingDelimiter.map { $0.stringByReplacingOccurrencesOfString("~0", withString: "~")}
         
         self.init(rawValue: rawValue, pointerValue: pointerValue)
     }
@@ -57,10 +57,10 @@ extension JPSJsonPointer {
         
         for i in 0..<pointer.pointerValue.count {
             if tempJson.type == .Array {
-                if "-" == pointer.pointerValue[i] {
+                if let value = pointer.pointerValue[i] as? String where "-" == value {
                     tempJson = tempJson.arrayValue.last!
-                } else {
-                    tempJson = tempJson[Int(pointer.pointerValue[i])!]
+                } else if let value = pointer.pointerValue[i] as? Int {
+                    tempJson = tempJson[value]
                 }
             } else {
                 tempJson = tempJson[pointer.pointerValue[i]]

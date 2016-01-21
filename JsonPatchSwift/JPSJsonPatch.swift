@@ -100,13 +100,15 @@ extension JPSJsonPatch {
             throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Operation '\(operation)' is invalid.")
         }
         
+        let pointer = try JPSJsonPointer(rawValue: path)
+        
         switch JPSOperation.JPSOperationType(rawValue: operation)! {
-        case .Add: return JPSOperation(type: JPSOperation.JPSOperationType.Add)
-        case .Remove: return JPSOperation(type: JPSOperation.JPSOperationType.Remove)
-        case .Replace: return JPSOperation(type: JPSOperation.JPSOperationType.Replace)
-        case .Move: return JPSOperation(type: JPSOperation.JPSOperationType.Move)
-        case .Copy: return JPSOperation(type: JPSOperation.JPSOperationType.Copy)
-        case .Test: return JPSOperation(type: JPSOperation.JPSOperationType.Test)
+        case .Add: return JPSOperation(type: JPSOperation.JPSOperationType.Add, pointer: pointer)
+        case .Remove: return JPSOperation(type: JPSOperation.JPSOperationType.Remove, pointer: pointer)
+        case .Replace: return JPSOperation(type: JPSOperation.JPSOperationType.Replace, pointer: pointer)
+        case .Move: return JPSOperation(type: JPSOperation.JPSOperationType.Move, pointer: pointer)
+        case .Copy: return JPSOperation(type: JPSOperation.JPSOperationType.Copy, pointer: pointer)
+        case .Test: return JPSOperation(type: JPSOperation.JPSOperationType.Test, pointer: pointer)
         }
     }
     
