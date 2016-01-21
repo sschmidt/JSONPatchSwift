@@ -24,5 +24,6 @@ struct JPSOperation {
     }
     
     let type: JPSOperationType
+    let pointer: JPSJsonPointer
     
 }
