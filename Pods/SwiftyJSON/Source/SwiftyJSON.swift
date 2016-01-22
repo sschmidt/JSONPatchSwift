@@ -228,8 +228,8 @@ extension JSON : Swift.CollectionType, Swift.SequenceType, Swift.Indexable {
         case .Array:
             return (String(position.arrayIndex), JSON(self.rawArray[position.arrayIndex!]))
         case .Dictionary:
-            let (key, rawValue) = self.rawDictionary[position.dictionaryIndex!]
-            return (key, JSON(rawValue))
+            let (key, value) = self.rawDictionary[position.dictionaryIndex!]
+            return (key, JSON(value))
         default:
             return ("", JSON.null)
         }
@@ -559,37 +559,37 @@ extension JSON {
 
 extension JSON: Swift.StringLiteralConvertible {
 
-    public init(stringLiteral rawValue: StringLiteralType) {
-        self.init(rawValue)
+    public init(stringLiteral value: StringLiteralType) {
+        self.init(value)
     }
 
-    public init(extendedGraphemeClusterLiteral rawValue: StringLiteralType) {
-        self.init(rawValue)
+    public init(extendedGraphemeClusterLiteral value: StringLiteralType) {
+        self.init(value)
     }
 
-    public init(unicodeScalarLiteral rawValue: StringLiteralType) {
-        self.init(rawValue)
+    public init(unicodeScalarLiteral value: StringLiteralType) {
+        self.init(value)
     }
 }
 
 extension JSON: Swift.IntegerLiteralConvertible {
 
-    public init(integerLiteral rawValue: IntegerLiteralType) {
-        self.init(rawValue)
+    public init(integerLiteral value: IntegerLiteralType) {
+        self.init(value)
     }
 }
 
 extension JSON: Swift.BooleanLiteralConvertible {
 
-    public init(booleanLiteral rawValue: BooleanLiteralType) {
-        self.init(rawValue)
+    public init(booleanLiteral value: BooleanLiteralType) {
+        self.init(value)
     }
 }
 
 extension JSON: Swift.FloatLiteralConvertible {
 
-    public init(floatLiteral rawValue: FloatLiteralType) {
-        self.init(rawValue)
+    public init(floatLiteral value: FloatLiteralType) {
+        self.init(value)
     }
 }
 
