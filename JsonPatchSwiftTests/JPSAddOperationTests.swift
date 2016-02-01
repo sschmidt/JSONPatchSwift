@@ -46,7 +46,7 @@ class JPSAddOperationTests: XCTestCase {
         XCTAssertEqual(resultingJson, expectedJson)
     }
     
-    func testIfInsertingToAnArrayWithAndIndexTooBigResultsInAnError() {
+    func testAddToArrayWithIndexOutOfBoundsProducesError() {
         XCTFail("Yet to be implemented.")
     }
     
