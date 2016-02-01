@@ -88,7 +88,7 @@ extension JPSJsonPatch {
 // MARK: - Private functions
 
 extension JPSJsonPatch {
-
+    
     private static func extractOperationFromJson(json: JSON) throws -> JPSOperation {
         
         // The elements 'op' and 'path' are mandatory.
@@ -98,21 +98,14 @@ extension JPSJsonPatch {
         guard let path = json[JPSConstants.JsonPatch.Parameter.Path].string else {
             throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: JPSConstants.JsonPatch.InitialisationErrorMessages.PathElementNotFound)
         }
-        guard nil != JPSOperation.JPSOperationType(rawValue: operation) else {
+        guard let operationType = JPSOperation.JPSOperationType(rawValue: operation) else {
             throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: JPSConstants.JsonPatch.InitialisationErrorMessages.InvalidOperation)
         }
         
         let value = json[JPSConstants.JsonPatch.Parameter.Value]
         let pointer = try JPSJsonPointer(rawValue: path)
         
-        switch JPSOperation.JPSOperationType(rawValue: operation)! {
-        case .Add: return JPSOperation(type: JPSOperation.JPSOperationType.Add, pointer: pointer, value: value)
-        case .Remove: return JPSOperation(type: JPSOperation.JPSOperationType.Remove, pointer: pointer, value: value)
-        case .Replace: return JPSOperation(type: JPSOperation.JPSOperationType.Replace, pointer: pointer, value: value)
-        case .Move: return JPSOperation(type: JPSOperation.JPSOperationType.Move, pointer: pointer, value: value)
-        case .Copy: return JPSOperation(type: JPSOperation.JPSOperationType.Copy, pointer: pointer, value: value)
-        case .Test: return JPSOperation(type: JPSOperation.JPSOperationType.Test, pointer: pointer, value: value)
-        }
+        return JPSOperation(type: operationType, pointer: pointer, value: value)
     }
     
 }
