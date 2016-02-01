@@ -150,6 +150,15 @@ class JPSDocumentStructureTests: XCTestCase {
         }
     }
     
+    func testJsonPatchSavesValue() {
+        let jsonPatch = try! JPSJsonPatch("[{ \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\" }]")
+        XCTAssertNotNil(jsonPatch)
+        XCTAssertNotNil(jsonPatch.operations)
+        XCTAssertEqual(jsonPatch.operations.count, 1)
+        XCTAssertTrue((jsonPatch.operations[0] as Any) is JPSOperation)
+        XCTAssertEqual(jsonPatch.operations[0].value, "foo")
+    }
+    
     func testJsonPatchRejectsEmptyArray() {
         do {
             // swiftlint:disable opening_brace
