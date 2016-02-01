@@ -24,15 +24,15 @@ class JPSAddOperationTests: XCTestCase {
 
     func testIfPathToNonExistingMemberCreatesNewMember() {
         let patch = try! JPSJsonPatch("{ \"op\" : \"add\", \"path\" : \"/a\", \"value\" : \"foo\" }")
-        let jsonToPatch = JSON(data: "{\"b\" : \"bar\"}".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!)
-        let resultingJson = JPSJsonPatch.applyPatch(patch, toJson: jsonToPatch)
+        let json = JSON(data: "{\"b\" : \"bar\"}".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!)
+        let resultingJson = JPSJsonPatch.applyPatch(patch, toJson: json)
         let expectedJson = JSON(data: "{ \"a\" : \"foo\", \"b\" : \"bar\" }".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
     
     func testIfPathToExistingMemberReplacesIt() {
         let json = JSON(data: " { \"foo\" : \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
-        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
         XCTFail("Yet to be implemented.")
     }
     
