@@ -46,11 +46,19 @@ class JPSAddOperationTests: XCTestCase {
         XCTAssertEqual(resultingJson, expectedJson)
     }
     
-    func testIfPathToExistingMemberReplacesIt() {
+    func testIfPathToExistingMemberReplacesIt1() {
         let json = JSON(data: " { \"foo\" : \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/foo\", \"value\": \"foobar\" }")
         let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
         let expectedJson = JSON(data: "{ \"foo\" : \"foobar\" }".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(resultingJson, expectedJson)
+    }
+    
+    func testIfPathToExistingMemberReplacesIt2() {
+        let json = JSON(data: " { \"foo\" : \" [ { \"foo\" : \"bar\" }, { \"blaa\" : \" { \" blubb \" : \"bloobb\" } \" } ] \" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/foo/1/blaa/ blubb \", \"value\": \"foo\" }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: " { \"foo\" : \" [ { \"foo\" : \"bar\" }, { \"blaa\" : \" { \" blubb \" : \"foo\" } \" } ] \" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
     
