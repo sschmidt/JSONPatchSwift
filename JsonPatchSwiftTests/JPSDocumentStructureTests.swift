@@ -156,7 +156,22 @@ class JPSDocumentStructureTests: XCTestCase {
         XCTAssertNotNil(jsonPatch.operations)
         XCTAssertEqual(jsonPatch.operations.count, 1)
         XCTAssertTrue((jsonPatch.operations[0] as Any) is JPSOperation)
-        XCTAssertEqual(jsonPatch.operations[0].value, "foo")
+        XCTAssertEqual(jsonPatch.operations[0].value as? String, "foo")
+    }
+    
+    func testJsonPatchRejectsMissingValue() {
+        do {
+            // swiftlint:disable opening_brace
+            let _ = try JPSJsonPatch("{ \"op\": \"add\", \"path\": \"foo\" }")
+            // swiftlint:enable opening_brace
+            XCTFail("Unreachable code. Should have raised an error.")
+        } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
+            // Expected behaviour.
+            XCTAssertNotNil(message)
+            XCTAssertEqual(message, "Could not find 'value' element.")
+        } catch {
+            XCTFail("Unexpected error.")
+        }
     }
     
     func testJsonPatchRejectsEmptyArray() {
