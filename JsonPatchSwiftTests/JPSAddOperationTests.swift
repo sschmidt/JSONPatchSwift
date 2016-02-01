@@ -23,17 +23,19 @@ class JPSAddOperationTests: XCTestCase {
     }
 
     func testIfPathToNonExistingMemberCreatesNewMember() {
-        let patch = try! JPSJsonPatch("{ \"op\" : \"add\", \"path\" : \"/a\", \"value\" : \"foo\" }")
-        let json = JSON(data: "{\"b\" : \"bar\"}".dataUsingEncoding(NSUTF8StringEncoding)!)
-        let resultingJson = JPSJsonPatch.applyPatch(patch, toJson: json)
-        let expectedJson = JSON(data: "{ \"a\" : \"foo\", \"b\" : \"bar\" }".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let json = JSON(data: " { \"foo\" : \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/bar\", \"value\": \"foo\" }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: "{ \"foo\" : \"bar\", \"bar\" : \"foo\" }".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
     
     func testIfPathToExistingMemberReplacesIt() {
         let json = JSON(data: " { \"foo\" : \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
-        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
-        XCTFail("Yet to be implemented.")
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/foo\", \"value\": \"foobar\" }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: "{ \"foo\" : \"foobar\" }".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(resultingJson, expectedJson)
     }
     
     func testIfPathToRootReplacesWholeDocument() {
