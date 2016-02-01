@@ -94,7 +94,6 @@ extension JPSJsonPatch {
         guard let path = json["path"].string else {
             throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'path' element.")
         }
-        let _ = try JPSJsonPointer(rawValue: path)
         guard nil != JPSOperation.JPSOperationType(rawValue: operation) else {
             throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Operation '\(operation)' is invalid.")
         }
