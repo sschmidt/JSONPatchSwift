@@ -129,7 +129,7 @@ class JPSDocumentStructureTests: XCTestCase {
         } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
             // Expected behaviour.
             XCTAssertNotNil(message)
-            XCTAssertEqual(message, "Could not find 'op' element.")
+            XCTAssertEqual(message, JPSConstants.JsonPatch.InitialisationErrorMessages.OpElementNotFound)
         } catch {
             XCTFail("Unexpected error.")
         }
@@ -144,7 +144,7 @@ class JPSDocumentStructureTests: XCTestCase {
         } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
             // Expected behaviour.
             XCTAssertNotNil(message)
-            XCTAssertEqual(message, "Could not find 'path' element.")
+            XCTAssertEqual(message, JPSConstants.JsonPatch.InitialisationErrorMessages.PathElementNotFound)
         } catch {
             XCTFail("Unexpected error.")
         }
@@ -156,7 +156,7 @@ class JPSDocumentStructureTests: XCTestCase {
         XCTAssertNotNil(jsonPatch.operations)
         XCTAssertEqual(jsonPatch.operations.count, 1)
         XCTAssertTrue((jsonPatch.operations[0] as Any) is JPSOperation)
-        XCTAssertEqual(jsonPatch.operations[0].value as? String, "foo")
+        XCTAssertEqual(jsonPatch.operations[0].value.string, "foo")
     }
     
     func testJsonPatchRejectsMissingValue() {
@@ -245,7 +245,7 @@ class JPSDocumentStructureTests: XCTestCase {
         } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
             // Expected behaviour.
             XCTAssertNotNil(message)
-            XCTAssertEqual(message, "Operation 'foo' is invalid.")
+            XCTAssertEqual(message, "Operation is invalid.")
         } catch {
             XCTFail("Unexpected error.")
         }
