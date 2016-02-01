@@ -22,11 +22,27 @@ class JPSAddOperationTests: XCTestCase {
         XCTFail("Yet to be implemented.")
     }
 
-    func testIfPathToNonExistingMemberCreatesNewMember() {
+    func testIfPathToNonExistingMemberCreatesNewMember1() {
         let json = JSON(data: " { \"foo\" : \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/bar\", \"value\": \"foo\" }")
         let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
         let expectedJson = JSON(data: "{ \"foo\" : \"bar\", \"bar\" : \"foo\" }".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(resultingJson, expectedJson)
+    }
+    
+    func testIfPathToNonExistingMemberCreatesNewMember2() {
+        let json = JSON(data: " { \"foo\" : \" { \"foo2\" : \"bar\" } \" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/foo/bar\", \"value\": \"foo\" }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: " { \"foo\" : \" { \"foo2\" : \"bar\", \"bar\" : \"foo\" } \" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(resultingJson, expectedJson)
+    }
+    
+    func testIfPathToNonExistingMemberCreatesNewMember3() {
+        let json = JSON(data: " { \"foo\" : \" [ { \"foo\" : \"bar\" }, { \"blaa\" : \" { \" blubb \" : \"bloobb\" } \" } ] \" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/foo/01/blaa/blubby\", \"value\": \"foo\" }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: " { \"foo\" : \" [ { \"foo\" : \"bar\" }, { \"blaa\" : \" { \" blubb \" : \"bloobb\", \"blubby\" : \"foo\" } \" } ] \" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
     
