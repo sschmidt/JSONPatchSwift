@@ -39,24 +39,20 @@ struct JPSJsonPatch {
         guard let data = patch.dataUsingEncoding(NSUTF8StringEncoding) else {
             throw JPSJsonPatchInitialisationError.InvalidJsonFormat(message: "Could not encode patch.")
         }
-        let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
-        guard true == NSJSONSerialization.isValidJSONObject(json) else {
-            throw JPSJsonPatchInitialisationError.InvalidJsonFormat(message: "Invalid JSON format.")
-        }
+        
+        let json = JSON(data: data)
         
         // Check if there is an array of a dictionary as root element. Both are valid JSON patch documents.
-        if let json = json as? [String: AnyObject] {
+        if json.type == .Dictionary {
             self.operations = [try JPSJsonPatch.extractOperationFromJson(json)]
             
-        } else if let json = json as? [AnyObject] {
+        } else if json.type == .Array {
             guard 0 < json.count else {
                 throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Patch array does not contain elements.")
             }
             var operationArray = [JPSOperation]()
             for i in 0..<json.count {
-                guard let operation = json[i] as? [String: AnyObject] else {
-                    throw JPSJsonPatchInitialisationError.InvalidJsonFormat(message: "Array does not contain dictionaries")
-                }
+                let operation = json[i]
                 operationArray.append(try JPSJsonPatch.extractOperationFromJson(operation))
             }
             self.operations = operationArray
@@ -89,13 +85,13 @@ extension JPSJsonPatch {
 
 extension JPSJsonPatch {
 
-    private static func extractOperationFromJson(json: [String: AnyObject]) throws -> JPSOperation {
+    private static func extractOperationFromJson(json: JSON) throws -> JPSOperation {
         
         // The elements 'op' and 'path' are mandatory.
-        guard let operation = json["op"] as? String else {
+        guard let operation = json["op"].string else {
             throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'op' element.")
         }
-        guard let path = json["path"] as? String else {
+        guard let path = json["path"].string else {
             throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: "Could not find 'path' element.")
         }
         let _ = try JPSJsonPointer(rawValue: path)
