@@ -72,9 +72,10 @@ struct JPSJsonPatch {
 extension JPSJsonPatch {
     
     static func applyPatch(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
-//        let pointer = jsonPatch.operations[0].pointer
-//        json[pointer.pointerValue]// = jsonPatch.operation[0].value
-        return JSON(data: "{ \"bar\" : \"foo\" }".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let pointer = jsonPatch.operations[0].pointer
+        var patchedJson = json
+        patchedJson[pointer.pointerValue] = jsonPatch.operations[0].value
+        return patchedJson
     }
     
 }
