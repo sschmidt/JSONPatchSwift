@@ -19,7 +19,11 @@ import SwiftyJSON
 class JPSAddOperationTests: XCTestCase {
     
     func testIfPathToArrayInsertsValueAtPositionAndShiftsRemainingMembersRight() {
-        XCTFail("Yet to be implemented.")
+        let json = JSON(data: " [ \"foo\", 42, \"bar\" ] ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/2\", \"value\": \"42\" }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: " [ \"foo\", 42, \"42\", \"bar\" ] ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(resultingJson, expectedJson)
     }
 
     func testIfPathToNonExistingMemberCreatesNewMember1() {
