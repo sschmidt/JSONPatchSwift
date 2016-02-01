@@ -37,7 +37,11 @@ class JPSAddOperationTests: XCTestCase {
     }
     
     func testIfPathToRootReplacesWholeDocument() {
-        XCTFail("Yet to be implemented.")
+        let json = JSON(data: " { \"foo\" : \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"\", \"value\": { \"bar\" : \"foo\" } }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: "{ \"bar\" : \"foo\" }".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!)
+        XCTAssertEqual(resultingJson, expectedJson)
     }
     
     func testIfInsertingToAnArrayWithAndIndexTooBigResultsInAnError() {
