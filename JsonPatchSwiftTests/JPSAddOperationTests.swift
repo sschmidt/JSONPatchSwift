@@ -51,8 +51,11 @@ class JPSAddOperationTests: XCTestCase {
     }
     
     func testIfMinusAtEndOfPathAppendsToArray() {
-        // path: /a/b/-
-        XCTFail("Yet to be implemented.")
+        let json = JSON(data: " { \"foo\" : [ bar1, bar2, bar3 ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/foo/-\", \"value\": \"bar4\" }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: " { \"foo\" : [ bar1, bar2, bar3, bar4 ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(resultingJson, expectedJson)
     }
     
     func testIfPathElementsAreValid() {
