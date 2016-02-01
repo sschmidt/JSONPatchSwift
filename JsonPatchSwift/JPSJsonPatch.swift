@@ -74,7 +74,11 @@ extension JPSJsonPatch {
     static func applyPatch(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
         let pointer = jsonPatch.operations[0].pointer
         var patchedJson = json
-        patchedJson[pointer.pointerValue] = jsonPatch.operations[0].value
+        if "" == jsonPatch.operations[0].pointer.rawValue {
+            patchedJson = jsonPatch.operations[0].value
+        } else {
+            patchedJson[pointer.pointerValue] = jsonPatch.operations[0].value
+        }
         return patchedJson
     }
     
