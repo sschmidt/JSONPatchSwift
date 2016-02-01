@@ -74,12 +74,21 @@ class JPSAddOperationTests: XCTestCase {
         XCTAssertEqual(resultingJson, expectedJson)
     }
     
-    func testIfPathElementsAreValid() {
-        // "/a/b" works for:
-        // { "a": { "foo": 1 } }
-        // And is an error on:
-        // { "q": { "bar": 2 } }
-        XCTFail("Yet to be implemented.")
+    func testIfPathElementIsValid() {
+        let json = JSON(data: " { \"a\": { \"foo\": 1 } } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/a/b\", \"value\": \"bar\" }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: " { \"a\": { \"foo\": 1, \"b\" : \"bar\" } } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(resultingJson, expectedJson)
+    }
+    
+    func testIfInvalidPathElementRaisesError() {
+        do {
+            let _ = try JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/a/b\", \"value\": \"bar\" }")
+            XCTFail("Unreachable code. Should have raised an error, because 'a' must exist to access 'b'.")
+        } catch (let message) {
+            XCTAssertNotNil(message)
+        }
     }
     
 }
