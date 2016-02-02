@@ -119,7 +119,21 @@ extension JPSJsonPatch {
     }
     
     static func replace(operation: JPSOperation, toJson json: JSON) -> JSON {
-        return json
+        return JPSJsonPatch.applyOperation(json, pointer: operation.pointer) {
+            (traversedJson: JSON, pointer: JPSJsonPointer) in
+            var newJson = traversedJson
+            if var dictionary = traversedJson.dictionaryObject {
+                let key = pointer.pointerValue[0] as! String
+                dictionary[key] = operation.value.object
+                newJson.object = dictionary
+            }
+            if var arr = traversedJson.arrayObject {
+                let key = Int(pointer.pointerValue[0] as! String)!
+                arr[key] = operation.value.object
+                newJson.object = arr
+            }
+            return newJson
+        }
     }
     
     static func move(operation: JPSOperation, toJson json: JSON) -> JSON {

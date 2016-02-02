@@ -19,6 +19,7 @@
 		87D0730933DDDC34BEE99264 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A32E642709E465BE0F9EF098 /* Pods.framework */; };
 		9F0240EA1C6037B0003BBAE8 /* JPSRemoveOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0240E91C6037B0003BBAE8 /* JPSRemoveOperationTests.swift */; };
 		9F55F63C1C60E5F400B168D0 /* JPSMoveOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F55F63B1C60E5F400B168D0 /* JPSMoveOperationTests.swift */; };
+		9F55F63E1C6118CD00B168D0 /* JPSReplaceOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F55F63D1C6118CD00B168D0 /* JPSReplaceOperationTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		9AE6C2808D0FD6D1AD424E1D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		9F0240E91C6037B0003BBAE8 /* JPSRemoveOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSRemoveOperationTests.swift; sourceTree = "<group>"; };
 		9F55F63B1C60E5F400B168D0 /* JPSMoveOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSMoveOperationTests.swift; sourceTree = "<group>"; };
+		9F55F63D1C6118CD00B168D0 /* JPSReplaceOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSReplaceOperationTest.swift; sourceTree = "<group>"; };
 		A32E642709E465BE0F9EF098 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -113,6 +115,7 @@
 				2FAD25871C161A66006760CE /* Info.plist */,
 				9F0240E91C6037B0003BBAE8 /* JPSRemoveOperationTests.swift */,
 				9F55F63B1C60E5F400B168D0 /* JPSMoveOperationTests.swift */,
+				9F55F63D1C6118CD00B168D0 /* JPSReplaceOperationTest.swift */,
 			);
 			path = JsonPatchSwiftTests;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F55F63E1C6118CD00B168D0 /* JPSReplaceOperationTest.swift in Sources */,
 				9F55F63C1C60E5F400B168D0 /* JPSMoveOperationTests.swift in Sources */,
 				2FECC0DC1C3C1BF400BDE626 /* JPSJsonPointerTests.swift in Sources */,
 				2F2FEDD81C1626DD00D7630F /* JPSDocumentStructureTests.swift in Sources */,
