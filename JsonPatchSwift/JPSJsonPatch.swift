@@ -72,14 +72,60 @@ struct JPSJsonPatch {
 extension JPSJsonPatch {
     
     static func applyPatch(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
+        switch jsonPatch.operations[0].type {
+        case .Add: return JPSJsonPatch.add(jsonPatch, toJson: json)
+        case .Remove: return JPSJsonPatch.remove(jsonPatch, toJson: json)
+        case .Replace: return JPSJsonPatch.replace(jsonPatch, toJson: json)
+        case .Move: return JPSJsonPatch.move(jsonPatch, toJson: json)
+        case .Copy: return JPSJsonPatch.copy(jsonPatch, toJson: json)
+        case .Test: return JPSJsonPatch.test(jsonPatch, toJson: json)
+        }
+    }
+    
+    static func add(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
         let pointer = jsonPatch.operations[0].pointer
         var patchedJson = json
         if jsonPatch.operations[0].pointer.rawValue.isEmpty {
             patchedJson = jsonPatch.operations[0].value
         } else {
-            patchedJson[pointer.pointerValue] = jsonPatch.operations[0].value
+            if patchedJson[Array(pointer.pointerValue.dropLast())].type == .Array && pointer.pointerValue.last is Int {
+                //                let
+                
+            } else {
+                patchedJson[pointer.pointerValue] = jsonPatch.operations[0].value
+            }
         }
         return patchedJson
+    }
+    
+    static func remove(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
+        return json
+    }
+    
+    static func replace(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
+        return json
+    }
+    
+    static func move(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
+        return json
+    }
+    
+    static func copy(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
+        return json
+    }
+    
+    static func test(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
+        return json
+    }
+    
+    static func nextSubvalueInJson(inout json: JSON, forPointerValue pointer: JPSJsonPointer) -> JSON {
+        guard let firstPointerValue = pointer.pointerValue.first else {
+            return json
+        }
+        if let firstPointerValue = firstPointerValue as? Int where json[firstPointerValue].type == .Array {
+            
+        }
+        return json
     }
     
 }

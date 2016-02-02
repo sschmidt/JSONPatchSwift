@@ -93,9 +93,9 @@
 				2F2FEDD91C16E68C00D7630F /* JPSJsonPatch.swift */,
 				2F07C3B91C18862100314FF1 /* JPSOperation.swift */,
 				2FECC0D91C3C1B9D00BDE626 /* JPSJsonPointer.swift */,
+				2F26B10D1C5F9F52001EFA68 /* JPSContants.swift */,
 				2FAD25791C161A66006760CE /* JsonPatchSwift.h */,
 				2FAD257B1C161A66006760CE /* Info.plist */,
-				2F26B10D1C5F9F52001EFA68 /* JPSContants.swift */,
 			);
 			path = JsonPatchSwift;
 			sourceTree = "<group>";
