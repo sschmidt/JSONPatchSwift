@@ -20,26 +20,29 @@ enum JPSJsonPointerError: ErrorType {
 struct JPSJsonPointer {
     
     let rawValue: String
-    let pointerValue: [String]
+    let pointerValue: [JSONSubscriptType]
     
 }
 
 extension JPSJsonPointer {
 
     init(rawValue: String) throws {
-        guard rawValue.isEmpty || rawValue.containsString("/") else {
+        
+        guard rawValue.isEmpty || rawValue.containsString(JPSConstants.JsonPointer.Delimiter) else {
             throw JPSJsonPointerError.ValueDoesNotContainDelimiter
         }
-        guard rawValue.isEmpty || rawValue.hasPrefix("/") else {
+        guard rawValue.isEmpty || rawValue.hasPrefix(JPSConstants.JsonPointer.Delimiter) else {
             throw JPSJsonPointerError.NonEmptyPointerDoesNotStartWithDelimiter
         }
-        guard rawValue.isEmpty || "" == rawValue || !rawValue.componentsSeparatedByString("/").dropFirst().contains("") else {
+        
+        let pointerValueWithoutFirstElement = Array(rawValue.componentsSeparatedByString(JPSConstants.JsonPointer.Delimiter).dropFirst())
+        
+        guard rawValue.isEmpty || !pointerValueWithoutFirstElement.contains(JPSConstants.JsonPointer.EmptyString) else {
             throw JPSJsonPointerError.ContainsEmptyReferenceToken
         }
         
-        let pointerValueWithoutFirstDelimiter = Array(rawValue.componentsSeparatedByString("/").dropFirst())
-        let pointerValueAfterDecodingDelimiter = pointerValueWithoutFirstDelimiter.map { $0.stringByReplacingOccurrencesOfString("~1", withString: "/") }
-        let pointerValue = pointerValueAfterDecodingDelimiter.map { $0.stringByReplacingOccurrencesOfString("~0", withString: "~") }
+        let pointerValueAfterDecodingDelimiter = pointerValueWithoutFirstElement.map { $0.stringByReplacingOccurrencesOfString(JPSConstants.JsonPointer.EscapedDelimiter, withString: JPSConstants.JsonPointer.Delimiter) }
+        let pointerValue: [JSONSubscriptType] = pointerValueAfterDecodingDelimiter.map { $0.stringByReplacingOccurrencesOfString(JPSConstants.JsonPointer.EscapedEscapeCharacter, withString: JPSConstants.JsonPointer.EscapeCharater)}
         
         self.init(rawValue: rawValue, pointerValue: pointerValue)
     }
@@ -49,18 +52,21 @@ extension JPSJsonPointer {
 extension JPSJsonPointer {
 
     static func identifySubJsonForPointer(pointer: JPSJsonPointer, inJson json: JSON) throws -> JSON {
-        var tempJson = json
         
-        guard "" != pointer.rawValue else {
+        guard !pointer.rawValue.isEmpty else {
             return json
         }
         
+        var tempJson = json
         for i in 0..<pointer.pointerValue.count {
             if tempJson.type == .Array {
-                if "-" == pointer.pointerValue[i] {
+                guard let pointerValuePart = pointer.pointerValue[i] as? String else {
+                    continue
+                }
+                if JPSConstants.JsonPointer.EndOfArrayMarker == pointerValuePart {
                     tempJson = tempJson.arrayValue.last!
-                } else {
-                    tempJson = tempJson[Int(pointer.pointerValue[i])!]
+                } else if let value = Int(pointerValuePart) {
+                    tempJson = tempJson[value]
                 }
             } else {
                 tempJson = tempJson[pointer.pointerValue[i]]

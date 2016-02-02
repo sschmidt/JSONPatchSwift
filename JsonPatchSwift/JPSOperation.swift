@@ -8,6 +8,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+import SwiftyJSON
+
 func == (lhs: JPSOperation, rhs: JPSOperation) -> Bool {
     return lhs.type == rhs.type
 }
@@ -24,5 +26,7 @@ struct JPSOperation {
     }
     
     let type: JPSOperationType
+    let pointer: JPSJsonPointer
+    let value: JSON
     
 }

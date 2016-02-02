@@ -15,9 +15,7 @@ import XCTest
 // JavaScript Object Notation (JSON) Pointer
 // https://tools.ietf.org/html/rfc6901
 
-class JPSJsonPointerTests: XCTestCase {
-    
-}
+class JPSJsonPointerTests: XCTestCase {}
 
 
 // MARK: - chapter 3 tests
@@ -63,7 +61,7 @@ extension JPSJsonPointerTests {
     
     func testIfPointerOnlyContainingDelimiterIsInvalid() {
         do {
-            let _ = try JPSJsonPointer(rawValue: "/")
+            let _ = try JPSJsonPointer(rawValue: JPSConstants.JsonPointer.Delimiter)
             XCTFail("Unreachable code. Invalid pointer should raise an error.")
         } catch {
             // Expected behaviour.
@@ -78,11 +76,11 @@ extension JPSJsonPointerTests {
     
 //    The ABNF syntax of a JSON Pointer is:
 //    
-//    json-pointer    = *( "/" reference-token )
+//    json-pointer    = *( JPSConstants.JsonPointer.Delimiter reference-token )
 //    reference-token = *( unescaped / escaped )
 //    unescaped       = %x00-2E / %x30-7D / %x7F-10FFFF
 //    ; %x2F ('/') and %x7E ('~') are excluded from 'unescaped'
-//    escaped         = "~" ( "0" / "1" )
+//    escaped         = JPSConstants.JsonPointer.EscapeCharater ( "0" / "1" )
 //    ; representing '~' and '/', respectively
 //    
 //    It is an error condition if a JSON Pointer value does not conform to
@@ -101,27 +99,27 @@ extension JPSJsonPointerTests {
     func testIfTildeEscapedCharactersAreDecoded() {
         let jsonPointer1 = try! JPSJsonPointer(rawValue: "/~1")
         XCTAssertEqual(jsonPointer1.pointerValue.count, 1)
-        XCTAssertEqual(jsonPointer1.pointerValue[0], "/")
+        XCTAssertEqual(jsonPointer1.pointerValue[0] as? String, JPSConstants.JsonPointer.Delimiter)
         let jsonPointer2 = try! JPSJsonPointer(rawValue: "/~0")
         XCTAssertEqual(jsonPointer2.pointerValue.count, 1)
-        XCTAssertEqual(jsonPointer2.pointerValue[0], "~")
+        XCTAssertEqual(jsonPointer2.pointerValue[0] as? String, JPSConstants.JsonPointer.EscapeCharater)
         let jsonPointer3 = try! JPSJsonPointer(rawValue: "/~01")
         XCTAssertEqual(jsonPointer3.pointerValue.count, 1)
-        XCTAssertEqual(jsonPointer3.pointerValue[0], "~1")
+        XCTAssertEqual(jsonPointer3.pointerValue[0] as? String, JPSConstants.JsonPointer.EscapedDelimiter)
         let jsonPointer4 = try! JPSJsonPointer(rawValue: "/~10")
         XCTAssertEqual(jsonPointer4.pointerValue.count, 1)
-        XCTAssertEqual(jsonPointer4.pointerValue[0], "/0")
+        XCTAssertEqual(jsonPointer4.pointerValue[0] as? String, "/0")
         let jsonPointer5 = try! JPSJsonPointer(rawValue: "/~1~0")
         XCTAssertEqual(jsonPointer5.pointerValue.count, 1)
-        XCTAssertEqual(jsonPointer5.pointerValue[0], "/~")
+        XCTAssertEqual(jsonPointer5.pointerValue[0] as? String, "/~")
         let jsonPointer6 = try! JPSJsonPointer(rawValue: "/~1/~0")
         XCTAssertEqual(jsonPointer6.pointerValue.count, 2)
-        XCTAssertEqual(jsonPointer6.pointerValue[0], "/")
-        XCTAssertEqual(jsonPointer6.pointerValue[1], "~")
+        XCTAssertEqual(jsonPointer6.pointerValue[0] as? String, JPSConstants.JsonPointer.Delimiter)
+        XCTAssertEqual(jsonPointer6.pointerValue[1] as? String, JPSConstants.JsonPointer.EscapeCharater)
         let jsonPointer7 = try! JPSJsonPointer(rawValue: "/~0/~1")
         XCTAssertEqual(jsonPointer7.pointerValue.count, 2)
-        XCTAssertEqual(jsonPointer7.pointerValue[0], "~")
-        XCTAssertEqual(jsonPointer7.pointerValue[1], "/")
+        XCTAssertEqual(jsonPointer7.pointerValue[0] as? String, JPSConstants.JsonPointer.EscapeCharater)
+        XCTAssertEqual(jsonPointer7.pointerValue[1] as? String, JPSConstants.JsonPointer.Delimiter)
         
     }
     
