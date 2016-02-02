@@ -17,6 +17,24 @@ import SwiftyJSON
 // 4.2.  remove
 class JPSRemoveOperationTests: XCTestCase {
 
+    // http://tools.ietf.org/html/rfc6902#appendix-A.3
+    func testIfDeleteObjectMemberReturnsExpectedValue() {
+        let json = JSON(data: " { \"baz\": \"qux\", \"foo\": \"bar\"} ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/baz\" }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: " { \"foo\": \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(resultingJson, expectedJson)
+    }
+    
+    // http://tools.ietf.org/html/rfc6902#appendix-A.4
+    func testIfDeleteArrayElementReturnsExpectedValue() {
+        let json = JSON(data: " { \"foo\": [ \"bar\", \"qux\", \"baz\" ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/foo/1\" }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: " { \"foo\": [ \"bar\", \"baz\" ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(resultingJson, expectedJson)
+    }
+
     func testIfDeleteLastElementReturnsEmptyJson() {
         let json = JSON(data: " { \"foo\" : \"1\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/foo\" }")

@@ -18,6 +18,24 @@ import SwiftyJSON
 
 class JPSAddOperationTests: XCTestCase {
     
+    // http://tools.ietf.org/html/rfc6902#appendix-A.1
+    func testIfPathToNonExistingMemberCreatesNewMember1() {
+        let json = JSON(data: " { \"foo\" : \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/baz\", \"value\": \"qux\" }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: "{ \"foo\" : \"bar\", \"baz\" : \"qux\" }".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(resultingJson, expectedJson)
+    }
+
+    // http://tools.ietf.org/html/rfc6902#appendix-A.2
+    func testIfPathToArrayCreatesNewArrayElement() {
+        let json = JSON(data: " { \"foo\" : [ \"bar\", \"baz\"] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/foo/1\", \"value\": \"qux\" }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: "{ \"foo\": [ \"bar\", \"qux\", \"baz\" ] }".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(resultingJson, expectedJson)
+    }
+
     func testIfPathToArrayInsertsValueAtPositionAndShiftsRemainingMembersRight() {
         let json = JSON(data: " [ \"foo\", 42, \"bar\" ] ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/2\", \"value\": \"42\" }")
@@ -26,14 +44,6 @@ class JPSAddOperationTests: XCTestCase {
         XCTAssertEqual(resultingJson, expectedJson)
     }
 
-    func testIfPathToNonExistingMemberCreatesNewMember1() {
-        let json = JSON(data: " { \"foo\" : \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
-        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/bar\", \"value\": \"foo\" }")
-        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
-        let expectedJson = JSON(data: "{ \"foo\" : \"bar\", \"bar\" : \"foo\" }".dataUsingEncoding(NSUTF8StringEncoding)!)
-        XCTAssertEqual(resultingJson, expectedJson)
-    }
-    
     func testIfPathToNonExistingMemberCreatesNewMember2() {
         let json = JSON(data: " { \"foo\" : \" { \"foo2\" : \"bar\" } \" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/foo/bar\", \"value\": \"foo\" }")
