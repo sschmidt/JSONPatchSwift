@@ -72,49 +72,50 @@ struct JPSJsonPatch {
 extension JPSJsonPatch {
     
     static func applyPatch(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
-        switch jsonPatch.operations[0].type {
-        case .Add: return JPSJsonPatch.add(jsonPatch, toJson: json)
-        case .Remove: return JPSJsonPatch.remove(jsonPatch, toJson: json)
-        case .Replace: return JPSJsonPatch.replace(jsonPatch, toJson: json)
-        case .Move: return JPSJsonPatch.move(jsonPatch, toJson: json)
-        case .Copy: return JPSJsonPatch.copy(jsonPatch, toJson: json)
-        case .Test: return JPSJsonPatch.test(jsonPatch, toJson: json)
+        let operation = jsonPatch.operations[0]; // TODO - iterate all operations
+        switch operation.type {
+        case .Add: return JPSJsonPatch.add(operation, toJson: json)
+        case .Remove: return JPSJsonPatch.remove(operation, toJson: json)
+        case .Replace: return JPSJsonPatch.replace(operation, toJson: json)
+        case .Move: return JPSJsonPatch.move(operation, toJson: json)
+        case .Copy: return JPSJsonPatch.copy(operation, toJson: json)
+        case .Test: return JPSJsonPatch.test(operation, toJson: json)
         }
     }
     
-    static func add(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
-        let pointer = jsonPatch.operations[0].pointer
+    static func add(operation: JPSOperation, toJson json: JSON) -> JSON {
+        let pointer = operation.pointer
         var patchedJson = json
-        if jsonPatch.operations[0].pointer.rawValue.isEmpty {
-            patchedJson = jsonPatch.operations[0].value
+        if operation.pointer.rawValue.isEmpty {
+            patchedJson = operation.value
         } else {
             if patchedJson[Array(pointer.pointerValue.dropLast())].type == .Array && pointer.pointerValue.last is Int {
                 //                let
                 
             } else {
-                patchedJson[pointer.pointerValue] = jsonPatch.operations[0].value
+                patchedJson[pointer.pointerValue] = operation.value
             }
         }
         return patchedJson
     }
     
-    static func remove(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
+    static func remove(operation: JPSOperation, toJson json: JSON) -> JSON {
         return json
     }
     
-    static func replace(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
+    static func replace(operation: JPSOperation, toJson json: JSON) -> JSON {
         return json
     }
     
-    static func move(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
+    static func move(operation: JPSOperation, toJson json: JSON) -> JSON {
         return json
     }
     
-    static func copy(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
+    static func copy(operation: JPSOperation, toJson json: JSON) -> JSON {
         return json
     }
     
-    static func test(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
+    static func test(operation: JPSOperation, toJson json: JSON) -> JSON {
         return json
     }
     
