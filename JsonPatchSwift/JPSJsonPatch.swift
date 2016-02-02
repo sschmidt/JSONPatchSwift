@@ -72,7 +72,7 @@ struct JPSJsonPatch {
 extension JPSJsonPatch {
     
     static func applyPatch(jsonPatch: JPSJsonPatch, toJson json: JSON) -> JSON {
-        let operation = jsonPatch.operations[0]; // TODO - iterate all operations
+        let operation = jsonPatch.operations[0] // TODO - iterate all operations
         switch operation.type {
         case .Add: return JPSJsonPatch.add(operation, toJson: json)
         case .Remove: return JPSJsonPatch.remove(operation, toJson: json)
@@ -132,7 +132,11 @@ extension JPSJsonPatch {
             resultJson = JPSJsonPatch.remove(removeOperation, toJson: resultJson)
 
             // add
-            let addOperation = JPSOperation(type: JPSOperation.JPSOperationType.Add, pointer: operation.pointer, value: traversedJson[pointer.pointerValue], from: operation.from)
+            var jsonToAdd = traversedJson[pointer.pointerValue];
+            if traversedJson.type == .Array {
+                jsonToAdd = traversedJson[Int(pointer.pointerValue[0] as! String)!]
+            }
+            let addOperation = JPSOperation(type: JPSOperation.JPSOperationType.Add, pointer: operation.pointer, value: jsonToAdd, from: operation.from)
             resultJson = JPSJsonPatch.add(addOperation, toJson: resultJson)
 
             return traversedJson
