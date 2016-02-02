@@ -84,23 +84,38 @@ extension JPSJsonPatch {
     }
     
     static func add(operation: JPSOperation, toJson json: JSON) -> JSON {
-        let pointer = operation.pointer
-        var patchedJson = json
-        if operation.pointer.rawValue.isEmpty {
-            patchedJson = operation.value
-        } else {
-            if patchedJson[Array(pointer.pointerValue.dropLast())].type == .Array && pointer.pointerValue.last is Int {
-                //                let
-                
-            } else {
-                patchedJson[pointer.pointerValue] = operation.value
-            }
+        if(operation.pointer.pointerValue.count == 0) {
+            return operation.value
         }
-        return patchedJson
+        return JPSJsonPatch.applyOperation(json, pointer: operation.pointer) {
+            (traversedJson: JSON, pointer: JPSJsonPointer) in
+            var newJson = traversedJson
+            if var dictionary = traversedJson.dictionaryObject {
+                dictionary[pointer.pointerValue[0] as! String] = operation.value.object
+                newJson.object = dictionary
+            }
+            if var arr = traversedJson.arrayObject {
+                arr.insert(operation.value.object, atIndex: Int(pointer.pointerValue[0] as! String)!)
+                newJson.object = arr
+            }
+            return newJson
+        }
     }
     
     static func remove(operation: JPSOperation, toJson json: JSON) -> JSON {
-        return json
+        return JPSJsonPatch.applyOperation(json, pointer: operation.pointer) {
+            (traversedJson: JSON, pointer: JPSJsonPointer) in
+                var newJson = traversedJson
+                if var dictionary = traversedJson.dictionaryObject {
+                    dictionary.removeValueForKey(pointer.pointerValue[0] as! String)
+                    newJson.object = dictionary
+                }
+                if var arr = traversedJson.arrayObject {
+                    arr.removeAtIndex(Int(pointer.pointerValue[0] as! String)!)
+                    newJson.object = arr
+                }
+                return newJson
+        }
     }
     
     static func replace(operation: JPSOperation, toJson json: JSON) -> JSON {
@@ -108,7 +123,22 @@ extension JPSJsonPatch {
     }
     
     static func move(operation: JPSOperation, toJson json: JSON) -> JSON {
-        return json
+        var resultJson = json
+
+        JPSJsonPatch.applyOperation(json, pointer: operation.from!) {
+            (traversedJson: JSON, pointer: JPSJsonPointer) in
+            // remove
+            let removeOperation = JPSOperation(type: JPSOperation.JPSOperationType.Remove, pointer: operation.from!, value: resultJson, from: operation.from)
+            resultJson = JPSJsonPatch.remove(removeOperation, toJson: resultJson)
+
+            // add
+            let addOperation = JPSOperation(type: JPSOperation.JPSOperationType.Add, pointer: operation.pointer, value: traversedJson[pointer.pointerValue], from: operation.from)
+            resultJson = JPSJsonPatch.add(addOperation, toJson: resultJson)
+
+            return traversedJson
+        }
+
+        return resultJson
     }
     
     static func copy(operation: JPSOperation, toJson json: JSON) -> JSON {
@@ -118,15 +148,24 @@ extension JPSJsonPatch {
     static func test(operation: JPSOperation, toJson json: JSON) -> JSON {
         return json
     }
-    
-    static func nextSubvalueInJson(inout json: JSON, forPointerValue pointer: JPSJsonPointer) -> JSON {
-        guard let firstPointerValue = pointer.pointerValue.first else {
-            return json
+
+    static func applyOperation(json: JSON?, pointer: JPSJsonPointer, operation:(JSON, JPSJsonPointer) -> JSON) -> JSON {
+        let newJson = json!
+        if(pointer.pointerValue.count == 1) {
+            return operation(newJson, pointer)
+        } else {
+            if var arr = newJson.array {
+                let key = Int(pointer.pointerValue[0] as! String)!
+                arr[key] = applyOperation(arr[key], pointer: JPSJsonPointer.traverse(pointer), operation: operation)
+                return JSON(arr)
+            }
+            if var dictionary = newJson.dictionary {
+                let key = pointer.pointerValue[0] as! String
+                dictionary[key] = applyOperation(dictionary[key], pointer: JPSJsonPointer.traverse(pointer), operation: operation)
+                return JSON(dictionary)
+            }
         }
-        if let firstPointerValue = firstPointerValue as? Int where json[firstPointerValue].type == .Array {
-            
-        }
-        return json
+        return newJson
     }
     
 }
@@ -148,11 +187,19 @@ extension JPSJsonPatch {
         guard let operationType = JPSOperation.JPSOperationType(rawValue: operation) else {
             throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: JPSConstants.JsonPatch.InitialisationErrorMessages.InvalidOperation)
         }
-        
+
+        var from: JPSJsonPointer?
+        if operationType == .Move {
+            guard let fromValue = json[JPSConstants.JsonPatch.Parameter.From].string else {
+                throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: JPSConstants.JsonPatch.InitialisationErrorMessages.FromElementNotFound)
+            }
+            from = try JPSJsonPointer(rawValue: fromValue)
+        }
+
         let value = json[JPSConstants.JsonPatch.Parameter.Value]
         let pointer = try JPSJsonPointer(rawValue: path)
-        
-        return JPSOperation(type: operationType, pointer: pointer, value: value)
+
+        return JPSOperation(type: operationType, pointer: pointer, value: value, from: from)
     }
     
 }

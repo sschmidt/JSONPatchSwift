@@ -17,6 +17,7 @@ struct JPSConstants {
             static let Op = "op"
             static let Path = "path"
             static let Value = "value"
+            static let From = "from"
         }
         
         struct InitialisationErrorMessages {
@@ -26,6 +27,7 @@ struct JPSConstants {
             static let OpElementNotFound = "Could not find 'op' element."
             static let PathElementNotFound = "Could not find 'path' element."
             static let InvalidOperation = "Operation is invalid."
+            static let FromElementNotFound = "Could not find 'from' element."
         }
         
     }

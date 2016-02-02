@@ -382,3 +382,19 @@ extension JPSJsonPointerTests {
 //    
     
 }
+
+// MARK: - misc tests
+
+extension JPSJsonPointerTests {
+    func testIfTraverseReturnsNextPointer() {
+        let pointer = try! JPSJsonPointer(rawValue: "/a/b")
+        let newPointer = JPSJsonPointer.traverse(pointer)
+        XCTAssertEqual(newPointer.rawValue, "/b")
+    }
+    
+    func testIfDeepTraverseReturnsNextPointer() {
+        let pointer = try! JPSJsonPointer(rawValue: "/abc/b/hallo/welt")
+        let newPointer = JPSJsonPointer.traverse(pointer)
+        XCTAssertEqual(newPointer.rawValue, "/b/hallo/welt")
+    }
+}
