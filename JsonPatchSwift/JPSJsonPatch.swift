@@ -141,6 +141,12 @@ extension JPSJsonPatch {
 
         JPSJsonPatch.applyOperation(json, pointer: operation.from!) {
             (traversedJson: JSON, pointer: JPSJsonPointer) in
+            
+            // From: http://tools.ietf.org/html/rfc6902#section-4.3
+            //    This operation is functionally identical to a "remove" operation for
+            //    a value, followed immediately by an "add" operation at the same
+            //    location with the replacement value.
+
             // remove
             let removeOperation = JPSOperation(type: JPSOperation.JPSOperationType.Remove, pointer: operation.from!, value: resultJson, from: operation.from)
             resultJson = JPSJsonPatch.remove(removeOperation, toJson: resultJson)
@@ -160,7 +166,21 @@ extension JPSJsonPatch {
     }
     
     static func copy(operation: JPSOperation, toJson json: JSON) -> JSON {
-        return json
+        var resultJson = json
+        
+        JPSJsonPatch.applyOperation(json, pointer: operation.from!) {
+            (traversedJson: JSON, pointer: JPSJsonPointer) in
+            var jsonToAdd = traversedJson[pointer.pointerValue];
+            if traversedJson.type == .Array {
+                jsonToAdd = traversedJson[Int(pointer.pointerValue[0] as! String)!]
+            }
+            let addOperation = JPSOperation(type: JPSOperation.JPSOperationType.Add, pointer: operation.pointer, value: jsonToAdd, from: operation.from)
+            resultJson = JPSJsonPatch.add(addOperation, toJson: resultJson)
+            return traversedJson
+        }
+        
+        return resultJson
+
     }
     
     static func test(operation: JPSOperation, toJson json: JSON) -> JSON {
@@ -206,17 +226,23 @@ extension JPSJsonPatch {
             throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: JPSConstants.JsonPatch.InitialisationErrorMessages.InvalidOperation)
         }
 
+        // 'from' element mandatory for .Move, .Copy operations
         var from: JPSJsonPointer?
-        if operationType == .Move {
+        if operationType == .Move || operationType == .Copy {
             guard let fromValue = json[JPSConstants.JsonPatch.Parameter.From].string else {
                 throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: JPSConstants.JsonPatch.InitialisationErrorMessages.FromElementNotFound)
             }
             from = try JPSJsonPointer(rawValue: fromValue)
         }
 
+        // 'value' element mandatory for .Add, .Replace operations
         let value = json[JPSConstants.JsonPatch.Parameter.Value]
-        let pointer = try JPSJsonPointer(rawValue: path)
+        // counterintuitive null check: https://github.com/SwiftyJSON/SwiftyJSON/issues/205
+        if (operationType == .Add || operationType == .Replace) && value.null != nil {
+            throw JPSJsonPatchInitialisationError.InvalidPatchFormat(message: JPSConstants.JsonPatch.InitialisationErrorMessages.ValueElementNotFound)
+        }
 
+        let pointer = try JPSJsonPointer(rawValue: path)
         return JPSOperation(type: operationType, pointer: pointer, value: value, from: from)
     }
     

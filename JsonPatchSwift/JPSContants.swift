@@ -28,6 +28,7 @@ struct JPSConstants {
             static let PathElementNotFound = "Could not find 'path' element."
             static let InvalidOperation = "Operation is invalid."
             static let FromElementNotFound = "Could not find 'from' element."
+            static let ValueElementNotFound = "Could not find 'value' element."
         }
         
     }

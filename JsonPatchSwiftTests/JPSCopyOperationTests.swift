@@ -12,38 +12,39 @@ import XCTest
 @testable import JsonPatchSwift
 import SwiftyJSON
 
-// http://tools.ietf.org/html/rfc6902#section-4.3
+// http://tools.ietf.org/html/rfc6902#section-4.5
 // 4.  Operations
-// 4.3. replace
-class JPSReplaceOperationTests: XCTestCase {
+// 4.5. copy
+class JPSCopyOperationTests: XCTestCase {
     
-    // http://tools.ietf.org/html/rfc6902#appendix-A.5
-    func testIfReplaceValueInObjectReturnsExpectedValue() {
-        let json = JSON(data: "{\"baz\": \"qux\",\"foo\": \"bar\"}".dataUsingEncoding(NSUTF8StringEncoding)!)
-        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"replace\", \"path\": \"/baz\", \"value\": \"boo\" }")
+    func testIfCopyReplaceValueInObjectReturnsExpectedValue() {
+        let json = JSON(data: " { \"foo\" : { \"1\" : 2 }, \"bar\" : { }} ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"copy\", \"path\": \"/bar\", \"from\": \"/foo\" }")
         let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
-        let expectedJson = JSON(data: "  { \"baz\": \"boo\",\"foo\": \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let expectedJson = JSON(data: " { \"foo\" : { \"1\" : 2 }, \"bar\" : { \"1\" : 2 }} ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(resultingJson, expectedJson)
+
+    }
+    
+    func testIfCopyArrayReturnsExpectedValue() {
+        let json = JSON(data: " { \"foo\" : [1, 2, 3, 4], \"bar\" : []} ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"copy\", \"path\": \"/bar\", \"from\": \"/foo\" }")
+        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: " { \"foo\" : [1, 2, 3, 4], \"bar\" : [1, 2, 3, 4]}".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
 
-    func testIfReplaceValueInArrayArrayReturnsExpectedValue() {
-        let json = JSON(data: " { \"foo\" : [1, 2, 3, 4], \"bar\" : []} ".dataUsingEncoding(NSUTF8StringEncoding)!)
-        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"replace\", \"path\": \"/foo/1\", \"value\": 42 }")
-        let resultingJson = JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
-        let expectedJson = JSON(data: " { \"foo\" : [1, 42, 3, 4], \"bar\" : []}".dataUsingEncoding(NSUTF8StringEncoding)!)
-        XCTAssertEqual(resultingJson, expectedJson)
-    }
-    
-    func testIfMissingValueRaisesError() {
+    func testIfMissingParameterReturnsError() {
         do {
-            let result = try JPSJsonPatch("{ \"op\": \"replace\", \"path\": \"/foo/1\" }") // value missing
+            let result = try JPSJsonPatch("{ \"op\": \"copy\", \"path\": \"/bar\"}") // from parameter missing
             XCTFail(result.operations.last!.value.rawString()!)
         } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
             // Expected behaviour.
             XCTAssertNotNil(message)
+            XCTAssertEqual(message, JPSConstants.JsonPatch.InitialisationErrorMessages.FromElementNotFound)
         } catch {
             XCTFail("Unexpected error.")
         }
-
     }
+
 }

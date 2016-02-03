@@ -20,6 +20,7 @@
 		9F0240EA1C6037B0003BBAE8 /* JPSRemoveOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0240E91C6037B0003BBAE8 /* JPSRemoveOperationTests.swift */; };
 		9F55F63C1C60E5F400B168D0 /* JPSMoveOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F55F63B1C60E5F400B168D0 /* JPSMoveOperationTests.swift */; };
 		9F55F63E1C6118CD00B168D0 /* JPSReplaceOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F55F63D1C6118CD00B168D0 /* JPSReplaceOperationTest.swift */; };
+		9F55F6401C611AFD00B168D0 /* JPSCopyOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F55F63F1C611AFD00B168D0 /* JPSCopyOperationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		9F0240E91C6037B0003BBAE8 /* JPSRemoveOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSRemoveOperationTests.swift; sourceTree = "<group>"; };
 		9F55F63B1C60E5F400B168D0 /* JPSMoveOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSMoveOperationTests.swift; sourceTree = "<group>"; };
 		9F55F63D1C6118CD00B168D0 /* JPSReplaceOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSReplaceOperationTest.swift; sourceTree = "<group>"; };
+		9F55F63F1C611AFD00B168D0 /* JPSCopyOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSCopyOperationTests.swift; sourceTree = "<group>"; };
 		A32E642709E465BE0F9EF098 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -116,6 +118,7 @@
 				9F0240E91C6037B0003BBAE8 /* JPSRemoveOperationTests.swift */,
 				9F55F63B1C60E5F400B168D0 /* JPSMoveOperationTests.swift */,
 				9F55F63D1C6118CD00B168D0 /* JPSReplaceOperationTest.swift */,
+				9F55F63F1C611AFD00B168D0 /* JPSCopyOperationTests.swift */,
 			);
 			path = JsonPatchSwiftTests;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 			files = (
 				9F55F63E1C6118CD00B168D0 /* JPSReplaceOperationTest.swift in Sources */,
 				9F55F63C1C60E5F400B168D0 /* JPSMoveOperationTests.swift in Sources */,
+				9F55F6401C611AFD00B168D0 /* JPSCopyOperationTests.swift in Sources */,
 				2FECC0DC1C3C1BF400BDE626 /* JPSJsonPointerTests.swift in Sources */,
 				2F2FEDD81C1626DD00D7630F /* JPSDocumentStructureTests.swift in Sources */,
 				2F07C3B81C18749000314FF1 /* JPSAddOperationTests.swift in Sources */,

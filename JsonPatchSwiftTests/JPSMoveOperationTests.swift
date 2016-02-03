@@ -50,5 +50,17 @@ class JPSMoveOperationTests: XCTestCase {
         let expectedJson = JSON(data: "{ \"1\" : 2 }".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
-
+    
+    func testIfMissingParameterReturnsError() {
+        do {
+            let result = try JPSJsonPatch("{ \"op\": \"move\", \"path\": \"/bar\"}") // 'from' parameter missing
+            XCTFail(result.operations.last!.value.rawString()!)
+        } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
+            // Expected behaviour.
+            XCTAssertNotNil(message)
+            XCTAssertEqual(message, JPSConstants.JsonPatch.InitialisationErrorMessages.FromElementNotFound)
+        } catch {
+            XCTFail("Unexpected error.")
+        }
+    }
 }
