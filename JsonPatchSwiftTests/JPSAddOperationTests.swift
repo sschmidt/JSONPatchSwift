@@ -94,8 +94,6 @@ class JPSAddOperationTests: XCTestCase {
             // Expected behaviour.
             XCTAssertNotNil(message)
         }
-        
-        XCTFail("Yet to be implemented.")
     }
     
     func testIfMinusAtEndOfPathAppendsToArray() {
