@@ -31,6 +31,10 @@ struct JPSConstants {
             static let ValueElementNotFound = "Could not find 'value' element."
         }
         
+        struct ErrorMessages {
+            static let ValidationError = "Could not validate JSON."
+        }
+        
     }
     
     

@@ -32,6 +32,7 @@ struct JPSJsonPatch {
     }
     
     enum JPSJsonPatchApplyError: ErrorType {
+        case ValidationError(message: String?)
         case ArrayIndexOutOfBounds
     }
     
@@ -199,7 +200,14 @@ extension JPSJsonPatch {
     }
     
     private static func test(operation: JPSOperation, toJson json: JSON) throws -> JSON {
-        return json
+        return try JPSJsonPatch.applyOperation(json, pointer: operation.pointer) {
+            (traversedJson: JSON, pointer: JPSJsonPointer) in
+            let jsonToValidate = traversedJson[pointer.pointerValue]
+            guard jsonToValidate == operation.value else {
+                throw JPSJsonPatchApplyError.ValidationError(message: JPSConstants.JsonPatch.ErrorMessages.ValidationError)
+            }
+            return traversedJson
+        }
     }
     
     private static func applyOperation(json: JSON?, pointer: JPSJsonPointer, operation: ((JSON, JPSJsonPointer) throws -> JSON)) throws -> JSON {
