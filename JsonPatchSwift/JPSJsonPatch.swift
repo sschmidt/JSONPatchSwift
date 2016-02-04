@@ -84,19 +84,22 @@ extension JPSJsonPatch {
     }
 
     static func add(operation: JPSOperation, toJson json: JSON) throws -> JSON {
-        if(operation.pointer.pointerValue.count == 0) {
+
+        guard 0 < operation.pointer.pointerValue.count else {
             return operation.value
         }
+
         return try JPSJsonPatch.applyOperation(json, pointer: operation.pointer) {
-            (traversedJson: JSON, pointer: JPSJsonPointer) in
+            (traversedJson, pointer) -> JSON in
+            
             var newJson = traversedJson
-            if var dictionary = traversedJson.dictionaryObject {
-                dictionary[pointer.pointerValue[0] as! String] = operation.value.object
-                newJson.object = dictionary
+            if var jsonAsDictionary = traversedJson.dictionaryObject, let index = pointer.pointerValue[0] as? String {
+                jsonAsDictionary[index] = operation.value.object
+                newJson.object = jsonAsDictionary
             }
-            if var arr = traversedJson.arrayObject {
-                arr.insert(operation.value.object, atIndex: Int(pointer.pointerValue[0] as! String)!)
-                newJson.object = arr
+            if var jsonAsArray = traversedJson.arrayObject, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
+                jsonAsArray.insert(operation.value.object, atIndex: index)
+                newJson.object = jsonAsArray
             }
             return newJson
         }
