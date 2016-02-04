@@ -190,7 +190,7 @@ extension JPSJsonPatch {
         return json
     }
 
-    static func applyOperation(json: JSON?, pointer: JPSJsonPointer, operation:(JSON, JPSJsonPointer) throws -> JSON) throws -> JSON {
+    static func applyOperation(json: JSON?, pointer: JPSJsonPointer, operation: ((JSON, JPSJsonPointer) throws -> JSON)) throws -> JSON {
         let newJson = json!
         if(pointer.pointerValue.count == 1) {
             return try operation(newJson, pointer)
