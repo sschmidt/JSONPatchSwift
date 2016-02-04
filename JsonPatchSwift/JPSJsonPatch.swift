@@ -71,7 +71,7 @@ struct JPSJsonPatch {
 
 extension JPSJsonPatch {
     
-    static func applyPatch(jsonPatch: JPSJsonPatch, toJson json: JSON) throws -> JSON {
+    @warn_unused_result static func applyPatch(jsonPatch: JPSJsonPatch, toJson json: JSON) throws -> JSON {
         let operation = jsonPatch.operations[0] // TODO - iterate all operations
         switch operation.type {
         case .Add: return try JPSJsonPatch.add(operation, toJson: json)
