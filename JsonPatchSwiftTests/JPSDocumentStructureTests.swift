@@ -86,7 +86,7 @@ class JPSDocumentStructureTests: XCTestCase {
     
     func testJsonPatchWithDictionaryAsRootElementForOperationCopy() {
         // swiftlint:disable opening_brace
-        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"copy\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"copy\", \"path\": \"/a/b/c\", \"from\": \"/foo\" }")
         // swiftlint:enable opening_brace
         XCTAssertNotNil(jsonPatch)
         XCTAssertNotNil(jsonPatch.operations)
@@ -98,7 +98,7 @@ class JPSDocumentStructureTests: XCTestCase {
     
     func testJsonPatchWithDictionaryAsRootElementForOperationRemove() {
         // swiftlint:disable opening_brace
-        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/a/b/c\", \"value\": \"foo\" }")
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/a/b/c\" }")
         // swiftlint:enable opening_brace
         XCTAssertNotNil(jsonPatch)
         XCTAssertNotNil(jsonPatch.operations)
@@ -254,7 +254,7 @@ class JPSDocumentStructureTests: XCTestCase {
     func testMultipleOpElementsAreRejected() {
         do {
             // swiftlint:disable opening_brace
-            let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"/a/b\", \"op\" : \"remove\"}")
+            let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"/a/b\", \"op\" : \"remove\", \"value\" : \"foo\"}")
             // swiftlint:enable opening_brace
             // NSJSONSerialisation just ignores the second 'op' instead of raising an error.
             // Further investigation needed on how to solve that, except for manually parsing the string ...
@@ -271,7 +271,7 @@ class JPSDocumentStructureTests: XCTestCase {
     func testExactlyOnePathMemeber() {
         do {
             // swiftlint:disable opening_brace
-            let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"/a/b\", \"path\" : \"/a/b\"}")
+            let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"/a/b\", \"path\" : \"/a/b\", \"value\" : \"foo\"}")
             // swiftlint:enable opening_brace
             // NSJSONSerialisation just ignores the second 'op' instead of raising an error.
             // Further investigation needed on how to solve that, except for manually parsing the string ...
@@ -290,7 +290,7 @@ class JPSDocumentStructureTests: XCTestCase {
     func testIfPathContainsValidJsonPointer() {
         do {
             // swiftlint:disable opening_brace
-            let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"foo\" }")
+            let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"foo\" , \"value\" : \"foo\"}")
             // swiftlint:enable opening_brace
             XCTFail("Unreachable code. Should have raised an error.")
         } catch JPSJsonPointerError.ValueDoesNotContainDelimiter {
@@ -371,10 +371,10 @@ class JPSDocumentStructureTests: XCTestCase {
     
     func testEqualityOperatorWithDifferentAmountsOfOperations() {
         // swiftlint:disable opening_brace
-        let patch0 = "{ \"op\": \"add\", \"path\": \"/a/b/c\" }"
+        let patch0 = "{ \"op\": \"add\", \"path\": \"/a/b/c\", \"value\": \"foo\" }"
         let patch1 = "["
             + "{ \"op\": \"test\", \"path\": \"/a/b/c\", \"value\": \"foo\" },"
-            + "{ \"op\": \"remove\", \"path\": \"/a/b/c\" },"
+            + "{ \"op\": \"add\", \"path\": \"/a/b/c\", \"value\": \"foo\" },"
             + "]"
         // swiftlint:enable opening_brace
         let jsonPatch0 = try! JPSJsonPatch(patch0)
@@ -384,7 +384,7 @@ class JPSDocumentStructureTests: XCTestCase {
     
     func testEqualityOperatorWithDifferentOperations() {
         // swiftlint:disable opening_brace
-        let patch0 = "{ \"op\": \"add\", \"path\": \"/a/b/c\" }"
+        let patch0 = "{ \"op\": \"add\", \"path\": \"/a/b/c\", \"value\": \"foo\" }"
         let patch1 = "{ \"op\": \"remove\", \"path\": \"/a/b/c\" }"
         // swiftlint:enable opening_brace
         let jsonPatch0 = try! JPSJsonPatch(patch0)
