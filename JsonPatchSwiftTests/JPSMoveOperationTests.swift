@@ -30,7 +30,7 @@ class JPSMoveOperationTests: XCTestCase {
     func testIfMoveIndizesInArrayReturnsExpectedValue() {
         let json = JSON(data: " { \"foo\" : [\"all\", \"grass\", \"cows\", \"eat\"]} ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"move\", \"path\": \"/foo/3\", \"from\": \"/foo/1\" }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try? JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
         let expectedJson = JSON(data: "{ \"foo\" : [\"all\", \"cows\", \"eat\", \"grass\"]} ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
