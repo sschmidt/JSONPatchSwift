@@ -112,13 +112,13 @@
 			isa = PBXGroup;
 			children = (
 				2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */,
-				2F07C3B71C18749000314FF1 /* JPSAddOperationTests.swift */,
 				2FECC0DB1C3C1BF400BDE626 /* JPSJsonPointerTests.swift */,
-				2FAD25871C161A66006760CE /* Info.plist */,
+				2F07C3B71C18749000314FF1 /* JPSAddOperationTests.swift */,
 				9F0240E91C6037B0003BBAE8 /* JPSRemoveOperationTests.swift */,
-				9F55F63B1C60E5F400B168D0 /* JPSMoveOperationTests.swift */,
 				9F55F63D1C6118CD00B168D0 /* JPSReplaceOperationTest.swift */,
+				9F55F63B1C60E5F400B168D0 /* JPSMoveOperationTests.swift */,
 				9F55F63F1C611AFD00B168D0 /* JPSCopyOperationTests.swift */,
+				2FAD25871C161A66006760CE /* Info.plist */,
 			);
 			path = JsonPatchSwiftTests;
 			sourceTree = "<group>";
