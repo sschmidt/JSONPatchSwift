@@ -91,13 +91,14 @@ extension JPSJsonPatch {
 
         return try JPSJsonPatch.applyOperation(json, pointer: operation.pointer) {
             (traversedJson, pointer) -> JSON in
-            
             var newJson = traversedJson
-            if var jsonAsDictionary = traversedJson.dictionaryObject, let index = pointer.pointerValue[0] as? String {
-                jsonAsDictionary[index] = operation.value.object
+            if var jsonAsDictionary = traversedJson.dictionaryObject, let key = pointer.pointerValue[0] as? String {
+                jsonAsDictionary[key] = operation.value.object
                 newJson.object = jsonAsDictionary
-            }
-            if var jsonAsArray = traversedJson.arrayObject, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
+            } else if var jsonAsDictionary = traversedJson.dictionaryObject, let index = pointer.pointerValue[0] as? Int {
+                jsonAsDictionary[String(index)] = operation.value.object
+                newJson.object = jsonAsDictionary
+            } else if var jsonAsArray = traversedJson.arrayObject, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
                 jsonAsArray.insert(operation.value.object, atIndex: index)
                 newJson.object = jsonAsArray
             }
@@ -109,12 +110,12 @@ extension JPSJsonPatch {
         return try JPSJsonPatch.applyOperation(json, pointer: operation.pointer) {
             (traversedJson: JSON, pointer: JPSJsonPointer) in
                 var newJson = traversedJson
-                if var dictionary = traversedJson.dictionaryObject {
-                    dictionary.removeValueForKey(pointer.pointerValue[0] as! String)
+                if var dictionary = traversedJson.dictionaryObject, let key = pointer.pointerValue[0] as? String {
+                    dictionary.removeValueForKey(key)
                     newJson.object = dictionary
                 }
-                if var arr = traversedJson.arrayObject {
-                    arr.removeAtIndex(Int(pointer.pointerValue[0] as! String)!)
+                if var arr = traversedJson.arrayObject, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
+                    arr.removeAtIndex(index)
                     newJson.object = arr
                 }
                 return newJson
@@ -125,14 +126,12 @@ extension JPSJsonPatch {
         return try JPSJsonPatch.applyOperation(json, pointer: operation.pointer) {
             (traversedJson: JSON, pointer: JPSJsonPointer) in
             var newJson = traversedJson
-            if var dictionary = traversedJson.dictionaryObject {
-                let key = pointer.pointerValue[0] as! String
+            if var dictionary = traversedJson.dictionaryObject, let key = pointer.pointerValue[0] as? String {
                 dictionary[key] = operation.value.object
                 newJson.object = dictionary
             }
-            if var arr = traversedJson.arrayObject {
-                let key = Int(pointer.pointerValue[0] as! String)!
-                arr[key] = operation.value.object
+            if var arr = traversedJson.arrayObject, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
+                arr[index] = operation.value.object
                 newJson.object = arr
             }
             return newJson
@@ -155,9 +154,9 @@ extension JPSJsonPatch {
             resultJson = try JPSJsonPatch.remove(removeOperation, toJson: resultJson)
 
             // add
-            var jsonToAdd = traversedJson[pointer.pointerValue];
-            if traversedJson.type == .Array {
-                jsonToAdd = traversedJson[Int(pointer.pointerValue[0] as! String)!]
+            var jsonToAdd = traversedJson[pointer.pointerValue]
+            if traversedJson.type == .Array, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
+                jsonToAdd = traversedJson[index]
             }
             let addOperation = JPSOperation(type: JPSOperation.JPSOperationType.Add, pointer: operation.pointer, value: jsonToAdd, from: operation.from)
             resultJson = try JPSJsonPatch.add(addOperation, toJson: resultJson)
@@ -173,9 +172,9 @@ extension JPSJsonPatch {
         
         try JPSJsonPatch.applyOperation(json, pointer: operation.from!) {
             (traversedJson: JSON, pointer: JPSJsonPointer) in
-            var jsonToAdd = traversedJson[pointer.pointerValue];
-            if traversedJson.type == .Array {
-                jsonToAdd = traversedJson[Int(pointer.pointerValue[0] as! String)!]
+            var jsonToAdd = traversedJson[pointer.pointerValue]
+            if traversedJson.type == .Array, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
+                jsonToAdd = traversedJson[index]
             }
             let addOperation = JPSOperation(type: JPSOperation.JPSOperationType.Add, pointer: operation.pointer, value: jsonToAdd, from: operation.from)
             resultJson = try JPSJsonPatch.add(addOperation, toJson: resultJson)
@@ -192,16 +191,14 @@ extension JPSJsonPatch {
 
     static func applyOperation(json: JSON?, pointer: JPSJsonPointer, operation: ((JSON, JPSJsonPointer) throws -> JSON)) throws -> JSON {
         let newJson = json!
-        if(pointer.pointerValue.count == 1) {
+        if pointer.pointerValue.count == 1 {
             return try operation(newJson, pointer)
         } else {
-            if var arr = newJson.array {
-                let key = Int(pointer.pointerValue[0] as! String)!
-                arr[key] = try applyOperation(arr[key], pointer: JPSJsonPointer.traverse(pointer), operation: operation)
+            if var arr = newJson.array, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
+                arr[index] = try applyOperation(arr[index], pointer: JPSJsonPointer.traverse(pointer), operation: operation)
                 return JSON(arr)
             }
-            if var dictionary = newJson.dictionary {
-                let key = pointer.pointerValue[0] as! String
+            if var dictionary = newJson.dictionary, let key = pointer.pointerValue[0] as? String {
                 dictionary[key] = try applyOperation(dictionary[key], pointer: JPSJsonPointer.traverse(pointer), operation: operation)
                 return JSON(dictionary)
             }
