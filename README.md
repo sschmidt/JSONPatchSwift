@@ -8,6 +8,12 @@ TODO
 
 TODO
 
+## Requirements
+
+- iOS 9.0+
+- Xcode 7
+
+
 ## Contributing
 
 1. Fork it!
@@ -18,11 +24,12 @@ TODO
 
 ## History
 
-TODO
+v0.9.0 - initial release
 
 ## Credits
 
-TODO
+- EXXETA AG
+- See [Contributors](https://www.github.com/EXXETA/JSONPatchSwift/graphs/contributors)
 
 ## License
 
