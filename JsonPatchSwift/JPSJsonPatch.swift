@@ -31,6 +31,10 @@ struct JPSJsonPatch {
         case UnexpectedError
     }
     
+    enum JPSJsonPatchApplyError: ErrorType {
+        case ArrayIndexOutOfBounds
+    }
+    
     let operations: [JPSOperation]
     
     init(_ patch: String) throws {
@@ -105,6 +109,9 @@ extension JPSJsonPatch {
                 jsonAsDictionary[String(index)] = operation.value.object
                 newJson.object = jsonAsDictionary
             } else if var jsonAsArray = traversedJson.arrayObject, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
+                guard index < jsonAsArray.count else {
+                    throw JPSJsonPatchApplyError.ArrayIndexOutOfBounds
+                }
                 jsonAsArray.insert(operation.value.object, atIndex: index)
                 newJson.object = jsonAsArray
             }
