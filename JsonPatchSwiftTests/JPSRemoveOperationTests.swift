@@ -21,7 +21,7 @@ class JPSRemoveOperationTests: XCTestCase {
     func testIfDeleteObjectMemberReturnsExpectedValue() {
         let json = JSON(data: " { \"baz\": \"qux\", \"foo\": \"bar\"} ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/baz\" }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
         let expectedJson = JSON(data: " { \"foo\": \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
@@ -30,7 +30,7 @@ class JPSRemoveOperationTests: XCTestCase {
     func testIfDeleteArrayElementReturnsExpectedValue() {
         let json = JSON(data: " { \"foo\": [ \"bar\", \"qux\", \"baz\" ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/foo/1\" }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
         let expectedJson = JSON(data: " { \"foo\": [ \"bar\", \"baz\" ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
@@ -38,7 +38,7 @@ class JPSRemoveOperationTests: XCTestCase {
     func testIfDeleteLastElementReturnsEmptyJson() {
         let json = JSON(data: " { \"foo\" : \"1\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/foo\" }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
         let expectedJson = JSON(data: "{ }".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
@@ -46,7 +46,7 @@ class JPSRemoveOperationTests: XCTestCase {
     func testIfDeleteSubElementReturnsEmptyTopElement() {
         let json = JSON(data: " { \"foo\" : { \"bar\" : \"1\" } } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/foo/bar\" }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
         let expectedJson = JSON(data: "{ \"foo\" : { } }".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
@@ -54,7 +54,7 @@ class JPSRemoveOperationTests: XCTestCase {
     func testIfDeleteLastArrayElementReturnsEmptyArray() {
         let json = JSON(data: " { \"foo\" : { \"bar\" : \"1\" } } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/foo/bar\" }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
         let expectedJson = JSON(data: "{ \"foo\" : { } }".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
@@ -62,7 +62,7 @@ class JPSRemoveOperationTests: XCTestCase {
     func testIfDeleteFromArrayDeletesTheExpectedKey() {
         let json = JSON(data: " [ \"foo\", 42, \"bar\" ] ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/2\" }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
         let expectedJson = JSON(data: " [ \"foo\", 42, ] ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
@@ -70,7 +70,7 @@ class JPSRemoveOperationTests: XCTestCase {
     func testIfDeleteFromMultiDimensionalArrayDeletesTheExpectedKey() {
         let json = JSON(data: " [ \"foo\", [ \"foo\", 3, \"42\" ], \"bar\" ] ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"remove\", \"path\": \"/1/2\" }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
         let expectedJson = JSON(data: " [ \"foo\", [ \"foo\", 3 ], \"bar\" ] ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }

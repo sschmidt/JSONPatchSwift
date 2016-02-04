@@ -21,7 +21,7 @@ class JPSReplaceOperationTests: XCTestCase {
     func testIfReplaceValueInObjectReturnsExpectedValue() {
         let json = JSON(data: "{\"baz\": \"qux\",\"foo\": \"bar\"}".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"replace\", \"path\": \"/baz\", \"value\": \"boo\" }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
         let expectedJson = JSON(data: "  { \"baz\": \"boo\",\"foo\": \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
@@ -29,7 +29,7 @@ class JPSReplaceOperationTests: XCTestCase {
     func testIfReplaceValueInArrayArrayReturnsExpectedValue() {
         let json = JSON(data: " { \"foo\" : [1, 2, 3, 4], \"bar\" : []} ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"replace\", \"path\": \"/foo/1\", \"value\": 42 }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
         let expectedJson = JSON(data: " { \"foo\" : [1, 42, 3, 4], \"bar\" : []}".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }

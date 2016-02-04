@@ -22,7 +22,7 @@ class JPSTestOperationTests: XCTestCase {
     func testIfBasicStringCheckReturnsExpectedResult() {
         let json = JSON(data: " { \"foo\" : { \"1\" : \"2\" }} ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"test\", \"path\": \"/foo/1\", \"value\": \"2\" }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
         XCTAssertEqual(resultingJson, json)
     }
 
@@ -30,9 +30,9 @@ class JPSTestOperationTests: XCTestCase {
         let json = JSON(data: " { \"foo\" : { \"1\" : \"2\" }} ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"test\", \"path\": \"/foo/1\", \"value\": \"3\" }")
         do {
-            let result = try JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+            let result = try JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
             XCTFail(result.rawString()!)
-        } catch JPSJsonPatch.JPSJsonPatchApplyError.ValidationError(let message) {
+        } catch JPSJsonPatcher.JPSJsonPatcherApplyError.ValidationError(let message) {
             // Expected behaviour.
             XCTAssertNotNil(message)
         } catch {
@@ -43,7 +43,7 @@ class JPSTestOperationTests: XCTestCase {
     func testIfBasicIntCheckReturnsExpectedResult() {
         let json = JSON(data: " { \"foo\" : { \"1\" : 2 }} ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"test\", \"path\": \"/foo/1\", \"value\": 2 }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
         XCTAssertEqual(resultingJson, json)
     }
 
@@ -51,9 +51,9 @@ class JPSTestOperationTests: XCTestCase {
         let json = JSON(data: " { \"foo\" : { \"1\" : 2 }} ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"test\", \"path\": \"/foo/1\", \"value\": 3 }")
         do {
-            let result = try JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+            let result = try JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
             XCTFail(result.rawString()!)
-        } catch JPSJsonPatch.JPSJsonPatchApplyError.ValidationError(let message) {
+        } catch JPSJsonPatcher.JPSJsonPatcherApplyError.ValidationError(let message) {
             // Expected behaviour.
             XCTAssertNotNil(message)
         } catch {
@@ -64,7 +64,7 @@ class JPSTestOperationTests: XCTestCase {
     func testIfBasicObjectCheckReturnsExpectedResult() {
         let json = JSON(data: " { \"foo\" : { \"1\" : 2 }} ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"test\", \"path\": \"/foo\", \"value\": { \"1\" : 2 } }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
         XCTAssertEqual(resultingJson, json)
     }
 
@@ -72,9 +72,9 @@ class JPSTestOperationTests: XCTestCase {
         let json = JSON(data: " { \"foo\" : { \"1\" : \"2\" }} ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"test\", \"path\": \"/foo\", \"value\": { \"1\" : 3 } }")
         do {
-            let result = try JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+            let result = try JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
             XCTFail(result.rawString()!)
-        } catch JPSJsonPatch.JPSJsonPatchApplyError.ValidationError(let message) {
+        } catch JPSJsonPatcher.JPSJsonPatcherApplyError.ValidationError(let message) {
             // Expected behaviour.
             XCTAssertNotNil(message)
         } catch {
@@ -85,7 +85,7 @@ class JPSTestOperationTests: XCTestCase {
     func testIfBasicArrayCheckReturnsExpectedResult() {
         let json = JSON(data: " { \"foo\" : [1, 2, 3, 4, 5]} ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"test\", \"path\": \"/foo\", \"value\": [1, 2, 3, 4, 5] }")
-        let resultingJson = try! JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
         XCTAssertEqual(resultingJson, json)
     }
 
@@ -93,9 +93,9 @@ class JPSTestOperationTests: XCTestCase {
         let json = JSON(data: " { \"foo\" : [1, 2, 3, 4, 5]} ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"test\", \"path\": \"/foo\", \"value\": [1, 2, 3, 4, 5, 6, 7, 42] }")
         do {
-            let result = try JPSJsonPatch.applyPatch(jsonPatch, toJson: json)
+            let result = try JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
             XCTFail(result.rawString()!)
-        } catch JPSJsonPatch.JPSJsonPatchApplyError.ValidationError(let message) {
+        } catch JPSJsonPatcher.JPSJsonPatcherApplyError.ValidationError(let message) {
             // Expected behaviour.
             XCTAssertNotNil(message)
         } catch {

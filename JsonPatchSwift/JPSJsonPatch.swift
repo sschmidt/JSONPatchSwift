@@ -31,11 +31,6 @@ struct JPSJsonPatch {
         case UnexpectedError
     }
     
-    enum JPSJsonPatchApplyError: ErrorType {
-        case ValidationError(message: String?)
-        case ArrayIndexOutOfBounds
-    }
-    
     let operations: [JPSOperation]
     
     init(_ patch: String) throws {
@@ -72,161 +67,10 @@ struct JPSJsonPatch {
 }
 
 
-// MARK: - Using the patch
-
-extension JPSJsonPatch {
-    
-    @warn_unused_result static func applyPatch(jsonPatch: JPSJsonPatch, toJson json: JSON) throws -> JSON {
-        let operation = jsonPatch.operations[0] // TODO - iterate all operations
-        switch operation.type {
-        case .Add: return try JPSJsonPatch.add(operation, toJson: json)
-        case .Remove: return try JPSJsonPatch.remove(operation, toJson: json)
-        case .Replace: return try JPSJsonPatch.replace(operation, toJson: json)
-        case .Move: return try JPSJsonPatch.move(operation, toJson: json)
-        case .Copy: return try JPSJsonPatch.copy(operation, toJson: json)
-        case .Test: return try JPSJsonPatch.test(operation, toJson: json)
-        }
-    }
-}
-
-
 // MARK: - Private functions
 
 extension JPSJsonPatch {
     
-    private static func add(operation: JPSOperation, toJson json: JSON) throws -> JSON {
-        
-        guard 0 < operation.pointer.pointerValue.count else {
-            return operation.value
-        }
-        
-        return try JPSJsonPatch.applyOperation(json, pointer: operation.pointer) {
-            (traversedJson, pointer) -> JSON in
-            var newJson = traversedJson
-            if var jsonAsDictionary = traversedJson.dictionaryObject, let key = pointer.pointerValue[0] as? String {
-                jsonAsDictionary[key] = operation.value.object
-                newJson.object = jsonAsDictionary
-            } else if var jsonAsDictionary = traversedJson.dictionaryObject, let index = pointer.pointerValue[0] as? Int {
-                jsonAsDictionary[String(index)] = operation.value.object
-                newJson.object = jsonAsDictionary
-            } else if var jsonAsArray = traversedJson.arrayObject, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
-                guard index < jsonAsArray.count else {
-                    throw JPSJsonPatchApplyError.ArrayIndexOutOfBounds
-                }
-                jsonAsArray.insert(operation.value.object, atIndex: index)
-                newJson.object = jsonAsArray
-            }
-            return newJson
-        }
-    }
-    
-    private static func remove(operation: JPSOperation, toJson json: JSON) throws -> JSON {
-        return try JPSJsonPatch.applyOperation(json, pointer: operation.pointer) {
-            (traversedJson: JSON, pointer: JPSJsonPointer) in
-            var newJson = traversedJson
-            if var dictionary = traversedJson.dictionaryObject, let key = pointer.pointerValue[0] as? String {
-                dictionary.removeValueForKey(key)
-                newJson.object = dictionary
-            }
-            if var arr = traversedJson.arrayObject, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
-                arr.removeAtIndex(index)
-                newJson.object = arr
-            }
-            return newJson
-        }
-    }
-    
-    private static func replace(operation: JPSOperation, toJson json: JSON) throws -> JSON {
-        return try JPSJsonPatch.applyOperation(json, pointer: operation.pointer) {
-            (traversedJson: JSON, pointer: JPSJsonPointer) in
-            var newJson = traversedJson
-            if var dictionary = traversedJson.dictionaryObject, let key = pointer.pointerValue[0] as? String {
-                dictionary[key] = operation.value.object
-                newJson.object = dictionary
-            }
-            if var arr = traversedJson.arrayObject, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
-                arr[index] = operation.value.object
-                newJson.object = arr
-            }
-            return newJson
-        }
-    }
-    
-    private static func move(operation: JPSOperation, toJson json: JSON) throws -> JSON {
-        var resultJson = json
-        
-        try JPSJsonPatch.applyOperation(json, pointer: operation.from!) {
-            (traversedJson: JSON, pointer: JPSJsonPointer) in
-            
-            // From: http://tools.ietf.org/html/rfc6902#section-4.3
-            //    This operation is functionally identical to a "remove" operation for
-            //    a value, followed immediately by an "add" operation at the same
-            //    location with the replacement value.
-            
-            // remove
-            let removeOperation = JPSOperation(type: JPSOperation.JPSOperationType.Remove, pointer: operation.from!, value: resultJson, from: operation.from)
-            resultJson = try JPSJsonPatch.remove(removeOperation, toJson: resultJson)
-            
-            // add
-            var jsonToAdd = traversedJson[pointer.pointerValue]
-            if traversedJson.type == .Array, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
-                jsonToAdd = traversedJson[index]
-            }
-            let addOperation = JPSOperation(type: JPSOperation.JPSOperationType.Add, pointer: operation.pointer, value: jsonToAdd, from: operation.from)
-            resultJson = try JPSJsonPatch.add(addOperation, toJson: resultJson)
-            
-            return traversedJson
-        }
-        
-        return resultJson
-    }
-    
-    private static func copy(operation: JPSOperation, toJson json: JSON) throws -> JSON {
-        var resultJson = json
-        
-        try JPSJsonPatch.applyOperation(json, pointer: operation.from!) {
-            (traversedJson: JSON, pointer: JPSJsonPointer) in
-            var jsonToAdd = traversedJson[pointer.pointerValue]
-            if traversedJson.type == .Array, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
-                jsonToAdd = traversedJson[index]
-            }
-            let addOperation = JPSOperation(type: JPSOperation.JPSOperationType.Add, pointer: operation.pointer, value: jsonToAdd, from: operation.from)
-            resultJson = try JPSJsonPatch.add(addOperation, toJson: resultJson)
-            return traversedJson
-        }
-        
-        return resultJson
-        
-    }
-    
-    private static func test(operation: JPSOperation, toJson json: JSON) throws -> JSON {
-        return try JPSJsonPatch.applyOperation(json, pointer: operation.pointer) {
-            (traversedJson: JSON, pointer: JPSJsonPointer) in
-            let jsonToValidate = traversedJson[pointer.pointerValue]
-            guard jsonToValidate == operation.value else {
-                throw JPSJsonPatchApplyError.ValidationError(message: JPSConstants.JsonPatch.ErrorMessages.ValidationError)
-            }
-            return traversedJson
-        }
-    }
-    
-    private static func applyOperation(json: JSON?, pointer: JPSJsonPointer, operation: ((JSON, JPSJsonPointer) throws -> JSON)) throws -> JSON {
-        let newJson = json!
-        if pointer.pointerValue.count == 1 {
-            return try operation(newJson, pointer)
-        } else {
-            if var arr = newJson.array, let indexString = pointer.pointerValue[0] as? String, let index = Int(indexString) {
-                arr[index] = try applyOperation(arr[index], pointer: JPSJsonPointer.traverse(pointer), operation: operation)
-                return JSON(arr)
-            }
-            if var dictionary = newJson.dictionary, let key = pointer.pointerValue[0] as? String {
-                dictionary[key] = try applyOperation(dictionary[key], pointer: JPSJsonPointer.traverse(pointer), operation: operation)
-                return JSON(dictionary)
-            }
-        }
-        return newJson
-    }
-
     private static func extractOperationFromJson(json: JSON) throws -> JPSOperation {
         
         // The elements 'op' and 'path' are mandatory.
