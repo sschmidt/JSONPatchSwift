@@ -274,7 +274,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  cd JsonPatchSwift\n  swiftlint\nelse\n  echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi";
+			shellScript = "if not which swiftlint >/dev/null; then\n  if not which brew >/dev/null; then\n    echo \"SwiftLint does not exist\"\n    exit 1\n  fi\n  brew install swiftlint\nfi\n\ncd JsonPatchSwift\nswiftlint\ncd ../JsonPatchSwiftTests\nswiftlint";
 		};
 		2F2FEDDC1C16EA8B00D7630F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
