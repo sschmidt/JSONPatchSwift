@@ -52,7 +52,9 @@ extension JPSJsonPointer {
 extension JPSJsonPointer {
     static func traverse(pointer: JPSJsonPointer) -> JPSJsonPointer {
         let pointerValueWithoutFirstElement = Array(pointer.rawValue.componentsSeparatedByString(JPSConstants.JsonPointer.Delimiter).dropFirst().dropFirst()).joinWithSeparator(JPSConstants.JsonPointer.Delimiter)
+        // swiftlint:disable force_try
         return try! JPSJsonPointer(rawValue: JPSConstants.JsonPointer.Delimiter + pointerValueWithoutFirstElement)
+        // swiftlint:enable force_try
     }
 }
 
