@@ -114,7 +114,9 @@ class JPSAddOperationTests: XCTestCase {
     
     func testIfInvalidPathElementRaisesError() {
         do {
-            let _ = try JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/a/b\", \"value\": \"bar\" }")
+            let json = JSON(data: " { \"a\": { \"foo\": 1 } } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+            let jsonPatch = try JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/c/b\", \"value\": \"bar\" }")
+            let _ = try JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
             XCTFail("Unreachable code. Should have raised an error, because 'a' must exist to access 'b'.")
         } catch (let message) {
             XCTAssertNotNil(message)
