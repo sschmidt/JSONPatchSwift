@@ -228,36 +228,6 @@ class JPSDocumentStructureTests: XCTestCase {
         }
     }
     
-    func testMultipleOpElementsAreRejected() {
-        do {
-            let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"/a/b\", \"op\" : \"remove\", \"value\" : \"foo\"}")
-            // NSJSONSerialisation just ignores the second 'op' instead of raising an error.
-            // Further investigation needed on how to solve that, except for manually parsing the string ...
-//            XCTFail("Unreachable code. Should have raised an error.")
-        } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
-            // Expected behaviour.
-            XCTAssertNotNil(message)
-            XCTAssertEqual(message, "There can be only one 'op' element.")
-        } catch {
-            XCTFail("Unexpected error.")
-        }
-    }
-    
-    func testExactlyOnePathMemeber() {
-        do {
-            let _ = try JPSJsonPatch("{\"op\" : \"add\", \"path\" : \"/a/b\", \"path\" : \"/a/b\", \"value\" : \"foo\"}")
-            // NSJSONSerialisation just ignores the second 'op' instead of raising an error.
-            // Further investigation needed on how to solve that, except for manually parsing the string ...
-//            XCTFail("Unreachable code. Should have raised an error.")
-        } catch JPSJsonPatch.JPSJsonPatchInitialisationError.InvalidPatchFormat(let message) {
-            // Expected behaviour.
-            XCTAssertNotNil(message)
-            XCTAssertEqual(message, "There can be only one 'path' element.")
-        } catch {
-            XCTFail("Unexpected error.")
-        }
-    }
-    
     // JSON Pointer: RFC6901
     // Multiple tests necessary here
     func testIfPathContainsValidJsonPointer() {
