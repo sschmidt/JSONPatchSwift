@@ -26,7 +26,7 @@ class JPSAddOperationTests: XCTestCase {
         let expectedJson = JSON(data: "{ \"foo\" : \"bar\", \"baz\" : \"qux\" }".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
-
+    
     // http://tools.ietf.org/html/rfc6902#appendix-A.2
     func testIfPathToArrayCreatesNewArrayElement() {
         let json = JSON(data: " { \"foo\" : [ \"bar\", \"baz\"] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
@@ -35,7 +35,7 @@ class JPSAddOperationTests: XCTestCase {
         let expectedJson = JSON(data: "{ \"foo\": [ \"bar\", \"qux\", \"baz\" ] }".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
-
+    
     func testIfPathToArrayInsertsValueAtPositionAndShiftsRemainingMembersRight() {
         let json = JSON(data: " [ \"foo\", 42, \"bar\" ] ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/2\", \"value\": \"42\" }")
@@ -43,7 +43,7 @@ class JPSAddOperationTests: XCTestCase {
         let expectedJson = JSON(data: " [ \"foo\", 42, \"42\", \"bar\" ] ".dataUsingEncoding(NSUTF8StringEncoding)!)
         XCTAssertEqual(resultingJson, expectedJson)
     }
-
+    
     func testIfPathToNonExistingMemberCreatesNewMember2() {
         let json = JSON(data: " { \"foo\" : \" { \"foo2\" : \"bar\" } \" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
         let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/foo/bar\", \"value\": \"foo\" }")
