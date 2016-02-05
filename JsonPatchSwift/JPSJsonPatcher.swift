@@ -34,6 +34,7 @@ extension JPSJsonPatcher {
     enum JPSJsonPatcherApplyError: ErrorType {
         case ValidationError(message: String?)
         case ArrayIndexOutOfBounds
+        case InvalidJson
     }
     
     private static func add(operation: JPSOperation, toJson json: JSON) throws -> JSON {
@@ -153,7 +154,9 @@ extension JPSJsonPatcher {
     }
     
     private static func applyOperation(json: JSON?, pointer: JPSJsonPointer, operation: ((JSON, JPSJsonPointer) throws -> JSON)) throws -> JSON {
-        let newJson = json!
+        guard let newJson = json else {
+            throw JPSJsonPatcherApplyError.InvalidJson
+        }
         if pointer.pointerValue.count == 1 {
             return try operation(newJson, pointer)
         } else {
