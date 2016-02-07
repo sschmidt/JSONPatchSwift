@@ -13,6 +13,7 @@
 		2F2FEDD81C1626DD00D7630F /* JPSDocumentStructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */; };
 		2F2FEDDA1C16E68C00D7630F /* JPSJsonPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2FEDD91C16E68C00D7630F /* JPSJsonPatch.swift */; };
 		2F9BB70D1C63B80900EB7127 /* JPSJsonPatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9BB70C1C63B80900EB7127 /* JPSJsonPatcher.swift */; };
+		2F9BB70F1C67DD6500EB7127 /* JPSJsonPatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9BB70E1C67DD6500EB7127 /* JPSJsonPatchTests.swift */; };
 		2FAD257A1C161A66006760CE /* JsonPatchSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FAD25791C161A66006760CE /* JsonPatchSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2FAD25811C161A66006760CE /* JsonPatchSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FAD25761C161A66006760CE /* JsonPatchSwift.framework */; };
 		2FECC0DA1C3C1B9D00BDE626 /* JPSJsonPointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FECC0D91C3C1B9D00BDE626 /* JPSJsonPointer.swift */; };
@@ -42,6 +43,7 @@
 		2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSDocumentStructureTests.swift; sourceTree = "<group>"; };
 		2F2FEDD91C16E68C00D7630F /* JPSJsonPatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSJsonPatch.swift; sourceTree = "<group>"; };
 		2F9BB70C1C63B80900EB7127 /* JPSJsonPatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSJsonPatcher.swift; sourceTree = "<group>"; };
+		2F9BB70E1C67DD6500EB7127 /* JPSJsonPatchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JPSJsonPatchTests.swift; sourceTree = "<group>"; };
 		2FAD25761C161A66006760CE /* JsonPatchSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JsonPatchSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FAD25791C161A66006760CE /* JsonPatchSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JsonPatchSwift.h; sourceTree = "<group>"; };
 		2FAD257B1C161A66006760CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				2F2FEDD71C1626DD00D7630F /* JPSDocumentStructureTests.swift */,
+				2F9BB70E1C67DD6500EB7127 /* JPSJsonPatchTests.swift */,
 				2FECC0DB1C3C1BF400BDE626 /* JPSJsonPointerTests.swift */,
 				2F07C3B71C18749000314FF1 /* JPSAddOperationTests.swift */,
 				9F0240E91C6037B0003BBAE8 /* JPSRemoveOperationTests.swift */,
@@ -331,6 +334,7 @@
 			files = (
 				9F55F63E1C6118CD00B168D0 /* JPSReplaceOperationTest.swift in Sources */,
 				9F55F63C1C60E5F400B168D0 /* JPSMoveOperationTests.swift in Sources */,
+				2F9BB70F1C67DD6500EB7127 /* JPSJsonPatchTests.swift in Sources */,
 				9F55F6401C611AFD00B168D0 /* JPSCopyOperationTests.swift in Sources */,
 				2FECC0DC1C3C1BF400BDE626 /* JPSJsonPointerTests.swift in Sources */,
 				2F2FEDD81C1626DD00D7630F /* JPSDocumentStructureTests.swift in Sources */,
