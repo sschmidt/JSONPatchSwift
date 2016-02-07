@@ -13,15 +13,18 @@ import SwiftyJSON
 struct JPSJsonPatcher {
     
     static func applyPatch(jsonPatch: JPSJsonPatch, toJson json: JSON) throws -> JSON {
-        let operation = jsonPatch.operations.first! // TODO - iterate all operations
-        switch operation.type {
-        case .Add: return try JPSJsonPatcher.add(operation, toJson: json)
-        case .Remove: return try JPSJsonPatcher.remove(operation, toJson: json)
-        case .Replace: return try JPSJsonPatcher.replace(operation, toJson: json)
-        case .Move: return try JPSJsonPatcher.move(operation, toJson: json)
-        case .Copy: return try JPSJsonPatcher.copy(operation, toJson: json)
-        case .Test: return try JPSJsonPatcher.test(operation, toJson: json)
+        var tempJson = json
+        for operation in jsonPatch.operations {
+            switch operation.type {
+            case .Add: tempJson = try JPSJsonPatcher.add(operation, toJson: tempJson)
+            case .Remove: tempJson = try JPSJsonPatcher.remove(operation, toJson: tempJson)
+            case .Replace: tempJson = try JPSJsonPatcher.replace(operation, toJson: tempJson)
+            case .Move: tempJson = try JPSJsonPatcher.move(operation, toJson: tempJson)
+            case .Copy: tempJson = try JPSJsonPatcher.copy(operation, toJson: tempJson)
+            case .Test: tempJson = try JPSJsonPatcher.test(operation, toJson: tempJson)
+            }
         }
+        return tempJson
     }
     
 }
