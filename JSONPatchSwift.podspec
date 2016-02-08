@@ -5,6 +5,7 @@ Pod::Spec.new do |s|
   s.version      = "0.9.0"
   s.summary      = "A RFC 6902 compliant implementation of JSONPatch in Swift."
   s.description  = <<-DESC
+                  JSONPatchSwift is an implementation of JSONPatch (RFC 6902) in pure Swift.
                    DESC
   s.homepage     = "https://www.github.com/EXXETA/JSONPatchSwift"
   s.license      = { :type => "Apache License, Version 2.0", :file => "LICENSE.txt" }
