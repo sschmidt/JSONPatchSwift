@@ -14,9 +14,9 @@ func == (lhs: JPSOperation, rhs: JPSOperation) -> Bool {
     return lhs.type == rhs.type
 }
 
-struct JPSOperation {
+public struct JPSOperation {
     
-    enum JPSOperationType: String {
+    public enum JPSOperationType: String {
         case Add = "add"
         case Remove = "remove"
         case Replace = "replace"

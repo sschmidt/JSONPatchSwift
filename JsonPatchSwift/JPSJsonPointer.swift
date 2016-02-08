@@ -10,14 +10,14 @@
 
 import SwiftyJSON
 
-enum JPSJsonPointerError: ErrorType {
+public enum JPSJsonPointerError: ErrorType {
     case ValueDoesNotContainDelimiter
     case NonEmptyPointerDoesNotStartWithDelimiter
     case ContainsEmptyReferenceToken
     case EvaluationFailed
 }
 
-struct JPSJsonPointer {
+public struct JPSJsonPointer {
     
     let rawValue: String
     let pointerValue: [JSONSubscriptType]
@@ -26,7 +26,7 @@ struct JPSJsonPointer {
 
 extension JPSJsonPointer {
 
-    init(rawValue: String) throws {
+    public init(rawValue: String) throws {
         
         guard rawValue.isEmpty || rawValue.containsString(JPSConstants.JsonPointer.Delimiter) else {
             throw JPSJsonPointerError.ValueDoesNotContainDelimiter

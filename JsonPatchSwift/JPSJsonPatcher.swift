@@ -10,9 +10,9 @@
 
 import SwiftyJSON
 
-struct JPSJsonPatcher {
+public struct JPSJsonPatcher {
     
-    static func applyPatch(jsonPatch: JPSJsonPatch, toJson json: JSON) throws -> JSON {
+    public static func applyPatch(jsonPatch: JPSJsonPatch, toJson json: JSON) throws -> JSON {
         var tempJson = json
         for operation in jsonPatch.operations {
             switch operation.type {
@@ -34,7 +34,7 @@ struct JPSJsonPatcher {
 
 extension JPSJsonPatcher {
     
-    enum JPSJsonPatcherApplyError: ErrorType {
+    public enum JPSJsonPatcherApplyError: ErrorType {
         case ValidationError(message: String?)
         case ArrayIndexOutOfBounds
         case InvalidJson

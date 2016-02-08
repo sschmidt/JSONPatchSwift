@@ -23,9 +23,9 @@ func == (lhs: JPSJsonPatch, rhs: JPSJsonPatch) -> Bool {
     return true
 }
 
-struct JPSJsonPatch {
+public struct JPSJsonPatch {
     
-    enum JPSJsonPatchInitialisationError: ErrorType {
+    public enum JPSJsonPatchInitialisationError: ErrorType {
         case InvalidJsonFormat(message: String?)
         case InvalidPatchFormat(message: String?)
         case UnexpectedError
@@ -33,7 +33,7 @@ struct JPSJsonPatch {
     
     let operations: [JPSOperation]
     
-    init(_ patch: String) throws {
+    public init(_ patch: String) throws {
         
         // Get the JSON
         guard let data = patch.dataUsingEncoding(NSUTF8StringEncoding) else {
