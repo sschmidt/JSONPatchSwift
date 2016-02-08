@@ -56,7 +56,7 @@ extension JPSJsonPatcher {
                 jsonAsDictionary[String(index)] = operation.value.object
                 newJson.object = jsonAsDictionary
             } else if var jsonAsArray = traversedJson.arrayObject, let indexString = pointer.pointerValue.first as? String, let index = Int(indexString) {
-                guard index < jsonAsArray.count else {
+                guard index <= jsonAsArray.count else {
                     throw JPSJsonPatcherApplyError.ArrayIndexOutOfBounds
                 }
                 jsonAsArray.insert(operation.value.object, atIndex: index)
