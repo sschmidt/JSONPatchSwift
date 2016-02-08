@@ -87,13 +87,21 @@ class JPSAddOperationTests: XCTestCase {
     func testAddToArrayWithIndexOutOfBoundsProducesError() {
         do {
             let json = JSON(data: " { \"a\": [ 23, 42 ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
-            let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/a/83\", \"value\": \"bar\" }")
+            let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/a/42\", \"value\": \"bar\" }")
             let _ = try JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
             XCTFail("Unreachable code. Should have raised an error, because the array index is out of bounds.")
         } catch (let message) {
             // Expected behaviour.
             XCTAssertNotNil(message)
         }
+    }
+    
+    func testAddToArrayWithIndexEqualsCount() {
+        let json = JSON(data: " { \"a\": [ 23, 42 ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        let jsonPatch = try! JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/a/2\", \"value\": \"bar\" }")
+        let resultingJson = try! JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
+        let expectedJson = JSON(data: " { \"a\": [ 23, 42, \"bar\" ] } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+        XCTAssertEqual(resultingJson, expectedJson)
     }
     
     func testIfMinusAtEndOfPathAppendsToArray() {
