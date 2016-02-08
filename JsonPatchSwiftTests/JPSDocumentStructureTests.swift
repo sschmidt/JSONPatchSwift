@@ -319,8 +319,4 @@ class JPSDocumentStructureTests: XCTestCase {
         XCTAssertFalse(jsonPatch0 == jsonPatch1)
     }
     
-    func testIfApplyingPatchToInvalidJsonResultsInError() {
-        XCTFail("Yet to be implemented.")
-    }
-    
 }
