@@ -48,7 +48,7 @@ let resultingJson = try? JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
 
 ## History
 
-v0.9.0 - initial release
+v1.0 - initial release
 
 ## Credits
 
