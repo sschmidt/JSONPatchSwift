@@ -1,12 +1,36 @@
 # JSON Patch (RFC 6902) in Swift
 
+JSONPatchSwift is an implementation of JSONPatch (RFC 6902) in pure Swift.
+
 ## Installation
 
-TODO
+###CocoaPods (iOS 9.0+, OS X 10.10+)
+You can use [Cocoapods](http://cocoapods.org/) to install `JSONPatchSwift`by adding it to your `Podfile`:
+```ruby
+platform :ios, '9.0'
+use_frameworks!
+
+target 'MyApp' do
+	pod 'JSONPatchSwift', :git => 'https://github.com/EXXETA/JSONPatchSwift.git'
+end
+```
+Note that this requires CocoaPods version 36, and your iOS deployment target to be at least 9.0:
 
 ## Usage
 
-TODO
+###Initialization
+```swift
+import JSONPatchSwift
+```
+```swift
+let jsonPatch = try? JPSJsonPatch("{ \"op\": \"add\", \"path\": \"/baz\", \"value\": \"qux\" }")
+```
+
+###Using it on a JSON (using the framework [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON))
+```swift
+let json = JSON(data: " { \"foo\" : \"bar\" } ".dataUsingEncoding(NSUTF8StringEncoding)!)
+let resultingJson = try? JPSJsonPatcher.applyPatch(jsonPatch, toJson: json)
+```
 
 ## Requirements
 
