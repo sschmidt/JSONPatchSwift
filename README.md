@@ -5,7 +5,7 @@ JSONPatchSwift is an implementation of JSONPatch (RFC 6902) in pure Swift.
 ## Installation
 
 ###CocoaPods (iOS 9.0+, OS X 10.10+)
-You can use [Cocoapods](http://cocoapods.org/) to install `JSONPatchSwift`by adding it to your `Podfile`:
+You can use [CocoaPods](http://cocoapods.org/) to install `JSONPatchSwift`by adding it to your `Podfile`:
 ```ruby
 platform :ios, '9.0'
 use_frameworks!
