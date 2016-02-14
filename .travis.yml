@@ -5,3 +5,6 @@ xcode_workspace: JsonPatchSwift.xcworkspace
 xcode_scheme: JsonPatchSwift
 before_install:
   - brew install swiftlint
+  - gem install slather --no-rdoc --no-ri --no-document --quiet
+after_success:
+  - cd $TRAVIS_BUILD_DIR && slather
