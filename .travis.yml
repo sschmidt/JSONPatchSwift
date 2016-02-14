@@ -6,5 +6,6 @@ xcode_scheme: JsonPatchSwift
 before_install:
   - brew install swiftlint
   - gem install slather --no-rdoc --no-ri --no-document --quiet
+script: xcodebuild  -workspace JsonPatchSwift.xcworkspace -scheme JsonPatchSwift -destination "name=iPhone 6s,OS=latest" build test
 after_success:
   - cd $TRAVIS_BUILD_DIR && slather

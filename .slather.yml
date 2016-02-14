@@ -1,5 +1,3 @@
-ci_service: travis_pro
-ci_access_token: VSfonSdGsgFV2G1lMOhfPehS7arxRqGOm 
 coverage_service: coveralls
 xcodeproj: JSONPatchSwift.xcodeproj
 source_directory: JSONPatchSwift 
